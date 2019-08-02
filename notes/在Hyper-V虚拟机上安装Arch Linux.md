@@ -13,6 +13,8 @@ modified: '2019-07-31T14:03:10.185Z'
 
 在尝试在一台物理机器上安装Arch Linux之前，不妨在已有的虚拟机中体验一下安装Arch Linux的全过程。虚拟机安装过程中，可以直接使用原生系统的软硬件阅读安装指南、进行资料的搜索，更为便利。同时，如果遇到困难想中途停止安装，也可以轻松还原。
 
+本文描述笔者在一台Windows 10 机器上，从开启Windows 10自带虚拟机功能，到可以在虚拟机中运行有网络连接的Arch Linux的过程。
+
 > 笔者是在下述虚拟机环境上安装的Arch Linux：
 >
 > 操作系统：Windows 10 Pro 1903 18362.239
@@ -240,13 +242,13 @@ Arch Linux默认使用在线安装方式，在安装以及日后更新时，都�
 - 如果不想用诸如Vim/Nano等命令行文本编辑器的话，可以直接用某个服务器覆写列表文件：
 
   ```bash
-  echo "Server = https://mirrors.tuna.tsinghua.edu.cn/archlinux/$repo/os/$arch" > /etc/pacman.d/mirrorlist
+  echo Server = https://mirrors.tuna.tsinghua.edu.cn/archlinux/$repo/os/$arch > /etc/pacman.d/mirrorlist
   ```
 
 - 如果希望再附加一两行服务器，用`>>`替换上述命令的`>`来在文件末尾附加新内容，例如：
 
   ```bash
-  echo "Server = http://mirrors.163.com/archlinux/$repo/os/$arch" >> /etc/pacman.d/mirrorlist
+  echo Server = http://mirrors.163.com/archlinux/$repo/os/$arch >> /etc/pacman.d/mirrorlist
   ```
 
 - 检查文件的内容：
@@ -309,17 +311,19 @@ hwclock --systohc
 
 程序和系统均需要用[Locale](https://wiki.archlinux.org/index.php/Locale)来确定地域、货币、时间日期格式等等。要使用某个locale设置，就要先生成它。有时候，即使自己在系统使用过程中可能只用到一套locale，但为了支持切换、或者支持此电脑上的其他用户对不同的locale的需要，就要将所有可能用到的locale都一并生成。
 
-移除`/etc/locale.gen`中您需要的locale前的`#`号注释。可以用Nano/Vi(m)等工具修改，也可以用前述的`echo`命令直接编写。
-
-笔者选择的locale为：
+移除`/etc/locale.gen`中您需要的locale前的`#`号注释。可以用Nano/Vi(m)等工具修改，也可以用`cat`命令直接编写，例如：
 
 ```bash
+cat > /etc/locale.gen
 en_US.UTF-8 UTF-8
 ja_JP.UTF-8 UTF-8
 zh_CN.UTF-8 UTF-8
 zh_TW.UTF-8 UTF-8
+# ctrl+d
 ```
 
+> 最后一行表示用组合键`ctrl+d`输入文件终止符`EOF`来完成该文件的编写。详见[Linux系统输入输出重定向简介](https://www.digitalocean.com/community/tutorials/an-introduction-to-linux-i-o-redirection)。
+>
 > 备注：建议使用UTF-8字符集
 
 之后生成locale讯息：
@@ -331,7 +335,7 @@ locale-gen
 创建`locale.conf`文件，并设置`LANG`变量：
 
 ```bash
-echo "LANG=en_US.UTF-8" > /etc/locale.conf
+echo LANG=en_US.UTF-8 > /etc/locale.conf
 ```
 
 > 备注：建议操作系统均使用英文locale，这样终端内的输出、软件报错信息均为英语，便于Google搜索和问题分享等等。反之，设置成汉字语系的locale则有可能导致TTY乱码。
@@ -349,9 +353,11 @@ echo myhostname > /etc/hostname
 并创建对应的[hosts](https://jlk.fjfi.cvut.cz/arch/manpages/man/hosts.5)文件：
 
 ```bash
-echo "127.0.0.1 localhost
+cat > /etc/hosts
+127.0.0.1 localhost
 ::1 localhost
-127.0.1.1 myhostname.localdomain myhostname" > /etc/hosts
+127.0.1.1 myhostname.localdomain myhostname
+# ctrl+d
 ```
 
 > 如果此系统有一个永久IP地址，应该用此地址替换`127.0.1.1`。
@@ -376,7 +382,7 @@ passwd
 
 ### Boot loader
 
-这是重启到我们的新系统前最后的步骤了，参考[Arch启动过程#Boot loader](https://wiki.archlinux.org/index.php/Arch_boot_process#Boot_loader "Arch boot process")来配置系统的Boot loader。
+这是重启到我们的新系统前最后的步骤了，参考[Arch启动过程#Boot loader](https://wiki.archlinux.org/index.php/Arch_boot_process#Boot_loader)来配置系统的Boot loader。
 
 本文中之前选择了EFISTUB启动方法，从UEFI直接启动，所以参考[Using UEFI directly](https://wiki.archlinux.org/index.php/EFISTUB#Using_UEFI_directly)来进行配置。
 
