@@ -156,11 +156,7 @@ ls /sys/firmware/efi/efivars
 
 ### 连接到互联网
 
-在配置实体机时需要使用有线网络或者无线网络进行连接。届时可以使用 [`dhcpcd`](https://wiki.archlinux.org/index.php/Dhcpcd)、[`wifi-menu`](https://wiki.archlinux.org/index.php/Netctl#Configuration)和[`netctl`](https://wiki.archlinux.org/index.php/Netctl)等工具来配置网络连接，乃至安装、调整驱动。这一步也是Linux系统安装时，根据电脑硬件配置的不同，比较容易栽的环节。
-
 此次在虚拟机中安装之前，已经配置了虚拟网络适配器，故跳过。
-
-> 详见[配置网络](https://wiki.archlinux.org/index.php/installation_guide#Connect_to_the_internet)、[无线网络连接](https://wiki.archlinux.org/index.php/Wireless_network_configuration)以及[网络管理器](https://wiki.archlinux.org/index.php/Network_configuration#Network_managers)。
 
 ### 更新系统时钟
 
@@ -267,7 +263,7 @@ pacstrap /mnt base
 
 出现`Proceed with installation`时，记得输入`y`并回车。
 
-如果之前选择的镜像服务器不好用，可以`Ctrl+c`中止下载并重新选择服务器。
+如果之前选择的镜像服务器不好用，可以`ctrl+c`中止下载并重新选择服务器。
 
 ## 配置系统
 
@@ -362,7 +358,7 @@ cat > /etc/hosts
 
 > 如果此系统有一个永久IP地址，应该用此地址替换`127.0.1.1`。
 
-完成其他[网络配置](https://wiki.archlinux.org/index.php/Network_configuration)，对于虚拟机和一般的有线网络实体机，只需要启动[`dhcpcd`](https://wiki.archlinux.org/index.php/Dhcpcd#Running)服务即可：
+完成其他[网络配置](https://wiki.archlinux.org/index.php/Network_configuration)，对于此虚拟机，只需要启动[`dhcpcd`](https://wiki.archlinux.org/index.php/Dhcpcd#Running)服务即可：
 
 ```bash
 systemctl enable dhcpcd
@@ -392,9 +388,9 @@ passwd
    vi /home/efibootmgr.sh
    ```
 
-   > - 不用Vi也可以用Nano等编辑器。但是之后有一个输入[分区UUID](https://wiki.archlinux.org/index.php/Persistent_block_device_naming#by-partuuid)的环节，笔者只试过用Vi的[`:read`](https://vim.fandom.com/wiki/Append_output_of_an_external_command#Using_:read)完成。
+   > - 不用Vi也可以用Nano等编辑器或者`cat`、`echo`等命令。但是之后有一个输入[分区UUID](https://wiki.archlinux.org/index.php/Persistent_block_device_naming#by-partuuid)的环节，笔者是用Vi的[`:read`](https://vim.fandom.com/wiki/Append_output_of_an_external_command#Using_:read)命令完成的。
    >
-   > - 新系统中没有Vim、efibootmgr等工具。如果用`exit`命令或者组合键`Ctrl+d`退出了chroot环境，记得将`/home/efibootmgr.sh`路径替换成`/mnt/home/efibootmgr.sh`。
+   > - 新系统中没有Vim、efibootmgr等工具。如果用`exit`命令或者组合键`ctrl+d`退出了chroot环境，记得将`/home/efibootmgr.sh`路径替换成`/mnt/home/efibootmgr.sh`。
    >
    > #### 一点Vi的小说明
    >
@@ -465,9 +461,11 @@ passwd
 
    其中XXXX即efibootmgr的输出中各启动项前的四位数。
 
+   > 笔者在笔电上安装时会将U盘设为第一项，系统设为第二项。关机之后移除U盘便可从硬盘系统启动。反之如果无法启动或缺少驱动，下次启动前插入U盘便能继续配置。若如此配置，记得在系统配置妥当后将系统驱动调回第一项。
+
 ## 重启
 
-1. 用组合键`Ctrl+d`或者命令退出chroot环境：
+1. 用组合键`ctrl+d`或者命令退出chroot环境：
 
    ```bash
    exit
@@ -481,13 +479,7 @@ passwd
 
    如果文件系统正处于使用中，可以用[fuser(1)](https://jlk.fjfi.cvut.cz/arch/manpages/man/fuser.1)找到。
 
-3. 最后，如果是在实体机上，重启系统：
-
-   ```bash
-   reboot
-   ```
-
-   或者关机：
+3. 关机：
 
    ```bash
    shutdown now
@@ -495,15 +487,19 @@ passwd
 
    所有仍然挂载的文件系统会被*systemd*自动卸载。移除安装介质并且用设置好的密码登录root账户。
 
-4. 在虚拟机上，我们要先关机，然后在虚拟机设置中将SCSI控制器里的DVD驱动器中的安装镜像关掉。
+   然后在虚拟机设置中将SCSI控制器里的DVD驱动器中的安装镜像关掉。
 
    ![remove-install-disk](../attachments/remove-install-disk.png)
 
-5. 再次启动后，终于进入了Arch Linux。
+4. 再次启动后，终于进入了Arch Linux。
 
    ![welcome-to-arch-linux](../attachments/welcome-to-arch-linux.png)
 
 ## 安装完成后的工作
+
+至此，我们便有了可以在Hyper-V虚拟机中运行的基本的Arch Linux系统，以及进行后续自定义的网络连接。
+
+您可以进一步参考官方[推荐的安装完成后的操作](https://wiki.archlinux.org/index.php/General_recommendations)。包括但不限于：
 
 - 安装桌面环境
 - 测试网络
