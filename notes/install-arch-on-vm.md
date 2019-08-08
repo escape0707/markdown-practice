@@ -11,8 +11,8 @@ modified: '2019-07-31T14:03:10.185Z'
 - [下载 & 校验Arch Linux ISO安装镜像](#下载--校验arch-linux-iso安装镜像)
 - [启用Hyper-V & 创建虚拟机](#启用hyper-v--创建虚拟机)
 - [配置虚拟机](#配置虚拟机)
-- [启动并连接到虚拟机](#启动并连接到虚拟机)
-- [安装Arch Linux之前的准备工作](#安装arch-linux之前的准备工作)
+- [连接并启动虚拟机](#连接并启动虚拟机)
+- [准备安装](#准备安装)
 - [安装Arch Linux](#安装arch-linux)
 - [配置系统](#配置系统)
 - [重启](#重启)
@@ -45,17 +45,19 @@ modified: '2019-07-31T14:03:10.185Z'
 
 ### 校验
 
-1. Windows下可直接用`certutil`校验SHA1：
+Windows下可直接用`certutil`校验SHA1：
 
-   > 将`version`替换为您下载到的版本。
+> 将`version`替换为您下载到的版本。
 
-   ```powershell
-   certutil -hashfile archlinux-version-x86_64.iso.sig sha1
-   ```
+```powershell
+certutil -hashfile archlinux-version-x86_64.iso.sig sha1
+```
 
-或者
+或在使用Rufus工具制作USB安装盘时，直接点击校验按钮校验SHA1。
 
-1. 或者校验PGP签名。Windows下可以使用[Gpg4win](https://www.gpg4win.org/)，安装前确认UAC提示的安装包签名是否正确。
+或校验PGP签名：
+
+1. Windows下可以使用[Gpg4win](https://www.gpg4win.org/)，安装前确认UAC提示的安装包签名是否正确。
 2. 将下载来的Arch Linux ISO安装镜像和PGP签名文件放在同一文件夹下，之后在此文件夹运行PowerShell或Command Prompt。
 3. 运行命令：
 
@@ -111,7 +113,7 @@ Arch Linux的安装和使用均需要连接到网络，因此要给虚拟机分�
 
    ![选择Generation 2](../attachments/specify-generation-2.png)
 
-3. 选择恰当大小的内存，笔者使用了默认值。
+3. 在“Assign Memory”时，选择恰当大小的内存，笔者使用了默认值。
 
 4. 在“Configure Networking”时，“Connection”选择“Default Switch”
 
@@ -201,7 +203,7 @@ Linux系统需要至少一个root目录（`/`）分区，如果启用了UEFI，�
 
 分区时为了方便可以用[`fdisk`](https://wiki.archlinux.org/index.php/Fdisk)工具的图形版`cfdisk`
 
-1. `Select label type`选择`gpt`
+1. `Select label type`选择`gpt`（如果未提示，检查屏幕上方第三行是否为`Lable: gpt`）
 2. `New`一个`512M`的分区，`Type`更改为`EFI System`
 3. `New`一个大小为剩余空间（即`cfdisk`自动填写的大小）的分区，并确保`Type`为`Linux filesystem`
 4. 选择`Write`将分区更改写到磁盘
@@ -426,10 +428,10 @@ passwd
 2. 在其中写入如下内容：
 
    ```bash
-   efibootmgr --disk /dev/sdX --part Y --create --label "Arch Linux" --loader /vmlinuz-linux --unicode 'root=PARTUUID=XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX rw initrd=\initramfs-linux.img' --verbose
+   efibootmgr --disk /dev/sda --part 1 --create --label "Arch Linux" --loader /vmlinuz-linux --unicode 'root=PARTUUID=XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX rw initrd=\initramfs-linux.img' --verbose
    ```
 
-3. 将`/dev/sdX`和`Y`替换为EFI系统分区（ESP）的磁盘和分区号，例如，本文之前挂载时，ESP对应的是`/dev/sda1`，那么`X`即`a`，`Y`即`1`。
+3. 将`/dev/sda`和`1`替换为您的EFI系统分区（ESP）的磁盘和分区号。`--disk /dev/sda --part 1`对应的是笔者的ESP`/dev/sda1`。
 
 4. 将`root=`之后的PARTUUID的参数替换成Linux文件系统分区（即`/dev/sda2`）的分区UUID。手动输入比较麻烦，这里笔者使用的Vi的`:read`命令，让Vi将`:read !`后面的文字当作命令执行，并将结果另起一行写在文件中。
 
@@ -512,6 +514,7 @@ passwd
 
 您可以进一步参考官方[推荐的安装完成后的操作](https://wiki.archlinux.org/index.php/General_recommendations)。包括但不限于：
 
+- 创建用户账户、配置`sudo`
 - 安装网卡、蓝牙、显卡等的闭源驱动
 - 配置无线网络
 - 安装桌面环境
