@@ -183,6 +183,14 @@ sudo pacman -S plasma-meta plasma-wayland-session dolphin-plugins kdegraphics-me
 sudo systemctl enable sddm
 ```
 
+之前提到，KDE环境整合了`NetworkManager`提供图形化Wi-Fi连接配置界面。但是由于这类网络管理软件（包括前文用到的`netctl`）同时运行会导致错误，此软件不会自动启动，需要我们手动启动：
+
+```bash
+systemctl enable NetworkManager
+```
+
+全部安装后重启系统、输入密码便可以进入KDE桌面。
+
 ## 网页浏览与科学上网
 
 要说为什么需要一个桌面环境，很大程度上不是因为运行软件或者修改设置比GUI更方便或者游戏之类的，而是为了能够至少能够使用[各种浏览器](https://wiki.archlinux.org/index.php/Web_browser)浏览网页……这里笔者以不需要代理就可以正常使用全部功能的Firefox为例，您也可以选择Chrome等：
