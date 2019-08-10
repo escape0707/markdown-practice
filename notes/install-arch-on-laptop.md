@@ -170,7 +170,7 @@ logout
   sudo pacman -S xf86-video-intel
   ```
 
-> 如果是在虚拟机中，请安装`xf86-video-fbdev`驱动。
+> 如果是在虚拟机中，请安装`xf86-video-fbdev`驱动。并且Hyper-V不支持使用wayland作为显示后端，请直接不要安装plasma-wayland-session，也不要在sddm中选择（不装就自然没的选）。
 
 ### 图形化界面
 
