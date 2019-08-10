@@ -1,8 +1,6 @@
 ---
 tags: [Blog/System Configurations]
 title: 在Hyper-V虚拟机上安装Arch Linux
-created: '2019-07-29T01:23:20.716Z'
-modified: '2019-07-31T14:03:10.185Z'
 ---
 
 ## 目录<!-- omit in toc -->
