@@ -199,6 +199,8 @@ systemctl enable NetworkManager
 sudo pacman -S firefox
 ```
 
+> 为了让`Backspace`在Linux下也和Windows下一样让火狐返回上一页，可以在`about:config`中设置`browser.backspace_action`为`0`。
+
 为了能够使用Google搜索引擎，还需要[Shadowsocks](https://wiki.archlinux.org/index.php/Shadowsocks)等科学上网工具，图方便可以用`shadowsocks-qt5`，但是其是否还在活跃更新笔者现在也不清楚：
 
 ```bash
