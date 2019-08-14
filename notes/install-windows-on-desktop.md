@@ -128,12 +128,15 @@ Windows Security notification icon
 
 ### 注册表
 
-将下列内容放入`.reg`文件中并运行，移除This PC中的3D Objects：
+将下列内容放入`.reg`文件中并运行，移除This PC中的3D Objects、设置启动时打开Num Lock：
 
 ```text
 Windows Registry Editor Version 5.00
 [-HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\MyComputer\NameSpace\{0DB7E03F-FC29-4DC6-9020-FF41B59E513A}]
 [-HKEY_LOCAL_MACHINE\SOFTWARE\WOW6432Node\Microsoft\Windows\CurrentVersion\Explorer\MyComputer\NameSpace\{0DB7E03F-FC29-4DC6-9020-FF41B59E513A}]
+
+[HKEY_USERS\.DEFAULT\Control Panel\Keyboard]
+"InitialKeyboardIndicators"="2"
 ```
 
 ### 关闭系统托盘区图标
