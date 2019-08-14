@@ -6,6 +6,7 @@ title: 在笔记本电脑上安装Arch Linux的额外注意事项
 ## 目录<!-- omit in toc -->
 
 - [前言](#前言)
+- [创建USB启动盘](#创建usb启动盘)
 - [实机安装时的不同点](#实机安装时的不同点)
 - [创建账户与配置sudo](#创建账户与配置sudo)
 - [显卡驱动与图形化界面](#显卡驱动与图形化界面)
@@ -14,11 +15,22 @@ title: 在笔记本电脑上安装Arch Linux的额外注意事项
 
 ## 前言
 
-> 本文是接续前文[在Hyper-V虚拟机上安装Arch Linux](install-arch-on-vm.md)的一篇自用安装记录，旨在记录笔者在笔电Thinkpad E430c上实际安装Arch Linux的过程与虚拟机安装的区别，以及一些通用的[安装后配置](https://wiki.archlinux.org/index.php/General_recommendations)过程。
->
-> 笔者初学Linux，经验不足。如有纰漏，望各位读者不吝赐教！
+> 之前笔者已经[在虚拟机上演练过Arch Linux的安装过程](install-arch-on-vm.md)了。但是在物理机上安装时，可能会遇到额外的闭源驱动、无线网络连接、蓝牙鼠标连接等问题。而且日常使用中，一般还需要安装一套桌面环境。
 
-之前笔者已经在虚拟机上演练过Arch Linux的安装过程了。但是在物理机上安装时，可能会遇到额外的闭源驱动、无线网络连接、蓝牙鼠标连接等问题。而且日常使用中，一般还需要安装一套桌面环境。
+本文是接续前文的Linux自用安装记录中篇，旨在记录笔者在笔电Thinkpad E430c上实际安装Arch Linux的过程、与虚拟机安装的区别、以及一些通用的[安装后配置](https://wiki.archlinux.org/index.php/General_recommendations)过程。
+
+笔者初遇Linux，经验不足。如有纰漏，望各位读者不吝赐教！
+
+## 创建USB启动盘
+
+Windows下可以用[Rufus工具创建USB启动盘](https://wiki.archlinux.org/index.php/USB_flash_installation_media#In_Windows)：
+
+- SELECT您的ArchISO
+- Partition Scheme选择GPT
+- File System选择FAT32
+- START，选Write in DD Image mode
+
+之后请参照您的主板设置调整为USB启动。
 
 ## 实机安装时的不同点
 
@@ -176,10 +188,10 @@ logout
 
 您可以自己选择喜爱的[桌面环境](https://wiki.archlinux.org/index.php/Desktop_environment)。笔者已经体验过Ubuntu和GNOME，故此次尝试比较接近Windows桌面体验的[`KDE`](https://wiki.archlinux.org/index.php/KDE)桌面环境。
 
-安装KDE、[`wayland`](https://wiki.archlinux.org/index.php/KDE#KDE_applications)后端支持、以及包括文件管理、终端、记事本等应用，并且启用[SDDM](https://wiki.archlinux.org/index.php/SDDM)显示管理器：
+安装`Noto`字体、KDE、[`wayland`](https://wiki.archlinux.org/index.php/KDE#KDE_applications)后端支持、以及包括文件管理、终端、记事本等应用，并且启用[SDDM](https://wiki.archlinux.org/index.php/SDDM)显示管理器：
 
 ```bash
-sudo pacman -S plasma-meta plasma-wayland-session dolphin-plugins kdegraphics-meta kdeutils-meta khelpcenter konsole kwrite
+sudo pacman -S noto-fonts-cjk plasma-meta plasma-wayland-session dolphin-plugins kdegraphics-meta kdeutils-meta khelpcenter konsole kwrite
 sudo systemctl enable sddm
 ```
 
@@ -200,6 +212,8 @@ sudo pacman -S firefox
 ```
 
 > 为了让`Backspace`在Linux下也和Windows下一样让火狐返回上一页，可以在`about:config`中设置`browser.backspace_action`为`0`。
+>
+> 为了让标题栏和标签页栏也和Windows下一样在一行，可以在自定义火狐浏览器布局时取消勾选`Title Bar`
 
 为了能够使用Google搜索引擎，还需要[Shadowsocks](https://wiki.archlinux.org/index.php/Shadowsocks)等科学上网工具，图方便可以用`shadowsocks-qt5`，但是其是否还在活跃更新笔者现在也不清楚：
 
@@ -237,7 +251,7 @@ https://raw.githubusercontent.com/gfwlist/gfwlist/master/gfwlist.txt
 
 现在开始，您可以参考Arch Wiki上的应用列表安装感兴趣的应用，或者学习一下系统维护等。妥善利用Google、StackOverflow等网站的资源，进入Linux和开源系统的世界。
 
-笔者之后也许会另起一文，记录笔者在Arch - Nouveau - SDDM - Plasma - Shadowsocks-qt5 - Firefox等齐备之后，安装的其他或许有用的软件和进行的调整，比如：
+也可以参考笔者[之后的文章](tweak-arch.md)，此文记录了笔者在Arch - Nouveau - SDDM - Plasma - Shadowsocks-qt5 - Firefox等齐备之后，安装的其他或许有用的软件和进行的调整，诸如：
 
 - pacman镜像服务器测速排序
 - pacman wrapper 加速下载与AUR安装
