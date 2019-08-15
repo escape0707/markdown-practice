@@ -280,6 +280,18 @@ yay -S visual-studio-code-bin
 
 当使用Vim扩展插件时，为了不用经常去够`Esc`和`Ctrl`，Linux下可以使用[`caps2esc`](https://aur.archlinux.org/packages/interception-caps2esc)，Windows下可以使用[`dual-key-remap`](https://github.com/ililim/dual-key-remap)或者[AutoHotKey脚本](https://github.com/escape0707/scripts/blob/master/Use%20CapsLock%20in%20Vim.ahk)。
 
+当使用C/C++插件format文件时，可能会提示无法找到`libtinfi.so.5`，这是因为Arch Linux自带的是`libtinfi.so.6`，我们可以检查一下：
+
+```bash
+ls /lib/ | grep libtinfo.
+```
+
+而且第六版向下兼容第五版，所以我们只需要建立一个symlink即可：
+
+```bash
+sudo link /lib/libtinfo.so.6 /lib/libtinfo.so.5
+```
+
 ## 结语
 
 此三篇文章便是笔者初装Arch Linux的记录。小总结：
