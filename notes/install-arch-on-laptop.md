@@ -215,17 +215,9 @@ sudo pacman -S firefox
 >
 > 为了让标题栏和标签页栏也和Windows下一样在一行，可以在自定义火狐浏览器布局时取消勾选`Title Bar`
 
-为了能够使用Google搜索引擎，还需要[Shadowsocks](https://wiki.archlinux.org/index.php/Shadowsocks)等科学上网工具，图方便可以用`shadowsocks-qt5`，但是其是否还在活跃更新笔者现在也不清楚：
+为了能够使用Google搜索引擎，还需要[Shadowsocks](https://wiki.archlinux.org/index.php/Shadowsocks)等科学上网工具。`shadowsocks-qt5`在`git clone`时连接总是会断开，所以笔者使用`shadowsocks-libev`。您也可以使用的Python版的`shadowsocks`。
 
-```bash
-sudo pacman -S shadowsocks-qt5
-```
-
-之后在启动的图形化界面中创建您的服务器条目，或者导入类似Windows版的`gui-config.json`的服务器配置列表文件。设置开机最小化自启动并编辑某条服务器将其设置为启动后自动连接。
-
-或者
-
-如果您想使用命令行版本的shadowsocks、shadowsocks-libev，那么需要安装、创建服务器配置文件、然后启动并启用：
+安装、创建服务器配置文件、然后启动并启用：
 
 > 用您喜欢的名字替换下文的`config`
 
@@ -251,7 +243,7 @@ https://raw.githubusercontent.com/gfwlist/gfwlist/master/gfwlist.txt
 
 现在开始，您可以参考Arch Wiki上的应用列表安装感兴趣的应用，或者学习一下系统维护等。妥善利用Google、StackOverflow等网站的资源，进入Linux和开源系统的世界。
 
-也可以参考笔者[之后的文章](tweak-arch.md)，此文记录了笔者在Arch - Nouveau - SDDM - Plasma - Shadowsocks-qt5 - Firefox等齐备之后，安装的其他或许有用的软件和进行的调整，诸如：
+也可以参考笔者[之后的文章](tweak-arch.md)，此文记录了笔者在Arch - Nouveau - SDDM - Plasma - Shadowsocks-libev - Firefox等齐备之后，安装的其他或许有用的软件和进行的调整，诸如：
 
 - pacman镜像服务器测速排序
 - pacman wrapper 加速下载与AUR安装

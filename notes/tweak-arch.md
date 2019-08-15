@@ -287,7 +287,7 @@ yay -S visual-studio-code-bin
 安装所有包：
 
 ```bash
-pacstrap /mnt base base-devel bash-completion broadcom-wl-dkms dolphin-plugins fcitx-cloudpinyin fcitx-im firefox-developer-edition git intel-ucode kcm-fcitx kdegraphics-meta kdeutils-meta khelpcenter konsole kwrite linux-headers noto-fonts-cjk pacman-contrib plasma-meta plasma-wayland-session powerpill rsync shadowsocks-qt5 systemd-swap visual-studio-code-bin xf86-video-intel xf86-video-nouveau yay
+pacstrap /mnt base base-devel bash-completion broadcom-wl-dkms dolphin-plugins fcitx-cloudpinyin fcitx-im firefox-developer-edition git intel-ucode kcm-fcitx kdegraphics-meta kdeutils-meta khelpcenter konsole kwrite linux-headers noto-fonts-cjk pacman-contrib plasma-meta plasma-wayland-session powerpill rsync shadowsocks-libev systemd-swap visual-studio-code-bin xf86-video-intel xf86-video-nouveau yay
 ```
 
 chroot后创建用户账户，设置两个账户的密码，设置`sudoers`：
