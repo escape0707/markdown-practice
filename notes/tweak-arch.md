@@ -143,7 +143,9 @@ yay -Syu
 yay -S powerpill reflector rsync --needed
 ```
 
-`powerpill`安装完成即可使用，精调请参考[`powerpill.json(1)`](https://xyne.archlinux.ca/projects/powerpill/#powerpill.json1)手册页。
+为`/etc/pacman.conf`中已启用的Repo添加`SigLevel = PackageRequired`，参见[Wiki#Troubleshooting](https://wiki.archlinux.org/index.php/Powerpill#Troubleshooting)
+
+此时即可使用`powerpill`，精调请参考[`powerpill.json(1)`](https://xyne.archlinux.ca/projects/powerpill/#powerpill.json1)手册页。
 
 ## 配置Swap
 
@@ -255,6 +257,28 @@ sudo cat >> /etc/inputrc
 > 删除光标后的内容：`ctrl+k`
 >
 > 援引前一条命令的内容用`!!`，如`sudo !!`来用`root`权限执行前一条命令。
+
+## GoldenDict
+
+笔者使用的离线词典软件GoldenDict：
+
+```bash
+sudo pacman -S goldendict
+```
+
+Linux上GoldenDict可以使用Scan Popup直接划词翻译，但是使用起来有时不如Windows上用[AutoHotKey脚本](https://github.com/escape0707/scripts/blob/master/GoldenDict%20Select%20To%20Translate.ahk)实现的稳定。
+
+Linux上的GoldenDict不像Windows上自带Morphology，需要自己[下载](https://sourceforge.net/projects/goldendict/files/better%20morphologies/1.0/)。
+
+## Visual Studio Code
+
+笔者安装的实微软专有版VSCode：
+
+```bash
+yay -S visual-studio-code-bin
+```
+
+当使用Vim扩展插件时，为了不用经常去够`Esc`和`Ctrl`，Linux下可以使用[`caps2esc`](https://aur.archlinux.org/packages/interception-caps2esc)，Windows下可以使用[`dual-key-remap`](https://github.com/ililim/dual-key-remap)或者[AutoHotKey脚本](https://github.com/escape0707/scripts/blob/master/Use%20CapsLock%20in%20Vim.ahk)。
 
 ## 结语
 
