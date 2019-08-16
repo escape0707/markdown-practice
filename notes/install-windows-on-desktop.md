@@ -77,12 +77,13 @@ Videos
 并安装其他软件：
 
 ```powershell
-choco install -y 7zip aria2 authy-desktop autohotkey emule Firefox geforce-experience geforce-game-ready-driver git goldendict logitech-options logitechgaming shadowsocks steam teamviewer tim toggl vlc vscode wechat
+choco install -y 7zip aria2 authy-desktop autohotkey emule Firefox geforce-experience geforce-game-ready-driver git logitech-options logitechgaming steam teamviewer tim toggl vlc vscode wechat
 ```
 
 以及自行安装一些软件：
 
 ```text
+GoldenDict
 Microsoft Edge Canary
 Microsoft Office Professional Plus 2019
 PanDownload
@@ -100,6 +101,8 @@ Trello
 哔哩哔哩动画
 哔哩哔哩动画UWP
 ```
+
+当使用Vim扩展插件时，为了不用经常去够`Esc`和`Ctrl`，Windows下可以使用[`dual-key-remap`](https://github.com/ililim/dual-key-remap)或者[AutoHotKey脚本](https://github.com/escape0707/scripts/blob/master/Use%20CapsLock%20in%20Vim.ahk)，Linux下可以使用[`caps2esc`](https://aur.archlinux.org/packages/interception-caps2esc)。
 
 最后配置GoldenDict词典，以及下载[GoldenDict划译脚本](https://github.com/escape0707/scripts)。
 
