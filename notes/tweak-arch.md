@@ -106,6 +106,8 @@ git config --global user.name "Your Username"
 git config --global user.email your@email.com
 git config --global http.proxy socks5://127.0.0.1:1080
 git config --global credential.helper store
+git config --global merge.ff only
+git config --global pull.ff only
 ```
 
 > 其中`bash-completion`包提供`bash`中各种命令的补全，包括`git`命令中补全分支名称、`pacman`命令中补全包名称等，十分便利。
