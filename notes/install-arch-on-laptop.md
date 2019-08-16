@@ -215,9 +215,9 @@ sudo pacman -S firefox
 >
 > 为了让标题栏和标签页栏也和Windows下一样在一行，可以在自定义火狐浏览器布局时取消勾选`Title Bar`
 
-为了能够使用Google搜索引擎，还需要[Shadowsocks](https://wiki.archlinux.org/index.php/Shadowsocks)等科学上网工具。`shadowsocks-qt5`在`git clone`时连接总是会断开，所以笔者使用`shadowsocks-libev`。您也可以使用的Python版的`shadowsocks`。
+为了能够使用Google搜索引擎，还需要[Shadowsocks](https://wiki.archlinux.org/index.php/Shadowsocks)等科学上网工具。`shadowsocks-qt5`在`git clone`时连接总是会断开，所以笔者使用C版`shadowsocks-libev`，您也可以使用的Python版的`shadowsocks`。
 
-安装、创建服务器配置文件、然后启动并启用，并且设置NetworkManager支持Shadowsocks有网后才自启动：
+安装、创建服务器配置文件、然后启动并启用：
 
 > 用您喜欢的名字替换下文的`config`
 
@@ -226,7 +226,13 @@ sudo pacman -S shadowsocks-libev
 vi /etc/shadowsocks/config.json
 # 将您的某个shadowsocks服务器信息写入到以上文件中
 sudo systemctl start shadowsocks-libev@config.json
-sudo systemctl enable shadowsocks-libev@config.json NetworkManager-wait-online.service
+sudo systemctl enable shadowsocks-libev@config.json
+```
+
+如果服务不能成功自动启动，请尝试将json中的`server`替换为完整域名解析到的IP地址，和/或设置NetworkManager支持Shadowsocks有网后才自启动：
+
+```bash
+sudo systemctl enable NetworkManager-wait-online.service
 ```
 
 安装并运行了本地Shadowsocks客户端后，在Firefox/Chrome中安装[Proxy SwitchyOmega](https://addons.mozilla.org/en-US/firefox/addon/switchyomega/)，打开设置，跳过所有教程，设置proxy中的服务器地址端口为`socks5`、地址为`127.0.0.1`，端口为`1080`。设置auto switch中的规则列表URL为：

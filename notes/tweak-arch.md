@@ -311,7 +311,7 @@ EDITOR=vi visudo
 启用所有服务：
 
 ```bash
-systemctl enable bluetooth NetworkManager-wait-online pacache.timer sddm systemd-swap
+systemctl enable bluetooth NetworkManager pacache.timer sddm systemd-swap
 ```
 
 设置Swap：
