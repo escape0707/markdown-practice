@@ -235,6 +235,15 @@ sudo systemctl enable shadowsocks-libev@config.json
 sudo systemctl enable NetworkManager-wait-online.service
 ```
 
+有时需要将Shadowsocks默认提供的socks5代理转化为http代理（比如Git），此时可以安装[`privoxy`](https://wiki.archlinux.org/index.php/Privoxy)、设置协议的转发、启动并启用服务：
+
+```bash
+sudo pacman -S privoxy
+sudo sh -c "echo 'forward-socks5 / 127.0.0.1:1080 .' >> /etc/privoxy/config"
+sudo systemctl start privoxy
+sudo systemctl enable privoxy
+```
+
 安装并运行了本地Shadowsocks客户端后，在Firefox/Chrome中安装[Proxy SwitchyOmega](https://addons.mozilla.org/en-US/firefox/addon/switchyomega/)，打开设置，跳过所有教程，设置proxy中的服务器地址端口为`socks5`、地址为`127.0.0.1`，端口为`1080`。设置auto switch中的规则列表URL为：
 
 ```URL

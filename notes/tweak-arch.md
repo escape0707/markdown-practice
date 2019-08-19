@@ -98,13 +98,13 @@ comm -23 <(pacman -Qqe | sort) <((for i in $(pacman -Qqg base base-devel fcitx-i
 
 > 将`YourUsername`和`your@email.com`替换为您的名字和邮箱地址。此信息之后将被用于的commit message中，作为开发历史的资料和GitHub等托管网站连接commit与账户的依据。
 >
-> 将代理服务器的地址设置为之前开启的Shadowsocks本地端的地址。Git for Windows下使用`socks5`协议貌似会不被`ServicePointManager`支持而需要反复输入账户密码，届时请用`http`协议。
+> 将代理服务器的地址设置为之前开启的Shadowsocks本地端的地址。Git for Windows下使用`socks5`协议貌似会不被`ServicePointManager`支持而需要反复输入账户密码，而Linux下似乎又不能clone gist，届时请用之前通过`privoxy`转化得到的`http`协议。
 
 ```bash
 sudo pacman -S git bash-completion
 git config --global user.name "Your Username"
 git config --global user.email your@email.com
-git config --global http.proxy socks5://127.0.0.1:1080
+git config --global http.proxy http://127.0.0.1:8118
 git config --global credential.helper store
 git config --global merge.ff only
 git config --global pull.ff only
@@ -301,7 +301,7 @@ sudo link /lib/libtinfo.so.6 /lib/libtinfo.so.5
 安装所有包：
 
 ```bash
-pacstrap /mnt base base-devel bash-completion broadcom-wl-dkms dolphin-plugins fcitx-cloudpinyin fcitx-im firefox-developer-edition git intel-ucode kcm-fcitx kdegraphics-meta kdeutils-meta khelpcenter konsole kwrite linux-headers noto-fonts-cjk pacman-contrib plasma-meta plasma-wayland-session powerpill rsync shadowsocks-libev systemd-swap visual-studio-code-bin xf86-video-intel xf86-video-nouveau yay
+pacstrap /mnt base base-devel bash-completion broadcom-wl-dkms caps2esc dolphin-plugins fcitx-cloudpinyin fcitx-im firefox-developer-edition git goldendict intel-ucode kcm-fcitx kdegraphics-meta kdeutils-meta khelpcenter konsole kwrite linux-headers noto-fonts-cjk pacman-contrib plasma-meta plasma-wayland-session powerpill privoxy proxychains-ng reflector rsync shadowsocks-libev systemd-swap visual-studio-code-bin xf86-video-nouveau yay
 ```
 
 chroot后创建用户账户，设置两个账户的密码，设置`sudoers`：
