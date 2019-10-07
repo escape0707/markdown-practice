@@ -64,7 +64,7 @@ netctl start profile
 pacman -S dialog wpa_supplicant
 ```
 
-> 以上两个软件包均不在base软件包组中。如果此时忘记安装，在新系统中便无`wifi-menu`等可用。不过届时可以再次从安装介质启动完成这一步骤。
+> 以上两个软件包均不在base软件包中。如果此时忘记安装，在新系统中便无`wifi-menu`等可用。不过届时可以再次从安装介质启动完成这一步骤。
 >
 > 如果希望安装KDE等桌面环境，那么则推荐您直接使用KDE中的图形化网络连接配置模块`NetworkManager`。此包会在安装KDE桌面环境时作为依赖自动安装。请您参见Todo
 

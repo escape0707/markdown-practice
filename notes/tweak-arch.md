@@ -68,7 +68,7 @@ sudo systemctl enable paccache.timer
 
 ### 列出所有直接安装的包
 
-以下命令计算所有直接安装的包中不属于base、base-devel和fcitx-im组的部分，建议写成脚本放在`/home/listpkg.bash`以供随时运行：
+以下命令计算所有直接安装的包中不属于base包、base-devel组和fcitx-im组的部分，建议写成脚本放在`/home/listpkg.bash`以供随时运行：
 
 ```bash
 comm -23 <(pacman -Qqe | sort) <((for i in $(pacman -Qqg base base-devel fcitx-im); do pactree -ul "$i"; done) | sort -u)

@@ -273,13 +273,15 @@ reflector --country China --protocol https --sort rate --save /etc/pacman.d/mirr
 cat /etc/pacman.d/mirrorlist
 ```
 
-### 安装`base`软件包组
+### 安装`base`软件包
 
 下载并安装Arch Linux，会花费大约三分钟：
 
 ```bash
-pacstrap /mnt base
+pacstrap /mnt base linux
 ```
+
+> 注意：从2019年10月6日起，base软件包组被同名的新base软件包[替换](https://www.archlinux.org/news/base-group-replaced-by-mandatory-base-package-manual-intervention-required/)，而且此软件包中不再包含netctl、vi、linux等软件包。本文撰写于这一变化之前，并且暂时没有条件重新安装系统并更新这篇文章。
 
 如果之前选择的镜像服务器不好用，可以`ctrl+c`中止下载并重新选择服务器。下次`pacman`会从中止的软件包开始续传。
 
