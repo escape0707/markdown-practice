@@ -30,6 +30,14 @@ Windows下可以用[Rufus工具创建USB启动盘](https://wiki.archlinux.org/in
 - File System选择FAT32
 - START，选Write in DD Image mode
 
+Linux下可以用[dd工具创建USB启动盘](https://wiki.archlinux.org/index.php/USB_flash_installation_media#In_GNU/Linux)：
+
+- 用`lsblk`命令找到USB盘的名称，例如`sdb`
+- 将如下命令中的`/dev/sdx`替换为您的USB盘的名称，例如`/dev/sdb`。注意不要后缀分区数，即不要用`/dev/sdb1`
+  ```bash
+  sudo dd bs=4M if=path/to/archlinux.iso of=/dev/sdx status=progress oflag=sync
+  ```
+
 之后请参照您的主板设置调整为USB启动。
 
 ## 实机安装时的不同点

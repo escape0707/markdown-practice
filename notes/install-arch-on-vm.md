@@ -20,7 +20,7 @@ title: 在Hyper-V虚拟机上安装Arch Linux
 
 作为计划投放在个人博客上的第一篇文章，记录些前几天在台式机和笔记本电脑上安装Arch Linux的过程。我~~可怜又可爱~~的小笔记本电脑从高中二年级开始就一直稳健地发挥着热量，直到如今大学毕业。其硬盘、CPU、内存难以满足当下一套Windows 10 + Firefox Quantum + Electron App(Visual Studio Code / Trello)的欲求。恰巧最近想要在Linux环境下学习一些别的框架，挑挑拣拣便看中了这个配置相对复杂但是内容精简的Arch Linux + KDE往笔电上试着装了装。
 
-此文不妄为各位读者解惑，仅能够作为下次安装或给同学朋友的参考便好。如对网络另一头的他人能有所帮助，不胜荣幸。
+此文不妄为各位读者解惑，仅能够作为下次安装或给同学朋友的参考便好。如能对网络另一端的您有所帮助，不胜荣幸。
 
 在尝试于一台物理机上安装Arch Linux之前，不妨先在虚拟机中体验一下安装Arch Linux的过程。况且，在虚拟机中安装，可以直接使用物理机的软硬件阅读安装指南、搜索资料，更为便利。另外，如遇困难，想中途停止安装，也可以轻松回滚。
 
@@ -53,9 +53,9 @@ certutil -hashfile archlinux-version-x86_64.iso.sig sha1
 
 或在使用Rufus工具制作USB安装盘时，直接点击校验按钮校验SHA1。
 
-或校验PGP签名：
+或校验PGP签名，在Windows下可以使用[Gpg4win](https://www.gpg4win.org/)：
 
-1. Windows下可以使用[Gpg4win](https://www.gpg4win.org/)，安装前确认UAC提示的安装包签名是否正确。
+1. 安装Gpg4win前确认UAC提示的安装包签名是否正确。
 2. 将下载来的Arch Linux ISO安装镜像和PGP签名文件放在同一文件夹下，之后在此文件夹运行PowerShell或Command Prompt。
 3. 运行命令：
 
@@ -84,6 +84,12 @@ certutil -hashfile archlinux-version-x86_64.iso.sig sha1
 6. 根据Arch Linux官网的[开发人员信息](https://www.archlinux.org/people/developers/#pierre)我们可以找到并确认这个公钥。
 
    > 当然我们也需要确认页面的可信任性等等，这里不再[详述](https://pierre-schmitz.com/trust-the-master-keys/)。
+
+或者在Arch Linux下，用`pacman-key`校验签名：
+
+```bash
+pacman-key -v archlinux-version-x86_64.iso.sig
+```
 
 ## 启用Hyper-V & 创建虚拟机
 
