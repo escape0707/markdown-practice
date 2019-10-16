@@ -301,7 +301,7 @@ sudo link /lib/libtinfo.so.6 /lib/libtinfo.so.5
 安装所有包：
 
 ```bash
-pacstrap /mnt base base-devel bash-completion broadcom-wl-dkms caps2esc dolphin-plugins fcitx-cloudpinyin fcitx-im firefox-developer-edition git goldendict intel-ucode kcm-fcitx kdegraphics-meta kdeutils-meta khelpcenter konsole kwrite linux-headers noto-fonts-cjk pacman-contrib plasma-meta plasma-wayland-session powerpill privoxy proxychains-ng reflector rsync shadowsocks-libev systemd-swap visual-studio-code-bin xf86-video-nouveau yay
+pacstrap /mnt arch-wiki-docs base base-devel bash-completion broadcom-wl-dkms caps2esc code cppreference dolphin-plugins fcitx-im fcitx-cloudpinyin firefox git goldendict intel-ucode kcm-fcitx kdegraphics-meta kdeutils-meta khelpcenter konsole kwrite linux-headers man-db neovim noto-fonts-cjk openssh pacman-contrib plasma-meta plasma-wayland-session powerpill reflector shadowsocks-libev systemd-swap telegram-desktop ttf-dejavu v2ray xf86-video-intel xf86-video-nouveau yay-bin 
 ```
 
 chroot后创建用户账户，设置两个账户的密码，设置`sudoers`：
