@@ -17,7 +17,7 @@ title: 在台式机上安装Windows 10
 
 ## 前言
 
-笔者自用的Windows 10重装备忘录。
+俺自用的Windows 10重装备忘录。
 
 ## 下载最新Windows安装镜像
 
@@ -43,7 +43,7 @@ choco install rufus
 
 ## UEFI下Secure Boot USB启动盘
 
-笔者使用的MSI B150 Krait Gaming，需要开启UEFI、Secure Boot，以及legacy USB support，之后UEFI模式的USB启动才会出现。
+俺使用的MSI B150 Krait Gaming，需要开启UEFI、Secure Boot，以及legacy USB support，之后UEFI模式的USB启动才会出现。
 
 ## Fresh Start
 
