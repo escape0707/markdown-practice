@@ -1,6 +1,6 @@
 ---
 tags: [Blog/System Configurations]
-title: 在Hyper-V虚拟机上安装Arch Linux
+title: 安装Arch Linux前的准备工作
 ---
 
 ## 目录<!-- omit in toc -->
