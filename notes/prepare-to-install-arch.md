@@ -68,6 +68,7 @@ title: 安装Arch Linux前的准备工作
 > 俺是在下述环境进行安装的：
 >
 > 操作系统：Windows 10 Pro 1903 18362.239
+>
 > 虚拟技术：Hyper-V
 >
 > 并不清楚Hyper-V与Oracle VM VirtualBox上仅仅是进行Arch Linux安装会有什么体验上的不同。之前已经试过VirtualBox，此次为了少安装一个第三方软件尝试一下微软的Hyper-V。
