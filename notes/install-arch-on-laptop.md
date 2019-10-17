@@ -6,7 +6,6 @@ title: 在笔记本电脑上安装Arch Linux的额外注意事项
 ## 目录<!-- omit in toc -->
 
 - [前言](#前言)
-- [创建USB启动盘](#创建usb启动盘)
 - [实机安装时的不同点](#实机安装时的不同点)
 - [创建账户与配置sudo](#创建账户与配置sudo)
 - [显卡驱动与图形化界面](#显卡驱动与图形化界面)
@@ -20,25 +19,6 @@ title: 在笔记本电脑上安装Arch Linux的额外注意事项
 本文是接续前文的Linux自用安装记录中篇，旨在记录笔者在笔电Thinkpad E430c上实际安装Arch Linux的过程、与虚拟机安装的区别、以及一些通用的[安装后配置](https://wiki.archlinux.org/index.php/General_recommendations)过程。
 
 笔者初遇Linux，经验不足。如有纰漏，望各位读者不吝赐教！
-
-## 创建USB启动盘
-
-Windows下可以用[Rufus工具创建USB启动盘](https://wiki.archlinux.org/index.php/USB_flash_installation_media#In_Windows)：
-
-- SELECT您的ArchISO
-- Partition Scheme选择GPT
-- File System选择FAT32
-- START，选Write in DD Image mode
-
-Linux下可以用[dd工具创建USB启动盘](https://wiki.archlinux.org/index.php/USB_flash_installation_media#In_GNU/Linux)：
-
-- 用`lsblk`命令找到USB盘的名称，例如`sdb`
-- 将如下命令中的`/dev/sdx`替换为您的USB盘的名称，例如`/dev/sdb`。注意不要后缀分区数，即不要用`/dev/sdb1`
-  ```bash
-  sudo dd bs=4M if=path/to/archlinux.iso of=/dev/sdx status=progress oflag=sync
-  ```
-
-之后请参照您的主板设置调整为USB启动。
 
 ## 实机安装时的不同点
 
