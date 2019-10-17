@@ -86,12 +86,12 @@ Linux系统需要至少一个root目录（`/`）分区，如果启用了UEFI，�
 
 分区时为了方便可以用[`fdisk`](https://wiki.archlinux.org/index.php/Fdisk)工具的图形版`cfdisk`
 
-1. `Select label type`选择`gpt`（如果未提示，检查屏幕上方第三行是否为`Lable: gpt`）
-2. `New`一个`512M`的分区，`Type`更改为`EFI System`
-3. `New`一个大小为`剩余空间-8GB`（即`cfdisk`自动填写的大小减去`8GB`）的分区，并确保`Type`为`Linux filesystem`
-4. `New`一个`8GB`的分区，`Type`更改为`Linux swap`
-5. 选择`Write`将分区更改写到磁盘
-6. `Quit`
+1. Select label type选择`gpt`（如果未提示，检查屏幕上方第三行是否为`Lable: gpt`）
+2. New一个`512M`的分区，Type更改为`EFI System`
+3. New一个大小为剩余空间-`8GB`（即`cfdisk`自动填写的大小减去`8GB`）的分区，并确保Type为`Linux filesystem`
+4. New一个`8GB`的分区，Type更改为`Linux swap`
+5. 选择Write将分区更改写到磁盘
+6. Quit
 
 ### 格式化分区
 
