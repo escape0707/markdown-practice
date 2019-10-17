@@ -3,6 +3,16 @@ tags: [Blog/System Configurations]
 title: 为Arch Linux创建Hyper-V虚拟机
 ---
 
+## 目录<!-- omit in toc -->
+
+- [前言](#前言)
+- [启用Hyper-V & 创建虚拟机](#启用hyper-v--创建虚拟机)
+- [配置虚拟机](#配置虚拟机)
+- [连接并启动虚拟机](#连接并启动虚拟机)
+- [正式安装](#正式安装)
+
+## 前言
+
 本文承接前文[安装Arch Linux前的准备工作](prepare-to-install-arch.md)，介绍利用Windows 10整合的Hyper-V技术，创建一台虚拟机并启动到Arch Linux安装介质以便安装的步骤。
 
 ## 启用Hyper-V & 创建虚拟机
@@ -68,5 +78,7 @@ Arch Linux的安装和使用均需要连接到网络，因此要给虚拟机分�
    ```bash
    ping baidu.com
    ```
+
+## 正式安装
 
 [在虚拟机/物理机中安装Arch Linux](install-arch-on-laptop-and-vm.md)的步骤请移步后文。
