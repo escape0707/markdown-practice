@@ -3,9 +3,9 @@ tags: [Blog/System Configurations]
 title: 初装Arch Linux后的软件和设置建议
 ---
 
-> 在前文[在笔记本电脑上安装Arch Linux的额外注意事项](install-arch-on-laptop.md)中，笔者已经描述了如何在笔记本上安装运行KDE桌面环境的Arch Linux系统。在满足了基本的Google搜索需求后，还有很多可以提升使用体验的空间。
+> 在前文[在笔记本电脑上安装Arch Linux的额外注意事项](install-arch-on-laptop.md)中，俺已经描述了如何在笔记本上安装运行KDE桌面环境的Arch Linux系统。在满足了基本的Google搜索需求后，还有很多可以提升使用体验的空间。
 
-本文是接续前文的Linux自用安装记录后篇，旨在记录笔者完善自己的Linux系统使用体验的过程中，安装并使用了哪些工具、修改了哪些配置。作为备忘之用。
+本文是接续前文的Linux自用安装记录后篇，旨在记录俺完善自己的Linux系统使用体验的过程中，安装并使用了哪些工具、修改了哪些配置。作为备忘之用。
 
 欢迎各位读者分享自己的技巧和建议！
 
@@ -15,6 +15,8 @@ title: 初装Arch Linux后的软件和设置建议
 - [安装蓝牙驱动并启用](#安装蓝牙驱动并启用)
 - [输入法](#输入法)
 - [Readline](#readline)
+- [GoldenDict](#goldendict)
+- [Visual Studio Code](#visual-studio-code)
 - [结语](#结语)
 
 ## pacman技巧
@@ -112,7 +114,7 @@ git config --global pull.ff only
 
 > 其中`bash-completion`包提供`bash`中各种命令的补全，包括`git`命令中补全分支名称、`pacman`命令中补全包名称等，十分便利。
 >
-> 配置`credential.helper`令您在和远程服务器同步时不需要反复输入用户名和密码。笔者为了方便设置为[`store`](https://git-scm.com/docs/git-credential-store)来明文保存到本地，但为了安全您还可以选择[`cache`](https://git-scm.com/docs/git-credential-cache)。
+> 配置`credential.helper`令您在和远程服务器同步时不需要反复输入用户名和密码。俺为了方便设置为[`store`](https://git-scm.com/docs/git-credential-store)来明文保存到本地，但为了安全您还可以选择[`cache`](https://git-scm.com/docs/git-credential-cache)。
 
 ### Yay
 
@@ -168,7 +170,7 @@ sudo sed --in-place s/swapfc_enabled=0/swapfc_enabled=1/ /etc/systemd/swap.conf
 
 > 其中`--in-place`表示直接修改指定文件并保存。
 
-笔者的物理内存为4G，不使用休眠模式则设置`swapfc_chunk_size=2G`。
+俺的物理内存为4G，不使用休眠模式则设置`swapfc_chunk_size=2G`。
 
 之后启用服务：
 
@@ -178,7 +180,7 @@ sudo systemctl enable systemd-swap
 
 ## 安装蓝牙驱动并启用
 
-笔者的笔电采用高通无线/蓝牙芯片，需要[自行安装蓝牙驱动](https://askubuntu.com/questions/632336/bluetooth-broadcom-43142-isnt-working)。
+俺的笔电采用高通无线/蓝牙芯片，需要[自行安装蓝牙驱动](https://askubuntu.com/questions/632336/bluetooth-broadcom-43142-isnt-working)。
 
 检查日志找到所需的蓝牙驱动型号：
 
@@ -219,7 +221,7 @@ sudo systemctl enable bluetooth
 
 ## 输入法
 
-Linux下有许多中文输入法，笔者使用包含于官方源中的[`Fcitx`](https://wiki.archlinux.org/index.php/Fcitx)。
+Linux下有许多中文输入法，俺使用包含于官方源中的[`Fcitx`](https://wiki.archlinux.org/index.php/Fcitx)。
 
 安装Fcitx框架、百度/谷歌云拼音插件、KDE设置插件：
 
@@ -262,7 +264,7 @@ sudo cat >> /etc/inputrc
 
 ## GoldenDict
 
-笔者使用的离线词典软件GoldenDict：
+俺使用的离线词典软件GoldenDict：
 
 ```bash
 sudo pacman -S goldendict
@@ -274,7 +276,7 @@ Linux上的GoldenDict不像Windows上自带Morphology，需要自己[下载](htt
 
 ## Visual Studio Code
 
-笔者安装的实微软专有版VSCode：
+俺安装的是微软专有版VSCode：
 
 ```bash
 yay -S visual-studio-code-bin
@@ -296,12 +298,12 @@ sudo link /lib/libtinfo.so.6 /lib/libtinfo.so.5
 
 ## 结语
 
-此三篇文章便是笔者初装Arch Linux的记录。小总结：
+此三篇文章便是俺初装Arch Linux的记录。小总结：
 
 安装所有包：
 
 ```bash
-pacstrap /mnt arch-wiki-docs base base-devel bash-completion broadcom-wl-dkms caps2esc code cppreference dolphin-plugins fcitx-im fcitx-cloudpinyin firefox git goldendict intel-ucode kcm-fcitx kdegraphics-meta kdeutils-meta khelpcenter konsole kwrite linux-headers man-db neovim noto-fonts-cjk openssh pacman-contrib plasma-meta plasma-wayland-session powerpill reflector shadowsocks-libev systemd-swap telegram-desktop ttf-dejavu v2ray xf86-video-intel xf86-video-nouveau yay-bin 
+pacstrap /mnt arch-wiki-docs base base-devel bash-completion broadcom-wl-dkms caps2esc code cppreference dolphin-plugins fcitx-im fcitx-cloudpinyin firefox git goldendict intel-ucode kcm-fcitx kdegraphics-meta kdeutils-meta khelpcenter konsole kwrite linux-headers man-db neovim noto-fonts-cjk openssh pacman-contrib plasma-meta plasma-wayland-session powerpill reflector shadowsocks-libev systemd-swap telegram-desktop ttf-dejavu v2ray xf86-video-intel xf86-video-nouveau yay-bin
 ```
 
 chroot后创建用户账户，设置两个账户的密码，设置`sudoers`：

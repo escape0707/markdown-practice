@@ -31,7 +31,7 @@ Arch Linux的安装和使用均需要连接到网络，因此要给虚拟机分�
 
    ![选择Generation 2](../attachments/specify-generation-2.png)
 
-3. 在“Assign Memory”时，选择恰当大小的内存，笔者使用了默认值。
+3. 在“Assign Memory”时，选择恰当大小的内存，俺使用了默认值。
 
 4. 在“Configure Networking”时，“Connection”选择“Default Switch”
 
@@ -69,4 +69,4 @@ Arch Linux的安装和使用均需要连接到网络，因此要给虚拟机分�
    ping baidu.com
    ```
 
-[在虚拟机/实体机中安装Arch Linux](install-arch-on-laptop-and-vm.md)的步骤请移步后文。
+[在虚拟机/物理机中安装Arch Linux](install-arch-on-laptop-and-vm.md)的步骤请移步后文。
