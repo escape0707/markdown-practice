@@ -36,29 +36,25 @@ ls /sys/firmware/efi/efivars
 
 ### 连接到互联网
 
-- 虚拟机：
+虚拟机之前已经配置了虚拟网络适配器，故跳过。
 
-  之前已经配置了虚拟网络适配器，故跳过。
+物理机安装时如使用有线连接，无需额外操作；而如需使用Wi-Fi连接，可以使用图形化工具：
 
-- 物理机：
+```bash
+wifi-menu -o
+```
 
-  物理机安装时如使用有线连接，无需额外操作；而如需使用Wi-Fi连接，可以使用图形化工具：
+一般来说，`archboot`安装环境中已经包含了各种网卡的驱动，其中就有俺所需的高通专有驱动`broadcom-wl`。但如果工具仍然报错，请根据[无线网络配置](https://wiki.archlinux.org/index.php/Wireless_network_configuration)检查常见问题。
 
-  ```bash
-  wifi-menu -o
-  ```
+根据向导选择网络，输入密码之后，工具便会在`/etc/netctl`创建一个连接配置文件，接下来启动它：
 
-  一般来说，`archboot`安装环境中已经包含了各种网卡的驱动，其中就有俺所需的高通专有驱动`broadcom-wl`。但如果工具仍然报错，请根据[无线网络配置](https://wiki.archlinux.org/index.php/Wireless_network_configuration)检查常见问题。
+> 用您指定的配置文件名称替换下文的`profile`，可在输入`start`和空格后，按`tab`键自动补全。
 
-  根据向导选择网络，输入密码之后，工具便会在`/etc/netctl`创建一个连接配置文件，接下来启动它：
+```bash
+netctl start profile
+```
 
-  > 用您指定的配置文件名称替换下文的`profile`，可在输入`start`和空格后，按`tab`键自动补全。
-
-  ```bash
-  netctl start profile
-  ```
-
-  如此便可连接上Wi-Fi网络。
+如此便可连接上Wi-Fi网络。
 
 ### 更新系统时钟
 
