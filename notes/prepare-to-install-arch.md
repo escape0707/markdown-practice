@@ -11,6 +11,7 @@ title: 安装Arch Linux前的准备工作
 - [推荐在虚拟机上初体验](#推荐在虚拟机上初体验)
 - [下载 & 校验Arch Linux ISO安装镜像](#下载--校验arch-linux-iso安装镜像)
 - [创建USB启动盘](#创建usb启动盘)
+- [准备完成](#准备完成)
 
 ## 前言
 
@@ -150,5 +151,7 @@ Linux下可以用[dd工具创建USB启动盘](https://wiki.archlinux.org/index.p
   ```
 
 之后请参照您的主板设置调整为USB启动。
+
+## 准备完成
 
 至此，准备工作已经完成。俺之后将会继续描述[在Hyper-V虚拟机上](create-vm-for-arch.md)和[在笔电上](install-arch-on-laptop-and-vm.md)安装Arch Linux的过程，详情请移步后文。
