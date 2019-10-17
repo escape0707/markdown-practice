@@ -1,17 +1,30 @@
 ---
 tags: [Blog/System Configurations]
-title: 在虚拟机/实体机中安装Arch Linux
+title: 在虚拟机/物理机中安装Arch Linux
 ---
 
-本文将承接前文[安装Arch Linux前的准备工作](prepare-to-install-arch.md)和[为Arch Linux创建Hyper-V虚拟机](create-vm-for-arch.md)，按步骤介绍在虚拟机以及实体机中安装Arch Linux的步骤。个别步骤虚拟机同实体机的操作不一致，后文中会注明。请注意区分。
+## 目录<!-- omit in toc -->
+
+- [前言](#前言)
+- [准备安装](#准备安装)
+- [安装Arch Linux](#安装arch-linux)
+- [配置系统](#配置系统)
+- [重启](#重启)
+- [安装完成后的工作](#安装完成后的工作)
+
+## 前言
+
+本文将承接前文[安装Arch Linux前的准备工作](prepare-to-install-arch.md)和[为Arch Linux创建Hyper-V虚拟机](create-vm-for-arch.md)，按步骤介绍在虚拟机以及物理机中安装Arch Linux的步骤。个别步骤虚拟机同物理机的操作不一致，后文中会注明。请注意区分。
 
 ## 准备安装
 
-   以下参考官方[安装指南](https://wiki.archlinux.org/index.php/Installation_guide#Pre-installation)。
+以下参考官方[安装指南](https://wiki.archlinux.org/index.php/Installation_guide#Pre-installation)。
+
+启动机器前，请在机器固件设置（虚拟机配置或物理机主板配置）中打开UEFI模式。并且，俺建议和虚拟机安装过程一样关闭[Secure Boot](https://www.rodsbooks.com/efi-bootloaders/secureboot.html)。支持这一建议的[原因](https://www.reddit.com/r/archlinux/comments/8nbau0/secure_boot_yay_or_nay/)为——Secure Boot保护我们不受[Evil Maid Attack](https://en.wikipedia.org/wiki/Evil_maid_attack)之类物理攻击，但俺自用笔记本的环境几乎不存在收到这类攻击的可能，并且俺也不涉及绝密级别的工作。鉴于俺已经不熟练（xiǎng tōu lǎn）到BootLoader都不会装、全盘加密也不会做、sudoers还不会配的份儿上，这种Windows平台下主板里按个回车就能够轻松享受，Linux却要看半个小时才弄得好的只有理论价值的安全措施暂时就不考虑了。如果有需要可以参看官方[Secure Boot指南](https://wiki.archlinux.org/index.php/Secure_Boot)。
 
 ### 选择键盘布局
 
-笔者使用默认的US布局，故不做更改。
+俺使用默认的US布局，故不做更改。
 
 ### 验证启动模式
 
@@ -23,9 +36,29 @@ ls /sys/firmware/efi/efivars
 
 ### 连接到互联网
 
-之前已经配置了虚拟网络适配器，故跳过。
+- 虚拟机：
 
-*物理机安装时如需使用Wi-Fi连接，请参见笔者的后续文章：[在笔记本电脑上安装Arch Linux的额外事项#连接到互联网](install-arch-on-laptop.md#连接到互联网)。*
+  之前已经配置了虚拟网络适配器，故跳过。
+
+- 物理机：
+
+  物理机安装时如使用有线连接，无需额外操作；而如需使用Wi-Fi连接，可以使用图形化工具：
+
+  ```bash
+  wifi-menu -o
+  ```
+
+  一般来说，`archboot`安装环境中已经包含了各种网卡的驱动，其中就有俺所需的高通专有驱动`broadcom-wl`。但如果工具仍然报错，请根据[无线网络配置](https://wiki.archlinux.org/index.php/Wireless_network_configuration)检查常见问题。
+
+  根据向导选择网络，输入密码之后，工具便会在`/etc/netctl`创建一个连接配置文件，接下来启动它：
+
+  > 用您指定的配置文件名称替换下文的`profile`，可在输入`start`和空格后，按`tab`键自动补全。
+
+  ```bash
+  netctl start profile
+  ```
+
+  如此便可连接上Wi-Fi网络。
 
 ### 更新系统时钟
 
@@ -51,19 +84,18 @@ fdisk -l
 
 寻找类似`/dev/sda`或者`/dev/nvme0n1`的条目，并根据磁盘的大小等信息，确定您想要安装的磁盘。
 
-Linux系统需要至少一个root目录（`/`）分区，如果启用了UEFI，还需要一个[EFI系统分区](https://wiki.archlinux.org/index.php/EFI_system_partition)。Swap可以不通过分区实现而是通过动态Swap文件实现。
+Linux系统需要至少一个root目录（`/`）分区，如果启用了UEFI，还需要一个[EFI系统分区](https://wiki.archlinux.org/index.php/EFI_system_partition)。[Swap](https://wiki.archlinux.org/index.php/swap)可以通过分区实现也可以通过动态Swap文件实现。
 
-笔者参考了官方分区模板，选择将磁盘分为512MB的EFI系统分区和利用全部剩余空间的Linux文件系统分区。
+俺参考了官方分区模板，选择将磁盘分为512MB的EFI系统分区、利用全部剩余空间的Linux文件系统分区和一个8GB的Swap分区。Swap分区的大小可以参考It's FOSS上的[一篇文章](https://itsfoss.com/swap-size/)。
 
 分区时为了方便可以用[`fdisk`](https://wiki.archlinux.org/index.php/Fdisk)工具的图形版`cfdisk`
 
 1. `Select label type`选择`gpt`（如果未提示，检查屏幕上方第三行是否为`Lable: gpt`）
 2. `New`一个`512M`的分区，`Type`更改为`EFI System`
-3. `New`一个大小为剩余空间（即`cfdisk`自动填写的大小）的分区，并确保`Type`为`Linux filesystem`
-4. 选择`Write`将分区更改写到磁盘
-5. `Quit`
-
-![cfdisk分区结果](../attachments/cfdisk-result.png)
+3. `New`一个大小为`剩余空间-8GB`（即`cfdisk`自动填写的大小减去`8GB`）的分区，并确保`Type`为`Linux filesystem`
+4. `New`一个`8GB`的分区，`Type`更改为`Linux swap`
+5. 选择`Write`将分区更改写到磁盘
+6. `Quit`
 
 ### 格式化分区
 
@@ -82,11 +114,18 @@ mkfs.ext4 /dev/sda2
 
 ![格式化分区](../attachments/format-partitions.png)
 
+如果之前创建了Swap分区，应将其启用：
+
+```bash
+mkswap /dev/sda3
+swapon /dev/sda3
+```
+
 ### 挂载分区
 
 将Linux文件系统分区挂载为`/mnt`，将EFI系统分区挂载为`/mnt/boot`。
 
-> 系统启动时，会在EFI系统分区寻找一个[Boot Loader](https://wiki.archlinux.org/index.php/Arch_boot_process#Boot_loader)、[Boot Manager](https://wiki.archlinux.org/index.php/Arch_boot_process#Boot_loader)或者使用[EFISTUB](https://wiki.archlinux.org/index.php/EFISTUB)方式直接启动Linux系统内核。由于笔者在虚拟机及笔电中只安装一个系统，不涉及双系统及其他复杂情况，所以选择EFISTUB方式。
+> 系统启动时，会在EFI系统分区寻找一个[Boot Loader](https://wiki.archlinux.org/index.php/Arch_boot_process#Boot_loader)、[Boot Manager](https://wiki.archlinux.org/index.php/Arch_boot_process#Boot_loader)或者使用[EFISTUB](https://wiki.archlinux.org/index.php/EFISTUB)方式直接启动Linux系统内核。由于俺在虚拟机及笔电中只安装一个系统，不涉及双系统及其他复杂情况，所以选择EFISTUB方式。
 >
 > 根据官方Wiki上关于[EFI系统分区挂载](https://wiki.archlinux.org/index.php/EFI_system_partition#Mount_the_partition)的说明，当选择EFISTUB直接启动的方法时，需将EFI系统分区挂载到`/boot`中。对应于我们将root挂载到`/mnt`的情况，应将EFI系统分区挂载到`/mnt/boot`目录。
 
@@ -106,7 +145,7 @@ Arch Linux默认在线安装。此外，更新时也会通过镜像服务器下�
 
 ```bash
 pacman -S reflector
-reflector --country China --protocol https --sort rate --save /etc/pacman.d/mirrorlist
+reflector --country China --sort rate --save /etc/pacman.d/mirrorlist
 ```
 
 也可以手动编辑，将自己喜好的镜像服务器放置在列表的前列：
@@ -117,10 +156,12 @@ reflector --country China --protocol https --sort rate --save /etc/pacman.d/mirr
   echo Server = https://mirrors.tuna.tsinghua.edu.cn/archlinux/$repo/os/$arch > /etc/pacman.d/mirrorlist
   ```
 
-- 如果希望再附加一两行服务器，用`>>`替换上述命令的`>`来在文件末尾附加新内容，例如：
+- 如果希望再附加一两行服务器，用`>>`来在文件末尾附加新内容，例如：
 
   ```bash
-  echo Server = http://mirrors.163.com/archlinux/$repo/os/$arch >> /etc/pacman.d/mirrorlist
+  cat >> /etc/pacman.d/mirrorlist
+  Server = https://mirrors.sjtug.sjtu.edu.cn/archlinux/$repo/os/$arch
+  Server = http://mirrors.163.com/archlinux/$repo/os/$arch
   ```
 
 最后检查文件内容：
@@ -129,19 +170,21 @@ reflector --country China --protocol https --sort rate --save /etc/pacman.d/mirr
 cat /etc/pacman.d/mirrorlist
 ```
 
-### 安装`base`软件包
+### 安装必要的软件包
 
 下载并安装Arch Linux，会花费大约三分钟：
 
 ```bash
-pacstrap /mnt base linux
+pacstrap /mnt base linux linux-firmware
 ```
 
-> 注意：从2019年10月6日起，base软件包组被同名的新base软件包[替换](https://www.archlinux.org/news/base-group-replaced-by-mandatory-base-package-manual-intervention-required/)，而且此软件包中不再包含netctl、vi、linux等软件包。本文撰写于这一变化之前，并且暂时没有条件重新安装系统并更新这篇文章。
+注意：从2019年10月6日起，base软件包组被同名的新base软件包[替换](https://www.archlinux.org/news/base-group-replaced-by-mandatory-base-package-manual-intervention-required/)，而且此软件包中不再包含`linux`、`linux-firmware`、`netctl`、`vi`等软件包。俺已经根据这一变化、重新安装了系统并更新了这篇文章。
+
+这一改动的好处在于日后`base`中添加的新成员可以跟随`base`的更新而自动安装。排除一些非必须的软件包可以方便诸如进行批量部署的运维人员自定义需要的部件。大家都可以安装自己需要的内核（`linux`）、文本编辑器（`neovim`）、网络管理器（`networkmanager`）、固件（`broadcom-wl-dkms`）等等，而不必用`ignore`来排除或安装后删除又或者不管不顾造成冗余。
 
 如果之前选择的镜像服务器不好用，可以`ctrl+c`中止下载并重新选择服务器。下次`pacman`会从中止的软件包开始续传。
 
-> 注：此时便可在命令后面续写其他想要安装的软件包列表，用空格隔开。这些软件包会被直接安装到新系统中。
+> 注：此时便可在命令后面续写其他想要安装的软件包名，用空格隔开。这些软件包会被直接安装到新系统中。但是部分软件报的安装可能需要附加脚本等，用`pacstrap`安装可能会有问题，俺的建议是在初体验Arch安装、未经实践的情况下，只安装原`base`和`base-devel`这类明确适配`pacstrap`设计的软件包。其余的软件包在chroot和重启到新系统之后再行安装。
 
 ## 配置系统
 
@@ -214,7 +257,7 @@ echo LANG=en_US.UTF-8 > /etc/locale.conf
 
 > 注：建议操作系统均使用英文locale，这样终端内的输出、软件报错信息均为英语，便于Google搜索和问题分享等等。反之，设置成汉字语系的locale还可能导致TTY乱码。
 
-之后设置新系统的键盘布局，由于笔者用默认的US键盘布局，故跳过。
+之后设置新系统的键盘布局，由于俺用默认的US键盘布局，故跳过。
 
 ### 网络配置
 
@@ -238,13 +281,32 @@ cat > /etc/hosts
 
 > 如果此系统有一个永久IP地址，应该用此地址替换`127.0.1.1`。
 
-完成其他[网络配置](https://wiki.archlinux.org/index.php/Network_configuration)，*物理机安装时如需使用Wi-Fi连接，请参见笔者的后续文章：[在笔记本电脑上安装Arch Linux的额外事项#网络配置](install-arch-on-laptop.md#网络配置)。*
+完成其他[网络配置](https://wiki.archlinux.org/index.php/Network_configuration)：
 
-对于此虚拟机，只需要启动[`dhcpcd`](https://wiki.archlinux.org/index.php/Dhcpcd#Running)服务即可：
+- 虚拟机：
 
-```bash
-systemctl enable dhcpcd
-```
+  对于虚拟机，只需要启动[`dhcpcd`](https://wiki.archlinux.org/index.php/Dhcpcd#Running)服务即可：
+
+  ```bash
+  systemctl enable dhcpcd
+  ```
+
+- 物理机：
+
+  如使用有线网络连接，同上述虚拟机配置一样只需启动`dhcpcd`服务即可。如需在新系统中继续使用Wi-Fi，则建议安装一个[网络管理器](https://wiki.archlinux.org/index.php/Network_configuration#Network_managers)。
+
+  鉴于KDE等[桌面环境](https://wiki.archlinux.org/index.php/Desktop_environment)常使用`networkmanager`来管理网络连接，并且此包会在安装KDE桌面环境时作为依赖自动安装。俺建议在`netctl`被移出`base`的当下，直接作为依赖包安装`networkmanager`来联网。
+
+  ```bash
+  pacman -S networkmanager --asdep
+  systemctl enable networkmanager
+  ```
+
+  此外，关于无线网卡驱动，俺的笔电使用的无线网卡芯片为高通的BCM43142，不被高通官方开源网卡驱动支持。而官方的专有驱动[`wl`](https://wiki.archlinux.org/index.php/Broadcom_wireless#broadcom-wl)则似乎由于知识产权问题，不能由其他组织分发，所以没能被集成在Linux操作系统内核自带固件全家桶`linux-firmware`中，必须由用户自行安装。所幸该驱动有一种可以支持dkms技术、随Linux系统内核更新自动适配的版本，所以这里俺安装网卡驱动的dkms版：
+
+  ```bash
+  pacman -S linux-headers broadcom-wl-dkms
+  ```
 
 ### Initramfs
 
@@ -264,72 +326,90 @@ passwd
 
 鉴于选择了EFISTUB启动方法，故参考[Using UEFI directly](https://wiki.archlinux.org/index.php/EFISTUB#Using_UEFI_directly)来进行配置。
 
-1. 首先创建一个脚本文件来存贮将要执行的一条长命令，方便我们检查和修改参数：
+如果是在**物理机**上安装，配置EFISTUB启动时还多一首小插曲——[Microcode](https://wiki.archlinux.org/index.php/Microcode)，即根据处理器品牌，配置早期微码更新。Intel处理器的操作如下，Amd处理器需要将`intel`替换为`amd`：
+
+```bash
+pacman -S intel-ucode
+```
+
+> 虚拟机上[不需要考虑Microcode](https://wiki.archlinux.org/index.php/Microcode#EFISTUB)
+
+之后编写EFISTUB启动项的脚本：
+
+1. 首先用`exit`命令或者组合键`ctrl+d`退出chroot环境。
+2. 创建一个脚本文件来存贮将要执行的一条长命令，方便我们检查和修改参数：
 
    ```bash
-   vi /home/efibootmgr.sh
+   vi efibootmgr.sh
    ```
 
-   > - 不用Vi也可以用Nano等编辑器或者`cat`、`echo`等命令。但之后输入[分区UUID](https://wiki.archlinux.org/index.php/Persistent_block_device_naming#by-partuuid)笔者是用Vi的[`:read`](https://vim.fandom.com/wiki/Append_output_of_an_external_command#Using_:read)命令完成的。
-   >
-   > - 新系统中没有Vim、efibootmgr等工具。如果用`exit`命令或者组合键`ctrl+d`退出了chroot环境，记得将`/home/efibootmgr.sh`路径替换成`/mnt/home/efibootmgr.sh`。
+   > 不用Vi(m)也可以用Nano等编辑器或者`cat`、`echo`等命令。但之后输入[分区UUID](https://wiki.archlinux.org/index.php/Persistent_block_device_naming#by-partuuid)俺是用Vi(m)的[`:read`](https://vim.fandom.com/wiki/Append_output_of_an_external_command#Using_:read)命令完成的。
    >
    > #### 一点Vi的小说明
    >
-   > 进入Vi后在普通模式。
+   > 进入Vi后是普通模式。
    >
    > 普通模式下按`h` `j` `k` `l`分别向←↓↑→移动光标。按`i`进入插入模式开始键入文字。
    >
    > 按`Esc`从各种模式返回普通模式。
    >
-   > 普通模式下键入`:`和命令并回车来执行Vi命令，例如`:q`在未修改文件的情况下退出、`:q!`放弃修改并退出、`:w`保存、`:wq`或`:x`保存并退出等。上述`:read`也是如此执行。
+   > 普通模式下键入`:`和命令并回车来执行Vi命令，例如`:q`在未修改文件的情况下退出、`:q!`放弃修改并退出、`:w`保存、`:wq`/`:x`保存并退出等。上述`:read`也是如此执行。
    >
-   > 普通模式下键入`dd`来剪切当前行，`p`来粘贴。
+   > 普通模式下键入`dd`来剪切当前行，`p`来粘贴，`J`（即`shift+j`）来将下一行接到当前行末尾。
    >
    > 更多Vi(m)技巧请您自行了解，不在此赘述。
 
-2. 在其中写入如下内容：
+3. 在其中写入如下内容：
 
-   ```bash
-   efibootmgr --disk /dev/sda --part 1 --create --label "Arch Linux" --loader /vmlinuz-linux --unicode 'root=PARTUUID=XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX rw initrd=\initramfs-linux.img' --verbose
-   ```
+   > 将下文`/dev/sda`和`1`替换为您的EFI系统分区（ESP）的磁盘和分区号。`--disk /dev/sda --part 1`对应的是俺之前创建的ESP——`/dev/sda1`。
 
-3. 将`/dev/sda`和`1`替换为您的EFI系统分区（ESP）的磁盘和分区号。`--disk /dev/sda --part 1`对应的是笔者的ESP`/dev/sda1`。
+   - 虚拟机：
 
-4. 将`root=`之后的PARTUUID的参数替换成Linux文件系统分区（即`/dev/sda2`）的分区UUID。手动输入比较麻烦，这里笔者使用的Vi的`:read`命令，让Vi将`:read !`后面的文字当作命令执行，并将结果另起一行写在文件中。
+     ```bash
+     efibootmgr --disk /dev/sda --part 1 --create --label "Arch Linux" --loader /vmlinuz-linux --unicode 'root=PARTUUID=XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX rw initrd=/initramfs-linux.img' --verbose
+     ```
+
+   - 物理机：
+
+     > 多一段启动Microcode的`initrd=/intel-ucode.img`
+
+     ```bash
+     efibootmgr --disk /dev/sda --part 1 --create --label "Arch Linux" --loader /vmlinuz-linux --unicode 'root=PARTUUID=XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX rw initrd=/intel-ucode.img initrd=/initramfs-linux.img' --verbose
+     ```
+
+4. 将`root=`之后的PARTUUID的参数替换成Linux文件系统分区（即`/dev/sda2`）的分区UUID。手动输入比较麻烦，这里俺使用的Vi(m)的`:read`命令，让Vi(m)将`:read !`后面的文字当作Shell命令执行，并将结果另起一行写在文件中。
 
    ```vim
    :read !lsblk -dno PARTUUID /dev/sda2
    ```
 
-   > 注意，默认情况下Vi会[防止](https://vi.stackexchange.com/a/2163/22060)用户使用退格键删除`自动缩进`、`换行符`以及`进入插入模式时的位置`之前的字符的。要么临时`:set backspace=indent,eol,start`，要么直接在普通模式下用`J`（大写J）将当前行末尾的换行符删除。
+   > 注意：默认情况下Vi会[防止](https://vi.stackexchange.com/a/2163/22060)用户使用退格键删除`自动缩进`、`换行符`以及`进入插入模式时的位置`之前的字符的。要么直接在普通模式下用`J`（大写J）将下一行接到当前行末尾，要么临时`:set backspace=indent,eol,start`。
 
-5. 物理机安装时，还应配置[Microcode](https://wiki.archlinux.org/index.php/Microcode)自动更新，请参见笔者的后续文章：[在笔记本电脑上安装Arch Linux的额外事项#Microcode](install-arch-on-laptop.md#Microcode)。
-
-6. 检查脚本中内容：
+5. 检查脚本中内容：
 
    ```bash
-   cat /home/efibootmgr.sh
+   cat efibootmgr.sh
    fdisk -l
    lsblk -dno PARTUUID /dev/sda2
    ```
 
-7. 确认无误后赋予该脚本可执行权限并运行：
+6. 确认无误后，可将该脚本在机器磁盘中备份一份（可选），赋予该脚本可执行权限，并运行：
 
    ```bash
-   chmod u+x /home/efibootmgr.sh
-   /home/efibootmgr.sh
+   cp efibootmgr.sh /mnt/home
+   chmod u+x efibootmgr.sh
+   ./efibootmgr.sh
    ```
 
-8. 再次检查启动项是否配置无误：
+7. 再次检查启动项是否配置无误：
 
    ```bash
    efibootmgr --verbose
    ```
 
-9. 设置启动顺序（可选）：
+8. 设置启动顺序（可选）：
 
-   > 笔者运行完脚本后，efibootmgr已经自动将`Arch Linux`项设置为优先启动了，故此步骤可以跳过。
+   > 运行完脚本后，efibootmgr自动将`Arch Linux`项设置为第一启动项，故此步骤可以跳过。
 
    ```bash
    efibootmgr --bootorder XXXX,XXXX --verbose
@@ -337,7 +417,7 @@ passwd
 
    其中XXXX即efibootmgr的输出中各启动项前的四位数。
 
-   > 笔者在笔电上安装时会将U盘设为第一项，系统设为第二项。关机之后移除U盘便可从硬盘系统启动。反之如果无法启动或缺少驱动，下次启动前插入U盘便能进行调整。若如此配置，记得在系统运行稳定后将系统驱动调回第一项。
+   > 俺在笔电上安装时会将U盘设为第一项，系统设为第二项，主板固件设置设为第三项。关机之后移除U盘便可从硬盘系统启动。之后若无法启动或缺少驱动，下次启动前插入U盘便能进入安装环境进行急救。确认启动正常后，可用`systemctl reboot --firmware-setup`重启到主板设置将系统调回第一项。
 
 ## 重启
 
@@ -361,25 +441,31 @@ passwd
    shutdown now
    ```
 
-   所有仍然挂载的文件系统会被*systemd*自动卸载。移除安装介质并且用设置好的密码登录root账户。
+   所有仍然挂载的文件系统会被*systemd*自动卸载。
 
-   然后在虚拟机设置中将SCSI控制器里的DVD驱动器中的安装镜像关掉。
+   移除安装介质：
 
-   ![remove-install-disk](../attachments/remove-install-disk.png)
+   - 虚拟机
 
-4. 再次启动后，终于进入了Arch Linux。
+     在虚拟机设置中将SCSI控制器里的DVD驱动器中的安装镜像关掉。
+
+     ![remove-install-disk](../attachments/remove-install-disk.png)
+
+   - 物理机
+
+     确认关机后移除U盘即可。
+
+4. 再次启动并用设置好的密码登录root账户后，终于进入了Arch Linux。
 
    ![welcome-to-arch-linux](../attachments/welcome-to-arch-linux.png)
 
 ## 安装完成后的工作
 
-至此，我们便可以在Hyper-V虚拟机中运行基本的Arch Linux系统，以及进行网络连接。
+至此，我们便可以在Hyper-V虚拟机/物理机中运行最小化的Arch Linux系统，以及进行网络连接。
 
 您可以进一步参考官方[推荐的安装完成后的操作](https://wiki.archlinux.org/index.php/General_recommendations)。包括但不限于：
 
 - 创建用户账户、配置`sudo`
-- 安装网卡、蓝牙、显卡等的闭源驱动
-- 配置无线网络
+- 安装蓝牙、显卡等的闭源驱动
+- 配置无线网络连接
 - 安装桌面环境
-
-，包括启用高通无线网卡连接网络、安装NVIDIA显卡驱动和KDE桌面环境、连接蓝牙鼠标等后续步骤。
