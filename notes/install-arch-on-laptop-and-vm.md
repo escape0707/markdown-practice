@@ -14,7 +14,7 @@ title: 在虚拟机/物理机中安装Arch Linux
 
 ## 前言
 
-本文将承接前文[安装Arch Linux前的准备工作](prepare-to-install-arch.md)和[为Arch Linux创建Hyper-V虚拟机](create-vm-for-arch.md)，按步骤介绍在虚拟机以及物理机中安装Arch Linux的步骤。个别步骤虚拟机同物理机的操作不一致，后文中会注明。请注意区分。
+本文将承接前文[安装Arch Linux前的准备工作](prepare-to-install-arch.md)和[为Arch Linux创建Hyper-V虚拟机](create-vm-for-arch.md)，按步骤介绍在虚拟机以及物理机中安装Arch Linux的步骤。个别步骤虚拟机同物理机的操作不一致，后文中会注明，请注意区分。
 
 以下参考官方[安装指南](https://wiki.archlinux.org/index.php/Installation_guide#Pre-installation)。
 
