@@ -6,6 +6,7 @@ title: 在虚拟机/物理机中安装Arch Linux
 ## 目录<!-- omit in toc -->
 
 - [前言](#前言)
+- [预备理论](#预备理论)
 - [准备安装](#准备安装)
 - [安装Arch Linux](#安装arch-linux)
 - [配置系统](#配置系统)
@@ -18,9 +19,34 @@ title: 在虚拟机/物理机中安装Arch Linux
 
 以下参考官方[安装指南](https://wiki.archlinux.org/index.php/Installation_guide#Pre-installation)。
 
-## 准备安装
+## 预备理论
+
+### 打开UEFI & 关闭Secure Boot
 
 启动机器前，请在机器固件设置（虚拟机配置或物理机主板配置）中打开UEFI模式。并且，俺建议和虚拟机安装过程一样关闭[Secure Boot](https://www.rodsbooks.com/efi-bootloaders/secureboot.html)。支持这一建议的[原因](https://www.reddit.com/r/archlinux/comments/8nbau0/secure_boot_yay_or_nay/)为——Secure Boot保护我们不受[Evil Maid Attack](https://en.wikipedia.org/wiki/Evil_maid_attack)之类物理攻击，但俺自用笔记本的环境几乎不存在收到这类攻击的可能，并且俺也不涉及绝密级别的工作。鉴于俺已经不熟练（xiǎng tōu lǎn）到BootLoader都不会装、全盘加密也不会做、sudoers还不会配的份儿上，这种Windows平台下主板里按个回车就能够轻松享受，Linux却要看半个小时才弄得好的只有理论价值的安全措施暂时就不考虑了。如果有需要可以参看官方[Secure Boot指南](https://wiki.archlinux.org/index.php/Secure_Boot)。
+
+### 在物理机上查看文档
+
+之前提到过尝鲜建议先用虚拟机安装，可以在原系统下方便查阅资料。
+
+如果在物理机上启动了Arch安装介质后，尽管相对抽象，但也有办法查阅资料。在[连接到互联网](#连接到互联网)之后，可以使用`elinks`文本型网页浏览器查看官方指南：
+
+```bash
+elinks https://wiki.archlinux.org/index.php/Installation_guide
+```
+
+> 如果觉得白色背景亮瞎了眼，可以按`esc`唤出菜单 -> `Setup` -> `Options Manager` -> 按空格键展开`Default color settings` -> `Use document-specified colors` -> `Edit` -> `Value` 改为 `1` （或 `0`）
+
+也可以查看ArchISO压制时附带的当时的安装指南的文字版：
+
+```bash
+ls
+less install.txt
+```
+
+如果希望一边看网页/文档，一边进行安装，可以用`ctrl+alt+F1`(`F1`到`F7`均可)和`alt+左/右键`切换终端。
+
+## 准备安装
 
 ### 选择键盘布局
 
@@ -457,7 +483,7 @@ pacman -S intel-ucode
 
 ## 安装完成后的工作
 
-至此，我们便可以在Hyper-V虚拟机/物理机中运行最小化的Arch Linux系统，以及进行网络连接。
+至此，我们便可以在Hyper-V虚拟机/物理机中运行最小化、可联网的Arch Linux系统。
 
 您可以进一步参考官方[推荐的安装完成后的操作](https://wiki.archlinux.org/index.php/General_recommendations)。包括但不限于：
 
@@ -465,3 +491,4 @@ pacman -S intel-ucode
 - 安装蓝牙、显卡等的闭源驱动
 - 配置无线网络连接
 - 安装桌面环境
+
