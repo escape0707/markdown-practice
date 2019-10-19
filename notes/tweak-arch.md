@@ -189,23 +189,20 @@ sudo systemctl enable bluetooth
 
 Linux下有许多中文输入法，俺使用包含于官方源中的[`Fcitx`](https://wiki.archlinux.org/index.php/Fcitx)。
 
-安装Fcitx框架、百度/谷歌云拼音插件、KDE设置插件：
+安装Fcitx、谷歌/百度云拼音插件、Fcitx配置工具（KDE用户则用`kcm-fcitx`)：
 
 ```bash
-sudo pacman -S fcitx-im fcitx-cloudpinyin kcm-fcitx
+sudo pacman -S fcitx-im fcitx-cloudpinyin fcitx-configtool
 ```
 
-为了能[`在wayland中使用Fcitx`](https://wiki.archlinux.org/index.php/Fcitx_(%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87)#Gnome_On_Wayland_%E7%94%A8%E6%88%B7%E6%97%A0%E6%B3%95%E4%BD%BF%E7%94%A8_fcitx)，修改如下文件：
+为了GTK/Qt程序能使用输入法，设置环境变量：
 
 ```bash
-sudo cat >> /etc/environment
-GTK_IM_MODULE=fcitx
-QT_IM_MODULE=fcitx
-XMODIFIERS=@im=fcitx
+printf 'GTK_IM_MODULE=fcitx\nQT_IM_MODULE=fcitx\nXMODIFIERS=@im=fcitx' | sudo tee -a /etc/environment > /dev/null
 # ctrl+d
 ```
 
-安装后在KDE设置插件中，取消勾选“仅显示当前语言”并启用需要的输入法；自行开启云拼音插件，如果网络受限选择百度云拼音。KDE插件可以设置候选词、皮肤、全窗口统一语言等；具体设置参见官方指导。
+安装后在设置插件中，取消勾选“仅显示当前语言”并启用需要的输入法；开启云拼音插件，如果网络受限选择百度云拼音。插件可以设置候选词、皮肤、全窗口统一语言等；具体设置参见官方指导。
 
 ## Readline
 
