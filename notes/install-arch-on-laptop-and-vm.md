@@ -328,7 +328,7 @@ cat > /etc/hosts
   如果使用GNOME、KDE等默认使用它的桌面环境，则作为依赖包安装`networkmanager`
 
   ```bash
-  pacman -S networkmanager --asdep
+  pacman -S networkmanager --asdeps
   ```
 
   安装完成后启用它，下次启动到系统后就会自动启动网络管理服务了。
