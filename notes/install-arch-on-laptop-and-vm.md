@@ -502,7 +502,7 @@ pacman -S intel-ucode
 
 ## 安装完成后的工作
 
-至此，我们便可以在Hyper-V虚拟机/物理机中运行最小化、可联网的Arch Linux系统。
+至此，我们便可以在Hyper-V虚拟机/物理机中运行最小化、可联网的Arch Linux系统。可以关机稍作休息，择时进行后续配置过程。
 
 您可以进一步参考官方[推荐的安装完成后的操作](https://wiki.archlinux.org/index.php/General_recommendations)。包括但不限于：
 
@@ -510,3 +510,5 @@ pacman -S intel-ucode
 - 安装蓝牙、显卡等的闭源驱动
 - 配置无线网络连接
 - 安装桌面环境
+
+俺也会在之后[Arch新机用上Google](customize-arch-to-use-google.md)一文中继续记录俺进一步折腾系统到可以用搜索引擎查资料的程度的步骤，详情请移步后文。
