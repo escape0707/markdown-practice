@@ -129,6 +129,29 @@ passwd your-username
 sudo pacman -S gvfs libwnck network-manager-applet noto-fonts-cjk pulseaudio xfce4 xfce4-goodies
 ```
 
+设置登录后[静默](https://wiki.archlinux.org/index.php/Silent_boot#startx)地[自启动`startx`](https://wiki.archlinux.org/index.php/Xinit#Autostart_X_at_login)（对于Zsh，修改`~/.zprofile`）：
+
+```bash
+cat >> ~/.bash_profile
+if systemctl -q is-active graphical.target && [[ ! $DISPLAY && $XDG_VTNR -eq 1 ]]; then
+  [[ $(fgconsole 2>/dev/null) == 1 ]] && exec startx -- vt1 &> /dev/null
+fi
+# ctrl+d
+```
+
+（可选的）设置[静默自动登录](https://wiki.archlinux.org/index.php/Silent_boot#agetty)：
+
+> username更换为想要自动登入的用户名
+
+```bash
+systemctl edit getty@tty1
+# 填入以下内容
+[Service]
+ExecStart=
+ExecStart=-/usr/bin/agetty --skip-login --nonewline --noissue --autologin username --noclear %I $TERM
+Type=simple
+```
+
 #### KDE
 
 安装`Noto`字体、KDE、[`wayland`](https://wiki.archlinux.org/index.php/KDE#KDE_applications)后端支持（可选）、以及文件管理、终端、记事本等应用，并且启用[SDDM](https://wiki.archlinux.org/index.php/SDDM)显示管理器：
