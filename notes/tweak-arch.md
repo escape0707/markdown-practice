@@ -21,39 +21,6 @@ title: 初装Arch Linux后的软件和设置建议
 
 ## pacman技巧
 
-### 更新镜像服务器并按速度排序
-
-之前提到过可以用`reflector`来[更新并排序镜像服务器列表](https://wiki.archlinux.org/index.php/Mirrors#Sorting_mirrors)：
-
-```bash
-pacman -S reflector
-reflector --country China --protocol https --sort rate --save /etc/pacman.d/mirrorlist
-```
-
-您也可以用下面的方法：
-
-```bash
-sudo pacman -S pacman-contrib
-curl -s "https://www.archlinux.org/mirrorlist/?country=CN&protocol=https&ip_version=4&use_mirror_status=on" | sed -e 's/^#Server/Server/' -e '/^#/d' | rankmirrors - > ~/mirrorlist
-cat ~/mirrorlist
-```
-
-> `curl`来下载，`-s`启用静默模式。
->
-> 这里`|`是管道符号，表示其左右的程序并发运行的情况下，左边程序输出到右边程序的输入。
->
-> `sed`是命令行文本编辑工具，`-e`用来接续一个脚本命令，`s/.../.../`即类似Vi中的替换命令，`/.../d`即删除包含该串的文本行。搜索串是正则表达式，其中的`^`表示串首（这里即行首）。
->
-> 最后的那个单独的`-`是“将被输入的内容，用作命令所需的文件”。
->
-> `~`表示“用户文件夹”。
-
-确认列表无误后进行替换：
-
-```bash
-sudo mv ~/mirrorlist /etc/pacman.d/mirrorlist
-```
-
 ### [更新系统](https://wiki.archlinux.org/index.php/Pacman#Upgrading_packages)
 
 ```bash
@@ -63,10 +30,9 @@ sudo pacman -Syu
 ### 定期[清理旧安装包](https://wiki.archlinux.org/index.php/Pacman#Cleaning_the_package_cache)
 
 ```bash
+sudo pacman -S pacman-contrib
 sudo systemctl enable paccache.timer
 ```
-
-> 此命令需要`pacman-contrib`包：
 
 ### 列出所有直接安装的包
 
