@@ -14,11 +14,11 @@ title: Arch新机用上Google
 
 ## 创建账户与配置sudo
 
-在完成了最小化Arch Linux安装之后，为了安全使用系统，还需要创建属于自己的个人账户，安装并配置好sudo。
+在完成了最小化Arch Linux安装之后，为了安全使用系统，还需要创建属于自己的个人账户、安装并配置好sudo。
 
-### 用户和用户组
+### 新建用户
 
-新安装的系统只有`root`一个超级用户。一直使用`root`账户并不安全，可能会意外地执行或修改了文件，以及给予第三方程序过高权限带来风险。故平时应当使用普通权限的账户。（KDE桌面环境也需要您创建非`root`账户才能登录。）
+新安装的系统只有`root`一个超级用户。一直使用`root`账户并不安全，可能会意外地执行或修改了文件，以及给予第三方程序过高权限带来风险。平时应当使用普通权限的账户。否则无法使用`makepkg`、`sddm`等工具。
 
 [新建一个用户](https://wiki.archlinux.org/index.php/Users_and_groups#Example_adding_a_user)：
 
@@ -39,7 +39,7 @@ passwd your-username
 pacman -S sudo
 ```
 
-由于俺只是单人、单账户并作为客户端使用机器，仅用`sudo`防手滑和防其他进程滥用权限。故在此不做[进阶的设置](https://wiki.archlinux.org/index.php/Sudo#Example_entries)，仅将之前新建的用户添加到`sudoers`中去：
+由于俺只是单人、单账户、客户端自闭性使用机器，仅用`sudo`防手滑和其他进程滥用权限。故在此不做[进阶的设置](https://wiki.archlinux.org/index.php/Sudo#Example_entries)，仅将之前新建的用户添加到`sudoers`中去：
 
 ```bash
 visudo
