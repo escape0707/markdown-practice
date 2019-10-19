@@ -317,14 +317,33 @@ cat > /etc/hosts
 
   如使用有线网络连接，同上述虚拟机配置一样只需启动`dhcpcd`服务即可。如需在新系统中继续使用Wi-Fi，则建议安装一个[网络管理器](https://wiki.archlinux.org/index.php/Network_configuration#Network_managers)。
 
-  鉴于KDE等[桌面环境](https://wiki.archlinux.org/index.php/Desktop_environment)常使用`networkmanager`来管理网络连接，并且此包会在安装KDE桌面环境时作为依赖自动安装。俺建议在`netctl`被移出`base`的当下，直接作为依赖包安装`networkmanager`来联网。
+  鉴于GNOME、KDE等[桌面环境](https://wiki.archlinux.org/index.php/Desktop_environment)常使用`networkmanager`来管理网络连接，Xfce也支持`network-manager-applet`作为前端，并且此包会在安装KDE桌面环境时作为依赖自动安装。俺建议在`netctl`被移出`base`的当下，使用来联网。
+
+  如果想和俺一样使用Xfce作为桌面环境，则直接安装`network-manager-applet`
+
+  ```bash
+  pacman -S network-manager-applet
+  ```
+
+  如果使用GNOME、KDE等默认使用它的桌面环境，则作为依赖包安装`networkmanager`
 
   ```bash
   pacman -S networkmanager --asdep
+  ```
+
+  安装完成后启用它，下次启动到系统后就会自动启动网络管理服务了。
+
+  ```bash
   systemctl enable networkmanager
   ```
 
-  此外，关于无线网卡驱动，俺的笔电使用的无线网卡芯片为高通的BCM43142，不被高通官方开源网卡驱动支持。而官方的专有驱动[`wl`](https://wiki.archlinux.org/index.php/Broadcom_wireless#broadcom-wl)则似乎由于知识产权问题，不能由其他组织分发，所以没能被集成在Linux操作系统内核自带固件全家桶`linux-firmware`中，必须由用户自行安装。所幸该驱动有一种可以支持dkms技术、随Linux系统内核更新自动适配的版本，所以这里俺安装网卡驱动的dkms版：
+  此外，关于无线网卡驱动，俺的笔电使用的无线网卡芯片为高通的BCM43142，不被高通官方开源网卡驱动支持。而官方的专有驱动[`wl`](https://wiki.archlinux.org/index.php/Broadcom_wireless#broadcom-wl)则似乎由于知识产权问题，不能由其他组织分发，所以没能被集成在Linux操作系统内核自带固件全家桶`linux-firmware`中，必须由用户自行安装：
+
+  ```bash
+  pacman -S broadcom-wl
+  ```
+
+  该驱动有一种可以支持[DKMS](https://wiki.archlinux.org/index.php/DKMS)技术、随Linux系统内核更新自动适配的版本，怕出问题也可以安装DKMS版：
 
   ```bash
   pacman -S linux-headers broadcom-wl-dkms
@@ -491,4 +510,3 @@ pacman -S intel-ucode
 - 安装蓝牙、显卡等的闭源驱动
 - 配置无线网络连接
 - 安装桌面环境
-
