@@ -174,13 +174,13 @@ cat /etc/pacman.d/mirrorlist
 pacstrap /mnt base linux linux-firmware
 ```
 
-注意：从2019年10月6日起，base软件包组被同名的新base软件包[替换](https://www.archlinux.org/news/base-group-replaced-by-mandatory-base-package-manual-intervention-required/)，而且此软件包中不再包含`linux`、`linux-firmware`、`netctl`、`vi`等软件包。俺已经根据这一变化、重新安装了系统并更新了这篇文章。
-
-这一改动的好处在于日后`base`中添加的新成员可以跟随`base`的更新而自动安装。排除一些非必须的软件包可以方便诸如进行批量部署的运维人员自定义需要的部件。大家都可以安装自己需要的内核（`linux`）、文本编辑器（`neovim`）、网络管理器（`networkmanager`）、固件（`broadcom-wl-dkms`）等等，而不必用`ignore`来排除或安装后删除又或者不管不顾造成冗余。
-
 如果之前选择的镜像服务器不好用，可以`ctrl+c`中止下载并重新选择服务器。下次`pacman`会从中止的软件包开始续传。
 
-> 注：此时便可在命令后面续写其他想要安装的软件包名，用空格隔开。这些软件包会被直接安装到新系统中。但是部分软件报的安装可能需要附加脚本等，用`pacstrap`安装可能会有问题，俺的建议是在初体验Arch安装、未经实践的情况下，只安装原`base`和`base-devel`这类明确适配`pacstrap`设计的软件包。其余的软件包在chroot和重启到新系统之后再行安装。
+> 注1：此时便可在命令后面续写其他想要安装的软件包名，用空格隔开。这些软件包会被直接安装到新系统中。但是部分软件报的安装可能需要附加脚本等，用`pacstrap`安装可能会有问题，俺的建议是在初体验Arch安装、未经实践的情况下，只安装原`base`和`base-devel`这类明确适配`pacstrap`设计的软件包。其余的软件包在chroot和重启到新系统之后再行安装。
+
+> 注2：从2019年10月6日起，base软件包组被同名的新base软件包[替换](https://www.archlinux.org/news/base-group-replaced-by-mandatory-base-package-manual-intervention-required/)，而且此软件包中不再包含`linux`、`linux-firmware`、`netctl`、`vi`等软件包。俺已经根据这一变化、重新安装了系统并更新了这篇文章。
+>
+> 这一改动的好处在于日后`base`中添加的新成员可以跟随`base`的更新而自动安装。排除一些非必须的软件包可以方便诸如进行批量部署的运维人员自定义需要的部件。大家都可以安装自己需要的内核（`linux`）、文本编辑器（`neovim`）、网络管理器（`networkmanager`）、固件（`broadcom-wl-dkms`）等等，而不必用`ignore`来排除或安装后删除又或者不管不顾造成冗余。
 
 ## 配置系统
 
