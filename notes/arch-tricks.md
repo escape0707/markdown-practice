@@ -34,23 +34,23 @@ sudo pacman -S pacman-contrib
 sudo systemctl enable paccache.timer
 ```
 
-### 列出所有直接安装的包
+### 列出所有非依赖的包
 
-以下命令计算所有直接安装的包中不属于base包、base-devel组和fcitx-im组的部分，建议写成脚本放在`/home/listpkg.bash`以供随时运行：
+以下命令计算所有安装的包中不被任何包显式依赖的包，可以用来在重装时参考最少需要安装哪些包，建议写成脚本放在`/home/lstpkg.sh`以供随时运行：
 
 ```bash
-comm -23 <(pacman -Qqe | sort) <((for i in $(pacman -Qqg base base-devel fcitx-im); do pactree -ul "$i"; done) | sort -u)
+installed_groups="base-devel xfce4 xfce4-goodies"
+append_apps="git sudo xfce4-windowck-plugin"
+(comm -23 <(pacman -Qqtt) <(pacman -Qqg $installed_groups | sort); printf %"s\n" $append_apps $installed_groups) | sort
 ```
 
-> 其中`comm`比较两个文件，左边列出第一个文件独有的内容，中间列出第二个文件独有的内容，右边列出两个文件共有的内容。可用`-`+`1`、`2`或/和`3`来不输出对应列。此处`-23`即只列出第一个文件中独有的内容。
+> 其中`comm`比较两个文件，左边列出第一个文件独有的内容，中间列出第二个文件独有的内容，右边列出两个文件共有的内容。可用`-`配合`1`、`2`或/和`3`来隐藏对应列的输出。此处`-23`即只列出第一个文件中独有的内容。
 >
 > `<()`运算符表示将括号内的表达式的输出当作输入命令中所需要的一个文件。
 >
-> `$()`表示用括号内的表达式的运行结果来替换所输入命令中`$()`这一部分，`$i`也是同理。
+> `installed_groups`应该填写我们手动安装的软件包组
 >
-> `sort`来排序，`-u`来只输出相同行中的第一个。
->
-> `fcitx-im`是之后我们需要安装的输入法的软件包组，见后文。
+> `append_apps`应填写一些意外被排除的软件包。例如，`yay-bin`依赖于`git`和`sudo`，但是`yay-bin`输入AUR，其安装本身就会用到后两者，所以还是难免显式安装。又或者`xfce4-windowck-plugin`错误的将其加入了`xfce4`组，只好显式地追加上它。
 
 ## Git与AUR与pacman wrapper
 
