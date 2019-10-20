@@ -146,7 +146,7 @@ sudo pacman -S gvfs network-manager-applet noto-fonts-cjk pulseaudio xfce4 xfce4
 ```bash
 cat >> ~/.bash_profile
 if systemctl -q is-active graphical.target && [[ ! $DISPLAY && $XDG_VTNR -eq 1 ]]; then
-  [[ $(fgconsole 2>/dev/null) == 1 ]] && exec startx -- vt1 &> /dev/null
+  [[ $(fgconsole 2>/dev/null) == 1 ]] && exec startxfce4 -- vt1 &> /dev/null
 fi
 # ctrl+d
 ```
