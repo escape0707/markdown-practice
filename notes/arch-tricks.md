@@ -9,6 +9,7 @@ title: 初装Arch Linux后的软件和设置建议
 
 欢迎各位读者分享自己的技巧和建议！
 
+- [bash-completion](#bash-completion)
 - [pacman技巧](#pacman技巧)
 - [Git与AUR与pacman wrapper](#git与aur与pacman-wrapper)
 - [配置Swap](#配置swap)
@@ -18,6 +19,14 @@ title: 初装Arch Linux后的软件和设置建议
 - [GoldenDict](#goldendict)
 - [Visual Studio Code](#visual-studio-code)
 - [结语](#结语)
+
+## bash-completion
+
+`bash-completion`包提供`bash`中各种命令的补全，包括`git`命令中补全分支名称、`pacman`命令中补全包名称等，十分便利。
+
+```bash
+sudo pacman -S bash-completion
+```
 
 ## pacman技巧
 
@@ -56,35 +65,33 @@ append_apps="git sudo xfce4-windowck-plugin"
 
 有两类软件可以作为pacman的封装，一类如[`yay`](https://wiki.archlinux.org/index.php/AUR_helpers#Pacman_wrappers)可以作为[AUR](https://wiki.archlinux.org/index.php/Arch_User_Repository)软件的安装管理助手，另一类如[`powerpill`](https://wiki.archlinux.org/index.php/Powerpill)可以多线程、[`rsync`](https://wiki.archlinux.org/index.php/Rsync)差量下载。
 
-而`yay`和`powerpill`均为非Arch官方的AUR软件包，所以我们从`yay`的编译安装开始，先介绍AUR软件的手动编译安装，然后介绍用`yay`安装AUR软件，最后调优`powerpill`。
+但是`yay`和`powerpill`均为非Arch官方的AUR软件包，而且如果不使用Go语言，就不必自己编译`yay`。所以我们从`yay-bin`的安装开始，先介绍AUR软件的手动安装，然后介绍用`yay`安装AUR软件，最后调优`powerpill`。
 
 [安装AUR软件包](https://wiki.archlinux.org/index.php/Arch_User_Repository#Installing_packages)之前需要先用Git下载。所以先配置好Git，即方便AUR软件安装，也方便日后开发流程。
 
 ### Git
 
-用如下命令安装并配置[`Git`](https://wiki.archlinux.org/index.php/Git)：
+安装并配置[`Git`](https://wiki.archlinux.org/index.php/Git)：
 
 > 将`YourUsername`和`your@email.com`替换为您的名字和邮箱地址。此信息之后将被用于的commit message中，作为开发历史的资料和GitHub等托管网站连接commit与账户的依据。
 >
 > 将代理服务器的地址设置为之前开启的Shadowsocks本地端的地址。Git for Windows下使用`socks5`协议貌似会不被`ServicePointManager`支持而需要反复输入账户密码，而Linux下似乎又不能clone gist，届时请用之前通过`privoxy`转化得到的`http`协议。
 
 ```bash
-sudo pacman -S git bash-completion
+sudo pacman -S git
 git config --global user.name "Your Username"
 git config --global user.email your@email.com
-git config --global http.proxy http://127.0.0.1:8118
+git config --global http.proxy socks5://127.0.0.1:1080
 git config --global credential.helper store
 git config --global merge.ff only
 git config --global pull.ff only
 ```
 
-> 其中`bash-completion`包提供`bash`中各种命令的补全，包括`git`命令中补全分支名称、`pacman`命令中补全包名称等，十分便利。
->
-> 配置`credential.helper`令您在和远程服务器同步时不需要反复输入用户名和密码。俺为了方便设置为[`store`](https://git-scm.com/docs/git-credential-store)来明文保存到本地，但为了安全您还可以选择[`cache`](https://git-scm.com/docs/git-credential-cache)。
+> 配置`credential.helper`后在和远程服务器同步时不需要反复输入用户名和密码。俺为了方便设置为[`store`](https://git-scm.com/docs/git-credential-store)来明文保存到本地，但为了安全也可以选择[`cache`](https://git-scm.com/docs/git-credential-cache)。
 
 ### Yay
 
-通过手动安装AUR软件包的方式安装yay，首先需要安装`base-devel`软件包组：
+通过手动安装AUR软件包的方式安装`yay-bin`，首先需要安装`base-devel`软件包组：
 
 ```bash
 sudo pacman -S base-devel --needed
@@ -95,8 +102,8 @@ sudo pacman -S base-devel --needed
 之后clone yay的build文件：
 
 ```bash
-git clone https://aur.archlinux.org/yay.git
-cd yay
+git clone https://aur.archlinux.org/yay-bin.git
+cd yay-bin
 less PKGBUILD
 ```
 
@@ -106,7 +113,9 @@ less PKGBUILD
 makepkg -si
 ```
 
-之后我们可以像用`pacman`一样使用`yay`来更新或安装官方包和AUR包，例如[`powerpill`](https://wiki.archlinux.org/index.php/Powerpill)。但是不要和`sudo`一起用，`yay`会在需要时自行提权：
+### Powerpill
+
+之后我们可以像用`pacman`一样使用`yay`来更新或安装官方包和AUR包，例如[`powerpill`](https://wiki.archlinux.org/index.php/Powerpill)。但是不要和`sudo`一起用，`yay`会在需要时自行申请提权：
 
 ```bash
 yay -Syu
@@ -115,7 +124,7 @@ yay -S powerpill reflector rsync --needed
 
 将`/etc/pacman.conf`的默认`SigLevel`改为`PackageRequired`，参见[Wiki#Troubleshooting](https://wiki.archlinux.org/index.php/Powerpill#Troubleshooting)
 
-此时即可使用`powerpill`，精调请参考[`powerpill.json(1)`](https://xyne.archlinux.ca/projects/powerpill/#powerpill.json1)手册页。
+此后即可使用`powerpill`，精调请参考[`powerpill.json(1)`](https://xyne.archlinux.ca/projects/powerpill/#powerpill.json1)手册页，主要调整其中`aria2c`参数部分。// Todo
 
 ## 配置Swap
 
