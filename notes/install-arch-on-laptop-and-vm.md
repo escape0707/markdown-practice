@@ -368,7 +368,7 @@ cat > /etc/hosts
   安装完成后启用它，下次启动到系统后就会自动启动网络管理服务了。
 
   ```bash
-  systemctl enable networkmanager
+  systemctl enable NetworkManager
   ```
 
   此外，关于无线网卡驱动，俺的笔电使用的无线网卡芯片为高通的BCM43142，不被高通官方开源网卡驱动支持。而官方的专有驱动[`wl`](https://wiki.archlinux.org/index.php/Broadcom_wireless#broadcom-wl)则似乎由于知识产权问题，不能由其他组织分发，所以没能被集成在Linux操作系统内核自带固件全家桶`linux-firmware`中，必须由用户自行安装：
