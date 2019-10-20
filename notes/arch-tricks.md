@@ -3,7 +3,7 @@ tags: [Blog/System Configurations]
 title: 初装Arch Linux后的软件和设置建议
 ---
 
-> 在前文[在笔记本电脑上安装Arch Linux的额外注意事项](install-arch-on-laptop.md)中，俺已经描述了如何在笔记本上安装运行KDE桌面环境的Arch Linux系统。在满足了基本的Google搜索需求后，还有很多可以提升使用体验的空间。
+> 在前文[在虚拟机/物理机中安装Arch Linux](install-arch-on-laptop-and-vm.md)中，俺已经描述了如何在笔记本上安装运行KDE桌面环境的Arch Linux系统。在满足了基本的Google搜索需求后，还有很多可以提升使用体验的空间。
 
 本文是接续前文的Linux自用安装记录后篇，旨在记录俺完善自己的Linux系统使用体验的过程中，安装并使用了哪些工具、修改了哪些配置。作为备忘之用。
 
