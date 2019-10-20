@@ -166,7 +166,7 @@ Arch Linux默认在线安装。此外，更新时也会通过镜像服务器下�
 下载软件包时会自动按照列表中的先后顺序选择服务器。我们可以按照Wiki上关于[镜像服务器排序](https://wiki.archlinux.org/index.php/Mirrors#Sorting_mirrors)的说明测试并修改列表：
 
 ```bash
-pacman -S reflector
+pacman -Sy reflector
 reflector --country China --sort rate --save /etc/pacman.d/mirrorlist
 ```
 
