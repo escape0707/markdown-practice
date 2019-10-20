@@ -10,15 +10,16 @@ title: 初装Arch Linux后的软件和设置建议
 欢迎各位读者分享自己的技巧和建议！
 
 - [bash-completion](#bash-completion)
+- [Readline](#readline)
 - [pacman技巧](#pacman技巧)
 - [Git与AUR与pacman wrapper](#git与aur与pacman-wrapper)
+- [将CapsLock映射到Esc和Ctrl](#将capslock映射到esc和ctrl)
 - [配置Swap](#配置swap)
 - [安装蓝牙驱动并启用](#安装蓝牙驱动并启用)
 - [输入法](#输入法)
-- [Readline](#readline)
 - [GoldenDict](#goldendict)
 - [Visual Studio Code](#visual-studio-code)
-- [结语](#结语)
+- [结语 // Todo](#结语--todo)
 
 ## bash-completion
 
@@ -27,6 +28,25 @@ title: 初装Arch Linux后的软件和设置建议
 ```bash
 sudo pacman -S bash-completion
 ```
+
+## Readline
+
+[`Readline`](https://wiki.archlinux.org/index.php/Readline)是用于bash等CLI的编辑、输入库，对其进行设置可以让CLI交互变得更方便：
+
+Readline中按上下箭头默认会在历史输入中选择，修改`inputrc`可以使其只匹配当前已输入内容进行搜索：
+
+```bash
+sudo cat >> /etc/inputrc
+"\e[A": history-search-backward
+"\e[B": history-search-forward
+# ctrl+d
+```
+
+> 删除光标前的内容：`ctrl+u`
+>
+> 删除光标后的内容：`ctrl+k`
+>
+> 援引前一条命令的内容用`!!`，如`sudo !!`来用`root`权限执行前一条命令。
 
 ## pacman技巧
 
@@ -126,11 +146,21 @@ yay -S powerpill reflector rsync --needed
 
 此后即可使用`powerpill`，精调请参考[`powerpill.json(1)`](https://xyne.archlinux.ca/projects/powerpill/#powerpill.json1)手册页，主要调整其中`aria2c`参数部分。// Todo
 
+## 将CapsLock映射到Esc和Ctrl
+
+当使用Vi时，为了不用经常去够`Esc`和`Ctrl`，Linux下可以使用[`caps2esc`](https://aur.archlinux.org/packages/interception-caps2esc)，Windows下可以使用[`dual-key-remap`](https://github.com/ililim/dual-key-remap)或者[AutoHotKey脚本](https://github.com/escape0707/scripts/blob/master/Use%20CapsLock%20in%20Vim.ahk)。
+
+```bash
+sudo yay caps2esc
+```
+
 ## 配置Swap
 
 [`Swap`](https://wiki.archlinux.org/index.php/Swap)即虚拟内存，在物理内存占用高时起作用。
 
-之前没有分配固定的Swap分区，在此可以设置[Swap文件](https://wiki.archlinux.org/index.php/Swap#Automated)
+之前分配了固定的Swap分区可以跳过这一部分。
+
+如果没有，在此可以设置[Swap文件](https://wiki.archlinux.org/index.php/Swap#Automated)
 
 ```bash
 sudo pacman -S systemd-swap
@@ -211,28 +241,7 @@ printf 'GTK_IM_MODULE=fcitx\nQT_IM_MODULE=fcitx\nXMODIFIERS=@im=fcitx' | sudo te
 # ctrl+d
 ```
 
-安装后在设置插件中，取消勾选“仅显示当前语言”并启用需要的输入法；开启云拼音插件，如果网络受限选择百度云拼音。插件可以设置候选词、皮肤、全窗口统一语言等；具体设置参见官方指导。
-
-## Readline
-
-[`Readline`](https://wiki.archlinux.org/index.php/Readline)是用于bash等CLI的编辑、输入库，对其进行设置可以让CLI交互变得更方便：
-
-### 搜索历史
-
-Readline中按上下箭头默认会在历史输入中选择，修改`inputrc`可以使其只匹配当前已输入内容进行搜索：
-
-```bash
-sudo cat >> /etc/inputrc
-"\e[A": history-search-backward
-"\e[B": history-search-forward
-# ctrl+d
-```
-
-> 删除光标前的内容：`ctrl+u`
->
-> 删除光标后的内容：`ctrl+k`
->
-> 援引前一条命令的内容用`!!`，如`sudo !!`来用`root`权限执行前一条命令。
+安装后在设置插件中，取消勾选“仅显示当前语言”并启用需要的输入法；开启云拼音插件，如果网络受限选择百度云拼音。插件可以设置候选词、皮肤、全窗口统一语言等；具体设置参见官方指导。 // Todo
 
 ## GoldenDict
 
@@ -248,15 +257,13 @@ Linux上的GoldenDict不像Windows上自带Morphology，需要自己[下载](htt
 
 ## Visual Studio Code
 
-俺安装的是微软专有版VSCode：
+俺安装的是开源编译版VSCode：
 
 ```bash
-yay -S visual-studio-code-bin
+yay -S code
 ```
 
-当使用Vim扩展插件时，为了不用经常去够`Esc`和`Ctrl`，Linux下可以使用[`caps2esc`](https://aur.archlinux.org/packages/interception-caps2esc)，Windows下可以使用[`dual-key-remap`](https://github.com/ililim/dual-key-remap)或者[AutoHotKey脚本](https://github.com/escape0707/scripts/blob/master/Use%20CapsLock%20in%20Vim.ahk)。
-
-当使用C/C++插件format文件时，可能会提示无法找到`libtinfi.so.5`，这是因为Arch Linux自带的是`libtinfi.so.6`，我们可以检查一下：
+当使用C/C++插件format文件时，可能会提示无法找到`libtinfi.so.5`，这是因为Arch Linux自带的是`libtinfi.so.6`，我们可以检查一下： // Todo
 
 ```bash
 ls /lib/ | grep libtinfo.
@@ -268,7 +275,7 @@ ls /lib/ | grep libtinfo.
 sudo link /lib/libtinfo.so.6 /lib/libtinfo.so.5
 ```
 
-## 结语
+## 结语 // Todo
 
 此三篇文章便是俺初装Arch Linux的记录。小总结：
 
