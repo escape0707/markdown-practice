@@ -259,6 +259,15 @@ cat /mnt/etc/fstab
 arch-chroot /mnt
 ```
 
+### 下载并配置默认文本编辑器
+
+有`nano`、`vi`、`vim`、`neovim`等可以使用，俺使用的是`neovim`，并且将其通过[`symlink`](https://en.wikipedia.org/wiki/Symbolic_link)用其彻底替换`vi`：
+
+```bash
+pacman -S neovim
+ln -s /usr/bin/{nvim,vi}
+```
+
 ### 时区
 
 设置时区（亚洲/上海）：
