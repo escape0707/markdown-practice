@@ -184,7 +184,10 @@ reflector --country China --sort rate --save /etc/pacman.d/mirrorlist
   cat >> /etc/pacman.d/mirrorlist
   Server = https://mirrors.sjtug.sjtu.edu.cn/archlinux/$repo/os/$arch
   Server = http://mirrors.163.com/archlinux/$repo/os/$arch
+  #ctrl+d
   ```
+
+  > 最后一行表示用组合键`ctrl+d`输入文件终止符`EOF`来完成该文件的编写。详见[Linux系统输入输出重定向简介](https://www.digitalocean.com/community/tutorials/an-introduction-to-linux-i-o-redirection)。
 
 最后检查文件内容：
 
@@ -192,9 +195,33 @@ reflector --country China --sort rate --save /etc/pacman.d/mirrorlist
 cat /etc/pacman.d/mirrorlist
 ```
 
+### 使用powerpill缓存软件包
+
+如果更新了服务器列表后还不够快，可以下载[`powerpill`](https://wiki.archlinux.org/index.php/Powerpill)，并用其缓存需要安装的各种软件包。当然如果身边有可用的Arch机器，则可以用[`pacserve`](https://wiki.archlinux.org/index.php/Pacserve)，这里不再赘述。
+
+由于`powerpill`属于AUR而非官方源，需要添加作者的源：
+
+```bash
+cat >> /etc/pacman.conf
+[xyne-x86_64]
+SigLevel = Required
+Server = https://xyne.archlinux.ca/bin/repo.php?file=
+#ctrl+d
+```
+
+安装`powerpill`并将其他软件包缓存到新机的缓存目录上：
+
+```bash
+pacman -Sy powerpill
+mkdir -p /mnt/var/cache/pacman/pkg
+powerpill -Sw base base-devel linux linux-firmware --cachedir /mnt/var/cache/pacman/pkg
+```
+
+建议此时就将所有之后想要安装的软件包一次性缓存下来，节省后续手动安装过程中等待下载的时间。下一步的`pacstrap`工具会使用这些缓存直接安装。
+
 ### 安装必要的软件包
 
-下载并安装Arch Linux，会花费大约三分钟：
+下载并安装Arch Linux，下载会花费大约三分钟：
 
 ```bash
 pacstrap /mnt base linux linux-firmware
@@ -261,8 +288,6 @@ zh_TW.UTF-8 UTF-8
 # ctrl+d
 ```
 
-> 最后一行表示用组合键`ctrl+d`输入文件终止符`EOF`来完成该文件的编写。详见[Linux系统输入输出重定向简介](https://www.digitalocean.com/community/tutorials/an-introduction-to-linux-i-o-redirection)。
->
 > 注：建议选择UTF-8字符集的locale。
 
 之后生成locale讯息：
