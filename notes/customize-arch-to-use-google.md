@@ -1,6 +1,6 @@
 ---
 tags: [Blog/System Configurations]
-title: Arch新机用上Google
+title: 让Arch新机用上Google
 ---
 
 ## 目录<!-- omit in toc -->
