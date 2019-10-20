@@ -13,6 +13,16 @@ title: Arch新机用上Google
 
 在前文[在虚拟机/物理机中安装Arch Linux](install-arch-on-laptop-and-vm.md)中，俺已经记录了安装最小化、可联网的Arch Linux的过程。本文将继续描述俺在前述系统中折腾到可以在桌面环境下使用搜索引擎的程度所需的步骤。
 
+## 用NetworkManager连接Wi-Fi
+
+如果是在物理机上想要连接Wi-Fi，可以用之前已经安装并启用的NetworkManager的图形化工具`nmtui`：
+
+```bash
+nmtui
+```
+
+选择好Wi-Fi、输入密码并激活后，NetworkManager便会记住并自动使用它。
+
 ## 创建账户与配置sudo
 
 在完成了最小化Arch Linux安装之后，为了安全使用系统，还需要创建属于自己的个人账户、安装并配置好sudo。
@@ -109,16 +119,15 @@ useradd -m your-username
 passwd your-username
 ```
 
-俺已经体验过Ubuntu、GNOME~~，故此次尝试比较接近Windows桌面体验的~~以及本文第一版中提到的[`KDE`](https://wiki.archlinux.org/index.php/KDE)。经过两个月的体验，俺觉出KDE确实足够酷炫、定制丰富、对Windows难民友好，但对于俺的笔记本来说淡入淡出等特效还是复杂了一些，启动耗时相对长、资源占用也相对多。目前俺换到了Xfce这一更简化的GNOME系桌面环境。并且放弃了[显示管理器](https://wiki.archlinux.org/index.php/Display_manager)。
+俺已经体验过Ubuntu、GNOME~~，故此次尝试比较接近Windows桌面体验的~~以及本文第一版中提到的[`KDE`](https://wiki.archlinux.org/index.php/KDE)。经过两个月的体验，俺觉出KDE的确酷炫、定制丰富、对Windows难民友好，但对于俺的笔记本来说淡入淡出等特效还是复杂了一些，启动耗时相对长、资源占用也相对多。目前俺换到了Xfce这一更简化的GNOME系桌面环境。并且放弃了[显示管理器](https://wiki.archlinux.org/index.php/Display_manager)。
 
-以下列举俺最近装Xfce和KDE的过程，如果想要安装KDE，[请见后](#kde)。
+以下是俺装Xfce和KDE的过程。
 
 #### Xfce
 
 需要安装的包：
 
 - 支持回收站机制：`gvfs`
-- 支持`xfce4-windowck-plugin`插件：`libwnck`
 - 托盘区网络管理：`network-manager-applet`
 - Noto汉字系字体：`noto-fonts-cjk`
 - 声音服务器：`pulseaudio`
@@ -126,7 +135,7 @@ passwd your-username
 - Xfce额外组件包：`xfce4-goodies`
 
 ```bash
-sudo pacman -S gvfs libwnck network-manager-applet noto-fonts-cjk pulseaudio xfce4 xfce4-goodies
+sudo pacman -S gvfs network-manager-applet noto-fonts-cjk pulseaudio xfce4 xfce4-goodies
 ```
 
 设置登录后[静默](https://wiki.archlinux.org/index.php/Silent_boot#startx)地[自启动`startx`](https://wiki.archlinux.org/index.php/Xinit#Autostart_X_at_login)（对于Zsh，修改`~/.zprofile`）：
