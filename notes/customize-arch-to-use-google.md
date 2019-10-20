@@ -177,7 +177,7 @@ sudo systemctl enable sddm
 
 ## 网页浏览与科学上网
 
-要说为什么需要一个桌面环境，很大程度上不是因为运行软件或者修改设置比GUI更方便或者游戏之类的，而是为了能够至少能够使用[各种浏览器](https://wiki.archlinux.org/index.php/Web_browser)浏览网页……这里俺以不需要代理就可以正常使用全部功能的Firefox为例，您也可以选择Chrome等：
+其实不需要桌面环境也可以使用[各种浏览器](https://wiki.archlinux.org/index.php/Web_browser)浏览网页、使用终端执行命令……这里俺以不需要代理就可以正常使用全部功能的Firefox为例，您也可以选择Chrome等：
 
 ```bash
 sudo pacman -S firefox
