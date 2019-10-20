@@ -6,8 +6,10 @@ title: Arch新机用上Google
 ## 目录<!-- omit in toc -->
 
 - [前言](#前言)
+- [用NetworkManager连接Wi-Fi](#用networkmanager连接wi-fi)
 - [创建账户与配置sudo](#创建账户与配置sudo)
 - [显卡驱动与图形化界面](#显卡驱动与图形化界面)
+- [网页浏览与科学上网](#网页浏览与科学上网)
 
 ## 前言
 
@@ -186,7 +188,11 @@ sudo pacman -S firefox
 >
 > 俺的机器上火狐在卷动页面时会出现屏幕撕裂，依照[官方Wiki上的策略](https://wiki.archlinux.org/index.php/firefox#Tearing_video_in_fullscreen_mode)，在`about:config`中设置`layers.acceleration.force-enabled`为`true`可以解决。
 
-为了能够使用Google搜索引擎，还需要[Shadowsocks](https://wiki.archlinux.org/index.php/Shadowsocks)等科学上网工具。`shadowsocks-qt5`在`git clone`时连接总是会断开，所以俺使用C版`shadowsocks-libev`，您也可以使用的Python版的`shadowsocks`。
+为了能够使用Google搜索引擎，还需要[Shadowsocks](https://wiki.archlinux.org/index.php/Shadowsocks)、[V2Ray]等科学上网工具。
+
+### Shadowsocks
+
+`shadowsocks-qt5`在`git clone`时连接总是会断开，所以俺使用C版`shadowsocks-libev`，您也可以使用的Python版的`shadowsocks`。
 
 安装、创建服务器配置文件、然后启动并启用：
 
@@ -196,26 +202,33 @@ sudo pacman -S firefox
 sudo pacman -S shadowsocks-libev
 vi /etc/shadowsocks/config.json
 # 将您的某个shadowsocks服务器信息写入到以上文件中
-sudo systemctl start shadowsocks-libev@config.json
-sudo systemctl enable shadowsocks-libev@config.json
+sudo systemctl enable shadowsocks-libev@config.json --now
 ```
 
-如果服务不能成功自动启动，请尝试将json中的`server`替换为完整域名解析到的IP地址，和/或设置NetworkManager支持Shadowsocks有网后才自启动：
+如果服务不能成功自动启动，请尝试将json中的`server`替换为完整域名解析到的IP地址
+
+### V2Ray
+
+安装、创建服务器配置文件、然后启动并启用：
 
 ```bash
-sudo systemctl enable NetworkManager-wait-online.service
+sudo pacman -S v2ray
+vi /etc/v2ray/config.json
+# 将您的某个v2ray服务器信息写入到以上文件中
+sudo systemctl enable v2ray --now
 ```
 
-有时需要将Shadowsocks默认提供的socks5代理转化为http代理（比如Git），此时可以安装[`privoxy`](https://wiki.archlinux.org/index.php/Privoxy)、设置协议的转发、启动并启用服务：
+### Privoxy
+
+有时需要将socks5代理转化为http代理（比如Git），此时可以安装[`privoxy`](https://wiki.archlinux.org/index.php/Privoxy)、设置协议的转发、启动并启用服务：
 
 ```bash
 sudo pacman -S privoxy
-sudo sh -c "echo 'forward-socks5 / 127.0.0.1:1080 .' >> /etc/privoxy/config"
-sudo systemctl start privoxy
-sudo systemctl enable privoxy
+sudo sh -c 'echo "forward-socks5 / 127.0.0.1:1080 ." >> /etc/privoxy/config'
+sudo systemctl enable privoxy --now
 ```
 
-安装并运行了本地Shadowsocks客户端后，在Firefox/Chrome中安装[Proxy SwitchyOmega](https://addons.mozilla.org/en-US/firefox/addon/switchyomega/)，打开设置，跳过所有教程，设置proxy中的服务器地址端口为`socks5`、地址为`127.0.0.1`，端口为`1080`。设置auto switch中的规则列表URL为：
+安装并运行了本地代理客户端后，在Firefox/Chrome中安装[Proxy SwitchyOmega](https://addons.mozilla.org/en-US/firefox/addon/switchyomega/)，打开设置，跳过所有教程，设置proxy中的服务器地址端口为`socks5`、地址为`127.0.0.1`，端口为`1080`。设置auto switch中的规则列表URL为：
 
 ```URL
 https://raw.githubusercontent.com/gfwlist/gfwlist/master/gfwlist.txt
