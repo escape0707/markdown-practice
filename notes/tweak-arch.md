@@ -113,7 +113,7 @@ yay -Syu
 yay -S powerpill reflector rsync --needed
 ```
 
-为`/etc/pacman.conf`中已启用的Repo添加`SigLevel = PackageRequired`，参见[Wiki#Troubleshooting](https://wiki.archlinux.org/index.php/Powerpill#Troubleshooting)
+将`/etc/pacman.conf`的默认`SigLevel`改为`PackageRequired`，参见[Wiki#Troubleshooting](https://wiki.archlinux.org/index.php/Powerpill#Troubleshooting)
 
 此时即可使用`powerpill`，精调请参考[`powerpill.json(1)`](https://xyne.archlinux.ca/projects/powerpill/#powerpill.json1)手册页。
 
