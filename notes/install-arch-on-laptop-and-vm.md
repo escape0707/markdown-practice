@@ -202,11 +202,11 @@ cat /etc/pacman.d/mirrorlist
 由于`powerpill`属于AUR而非官方源，需要添加作者的源：
 
 ```bash
-cat >> /etc/pacman.conf
+vim /etc/pacman.conf
+SigLevel = PackageRequired
 [xyne-x86_64]
 SigLevel = Required
 Server = https://xyne.archlinux.ca/bin/repo.php?file=
-#ctrl+d
 ```
 
 安装`powerpill`并将其他软件包缓存到新机的缓存目录上：
@@ -214,10 +214,10 @@ Server = https://xyne.archlinux.ca/bin/repo.php?file=
 ```bash
 pacman -Sy powerpill
 mkdir -p /mnt/var/cache/pacman/pkg
-powerpill -Sw base base-devel linux linux-firmware --cachedir /mnt/var/cache/pacman/pkg
+powerpill -Syw --dbpath /tmp --cachedir /mnt/var/cache/pacman/pkg base base-devel linux linux-firmware
 ```
 
-建议此时就将所有之后想要安装的软件包一次性缓存下来，节省后续手动安装过程中等待下载的时间。下一步的`pacstrap`工具会使用这些缓存直接安装。
+建议此时就将所有之后想要安装的软件包一次性installpkg.sh缓存下来，节省后续手动安装过程中等待下载的时间。下一步的`pacstrap`工具会使用这些缓存直接安装。
 
 ### 安装必要的软件包
 
