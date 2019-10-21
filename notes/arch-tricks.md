@@ -36,7 +36,7 @@ sudo pacman -S bash-completion
 Readline中按上下箭头默认会在历史输入中选择，修改`inputrc`可以使其只匹配当前已输入内容进行搜索：
 
 ```bash
-sudo cat >> /etc/inputrc
+sudo -e /etc/inputrc
 "\e[A": history-search-backward
 "\e[B": history-search-forward
 # ctrl+d
@@ -138,8 +138,7 @@ makepkg -si
 之后我们可以像用`pacman`一样使用`yay`来更新或安装官方包和AUR包，例如[`powerpill`](https://wiki.archlinux.org/index.php/Powerpill)。但是不要和`sudo`一起用，`yay`会在需要时自行申请提权：
 
 ```bash
-yay -Syu
-yay -S powerpill reflector rsync --needed
+yay -S powerpill
 ```
 
 将`/etc/pacman.conf`的默认`SigLevel`改为`PackageRequired`，参见[Wiki#Troubleshooting](https://wiki.archlinux.org/index.php/Powerpill#Troubleshooting)
@@ -151,7 +150,7 @@ yay -S powerpill reflector rsync --needed
 当使用Vi时，为了不用经常去够`Esc`和`Ctrl`，Linux下可以使用[`caps2esc`](https://aur.archlinux.org/packages/interception-caps2esc)，Windows下可以使用[`dual-key-remap`](https://github.com/ililim/dual-key-remap)或者[AutoHotKey脚本](https://github.com/escape0707/scripts/blob/master/Use%20CapsLock%20in%20Vim.ahk)。
 
 ```bash
-sudo yay caps2esc
+yay caps2esc
 ```
 
 ## 配置Swap
@@ -304,3 +303,18 @@ vi /etc/systemd/swap.conf
 ```
 
 最后用`efibootmgr`制作好启动项就可以启动了。
+
+## Fine-tune makepkg
+
+/etc/makepkg.conf
+
+CFLAGS="-march=native -O2 -pipe -fstack-protector-strong -fno-plt"
+CXXFLAGS="${CFLAGS}"
+MAKEFLAGS="-j4"
+COMPRESSXZ=(xz -c -z - --threads=0)
+
+> DLAGENTS for curl proxy, e.g.:
+>
+> `'https::/usr/bin/curl --socks5 127.0.0.1:1080 -gqb "" -fLC - --retry 3 --retry-delay 3 -o %o %u'`
+
+## zeal & dash & devdocs
