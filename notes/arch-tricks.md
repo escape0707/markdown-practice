@@ -259,19 +259,19 @@ Linux上的GoldenDict不像Windows上自带Morphology，需要自己[下载](htt
 俺安装的是开源编译版VSCode：
 
 ```bash
-yay -S code
+sudo pacman -S code
 ```
 
-当使用C/C++插件format文件时，可能会提示无法找到`libtinfi.so.5`，这是因为Arch Linux自带的是`libtinfi.so.6`，我们可以检查一下： // Todo
+当使用C/C++插件排版文件时，可能会提示无法找到`libtinfi.so.5`，这是因为Arch Linux自带的是`libtinfi.so.6`，我们可以检查一下：
 
 ```bash
 ls /lib/ | grep libtinfo.
 ```
 
-而且第六版向下兼容第五版，所以我们只需要建立一个symlink即可：
+而且第六版向下兼容第五版，所以我们只需要建立一个hard link即可：
 
 ```bash
-sudo link /lib/libtinfo.so.6 /lib/libtinfo.so.5
+sudo ln /lib/libtinfo.so.6 /lib/libtinfo.so.5
 ```
 
 ## 结语 // Todo
