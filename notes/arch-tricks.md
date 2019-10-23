@@ -318,3 +318,5 @@ COMPRESSXZ=(xz -c -z - --threads=0)
 > `'https::/usr/bin/curl --socks5 127.0.0.1:1080 -gqb "" -fLC - --retry 3 --retry-delay 3 -o %o %u'`
 
 ## zeal & dash & devdocs
+
+## xdg-user-dirs-gtk-update
