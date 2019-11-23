@@ -126,7 +126,7 @@ Include = /etc/pacman.d/archlinuxcn-mirrorlist
 
 有两类软件可以作为pacman的封装，一类如[`yay`](https://wiki.archlinux.org/index.php/AUR_helpers#Pacman_wrappers)可以作为[AUR](https://wiki.archlinux.org/index.php/Arch_User_Repository)软件的安装管理助手，另一类如[`powerpill`](https://wiki.archlinux.org/index.php/Powerpill)可以多线程、[`rsync`](https://wiki.archlinux.org/index.php/Rsync)差量下载。
 
-但是`yay`和`powerpill`均为非Arch官方的AUR软件包，而且如果不使用Go语言，就不必自己编译`yay`。所以我们从`yay-bin`的安装开始，先介绍AUR软件的手动安装，然后介绍用`yay`安装AUR软件，最后调优`powerpill`。
+`yay`和`powerpill`均为非Arch官方的AUR软件包。我们可以从ArchLinuxCN源按照通常方法直接安装，也可以从AUR编译安装。如不使用Go语言，可不必自己编译`yay`，用`yay-bin`即可。直接安装不再赘述，这里先介绍AUR软件的手动安装，然后介绍用`yay`安装AUR软件，最后调优`powerpill`。
 
 [安装AUR软件包](https://wiki.archlinux.org/index.php/Arch_User_Repository#Installing_packages)之前需要先用Git下载。所以先配置好Git，即方便AUR软件安装，也方便日后开发流程。
 
@@ -192,6 +192,7 @@ yay -S powerpill
 
 ```bash
 yay caps2esc
+sudo systemctl enable caps2esc --now
 ```
 
 ## 配置Swap
@@ -266,34 +267,59 @@ sudo systemctl enable bluetooth
 
 ## 输入法
 
-Linux下有许多中文输入法，俺使用包含于官方源中的[`Fcitx`](https://wiki.archlinux.org/index.php/Fcitx)。
+Linux下有许多中文输入法，俺使用包含于CN源中的`Fcitx5`。
 
-安装Fcitx、谷歌/百度云拼音插件、Fcitx配置工具（KDE用户则用`kcm-fcitx`)：
+安装fcitx5、GTK/Qt4/Qt5库、中文插件包：
 
 ```bash
-sudo pacman -S fcitx-im fcitx-cloudpinyin fcitx-configtool
+sudo pacman -S fcitx5-git fcitx5-gtk-git fcitx5-qt4-git fcitx5-qt5-git fcitx5-chinese-addons-git
 ```
 
 为了GTK/Qt程序能使用输入法，设置环境变量：
 
 ```bash
-printf 'GTK_IM_MODULE=fcitx\nQT_IM_MODULE=fcitx\nXMODIFIERS=@im=fcitx' | sudo tee -a /etc/environment > /dev/null
-# ctrl+d
+cat >> ~/.pam_environment
+GTK_IM_MODULE=fcitx5
+QT_IM_MODULE=fcitx5
+XMODIFIERS=@im=fcitx5
 ```
 
-安装后在设置插件中，取消勾选“仅显示当前语言”并启用需要的输入法；开启云拼音插件，如果网络受限选择百度云拼音。插件可以设置候选词、皮肤、全窗口统一语言等；具体设置参见官方指导。 // Todo
+启动fcitx5：
+
+```bash
+fcitx5
+```
+
+截止至2019/11/23，fcitx5还没有KDE以外的桌面环境的GUI配置插件。但是各种桌面环境都可以用通过安装`plasma-workspace`来用上KDE专属的配置插件（反正之后可以删掉）：
+
+```bash
+sudo pacman -S plasma-workspace kcm-fcitx5-git
+```
+
+在fcitx5启动的情况下，从开始菜单启动`Fcitx 5 Configuration`，或用`kcmshell5`启动配置插件：
+
+```bash
+kcmshell5 kcm_fcitx5
+```
+
+在配置插件中，取消勾选“仅显示当前语言”并启用需要的输入法如`pinyin`、`shuangpin`；开启云拼音插件，如果网络受限选择百度云拼音，或用`proxychains-ng`代理fcitx5；设置候选词数量、皮肤、模糊音等。具体设置俺会另外上传一个Git Repo，其中会有配置文件历史。//Todo
+
+配置插件删除快捷键时，不知为何一定会留下至少一个。想要彻底删除，只好手动去`~.config/fcitx5/`中将对应配置文件中的键值的`0=XXXXXXX`改为`0=`。
+
+最后，在自己桌面环境的自启动项里手动添加fcitx5即可。
 
 ## GoldenDict
 
-俺使用的离线词典软件GoldenDict：
+俺使用的离线词典软件GoldenDict的CN源git版：
 
 ```bash
-sudo pacman -S goldendict
+sudo pacman -S goldendict-qt5-git
 ```
 
-Linux上GoldenDict可以使用Scan Popup直接划词翻译，但是使用起来有时不如Windows上用[AutoHotKey脚本](https://github.com/escape0707/scripts/blob/master/GoldenDict%20Select%20To%20Translate.ahk)实现的稳定。
+此版本会同时安装官方版缺少的Morphology和拼写检查：`hunspell`。
 
-Linux上的GoldenDict不像Windows上自带Morphology，需要自己[下载](https://sourceforge.net/projects/goldendict/files/better%20morphologies/1.0/)。
+> Linux上GoldenDict可以使用Scan Popup直接划词翻译，但是使用起来有时不如Windows上用[AutoHotKey脚本](https://github.com/escape0707/scripts/blob/master/GoldenDict%20Select%20To%20Translate.ahk)实现的稳定。
+
 
 ## Visual Studio Code
 
