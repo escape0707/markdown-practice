@@ -399,3 +399,21 @@ COMPRESSXZ=(xz -c -z - --threads=0)
 ## zeal & dash & devdocs
 
 ## xdg-user-dirs-gtk-update
+
+## Xfce4快捷键设置
+
+想实现类似Windows的Win+1、2、3的软件启动和切换，似乎`jumpapp-git`是最合适的：
+
+```bash
+yay jumpapp-git
+```
+
+之后设置快捷键例如，`Super+1`=`jumpapp firefox`、`Super+2`=`jumpapp code`等。
+
+为了能够同时使用`Super`键打开`whiskermenu`，根据[Manjaro论坛建议](https://forum.manjaro.org/t/manjaro-xfce-18-0-beta-builds-testing/47347/75)，可以设置`Alt+F1`=`xfce4-popup-whiskermenu`，之后安装`xcape`：
+
+```bash
+sudo pacman -S xcape
+```
+
+并且设置自启动项`xcape -e 'Super_L=Alt_L|F1;Super_R=Alt_L|F1'`
