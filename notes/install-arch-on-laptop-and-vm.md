@@ -37,7 +37,7 @@ elinks https://wiki.archlinux.org/index.php/Installation_guide
 
 > 如果觉得白色背景亮瞎了眼，可以按`esc`唤出菜单 -> `Setup` -> `Options Manager` -> 按空格键展开`Default color settings` -> `Use document-specified colors` -> `Edit` -> `Value` 改为 `1` （或 `0`）
 
-也可以查看ArchISO压制时附带的当时的安装指南的文字版：
+也可以查看ArchISO压制时附带的纯文本安装指南：
 
 ```bash
 ls
@@ -110,7 +110,11 @@ Linux系统需要至少一个root目录（`/`）分区，如果启用了UEFI，�
 
 俺参考了官方分区模板，选择将磁盘分为512MB的EFI系统分区、利用全部剩余空间的Linux文件系统分区和一个8GB的Swap分区。Swap分区的大小可以参考It's FOSS上的[一篇文章](https://itsfoss.com/swap-size/)。一般来说设为物理内存的两倍肯定够用了。
 
-分区时为了方便可以用[`fdisk`](https://wiki.archlinux.org/index.php/Fdisk)工具的图形版`cfdisk`
+分区时为了方便可以用[`fdisk`](https://wiki.archlinux.org/index.php/Fdisk)工具的图形版`cfdisk`：
+
+```bash
+cfdisk
+```
 
 1. Select label type选择`gpt`（如果未提示，检查屏幕上方第三行是否为`Lable: gpt`）
 2. New一个`512M`的分区，Type更改为`EFI System`
@@ -170,6 +174,8 @@ pacman -Sy reflector
 reflector --country China --sort rate --save /etc/pacman.d/mirrorlist
 ```
 
+> 如果出现：`ImportError: No module named Reflector`的错误。可能是因为ArchISO的`python`版本过旧。用`pacman -S python --needed`更新一下并再次运行`reflector`也许可以解决问题。
+
 也可以手动编辑，将自己喜好的镜像服务器放置在列表的前列：
 
 - 如不想用Vim/Nano等命令行文本编辑器的话，可以直接用某个服务器地址覆写列表文件：
@@ -197,31 +203,38 @@ cat /etc/pacman.d/mirrorlist
 
 ### 使用powerpill缓存软件包
 
-如果更新了服务器列表后还不够快，可以下载[`powerpill`](https://wiki.archlinux.org/index.php/Powerpill)，并用其缓存需要安装的各种软件包。当然如果身边有可用的Arch机器，则可以用[`pacserve`](https://wiki.archlinux.org/index.php/Pacserve)，这里不再赘述。
+如果更新了服务器列表后还不够快，可以下载[`powerpill`](https://wiki.archlinux.org/index.php/Powerpill)，并用其先缓存各软件包。当然如果身边有可用的Arch机器，也可以用[`pacserve`](https://wiki.archlinux.org/index.php/Pacserve)，这里只说下`powerpill`。
 
-由于`powerpill`属于AUR而非官方源，需要添加作者的源：
+由于`powerpill`属于AUR而非官方源，ArchISO下`makepkg`又会非常麻烦，所以建议添加ArchlinuxCN源**或**作者的源，并[将`SigLevel`改成`PackageRequired`](https://wiki.archlinux.org/index.php/Powerpill#Troubleshooting)：
 
 ```bash
 vim /etc/pacman.conf
+# 将通用SigLevel改成PackageRequired
 SigLevel = PackageRequired
+# ArchLinuxCN
+[archlinuxcn]
+Server = https://repo.archlinuxcn.org/$arch
+# powerpill作者源（个人建议有CN源就够了，别加这个了）
 [xyne-x86_64]
 SigLevel = Required
 Server = https://xyne.archlinux.ca/bin/repo.php?file=
 ```
 
-安装`powerpill`并将其他软件包缓存到新机的缓存目录上：
+安装`powerpill`并将各软件包缓存到新机上：
 
 ```bash
+# 如用ArchLinuxCN，则需要安装keyring
+pacman -Sy archlinuxcn-keyring
 pacman -Sy powerpill
 mkdir -p /mnt/var/cache/pacman/pkg
-powerpill -Syw --dbpath /tmp --cachedir /mnt/var/cache/pacman/pkg base base-devel linux linux-firmware
+powerpill -Sw --dbpath /tmp --cachedir /mnt/var/cache/pacman/pkg base base-devel linux linux-firmware
 ```
 
-建议此时就将所有之后想要安装的软件包一次性installpkg.sh缓存下来，节省后续手动安装过程中等待下载的时间。下一步的`pacstrap`工具会使用这些缓存直接安装。
+建议此时就将所有之后想要安装的软件包一次性缓存下来，节省后续手动安装过程中等待下载的时间。下一步的`pacstrap`工具会使用这些缓存直接安装。
 
 ### 安装必要的软件包
 
-下载并安装Arch Linux，下载会花费大约三分钟：
+下载并安装Arch Linux：
 
 ```bash
 pacstrap /mnt base linux linux-firmware
@@ -293,6 +306,7 @@ cat > /etc/locale.gen
 en_US.UTF-8 UTF-8
 ja_JP.UTF-8 UTF-8
 zh_CN.UTF-8 UTF-8
+zh_HK.UTF-8 UTF-8
 zh_TW.UTF-8 UTF-8
 # ctrl+d
 ```
@@ -371,7 +385,7 @@ cat > /etc/hosts
   systemctl enable NetworkManager
   ```
 
-  此外，关于无线网卡驱动，俺的笔电使用的无线网卡芯片为高通的BCM43142，不被高通官方开源网卡驱动支持。而官方的专有驱动[`wl`](https://wiki.archlinux.org/index.php/Broadcom_wireless#broadcom-wl)则似乎由于知识产权问题，不能由其他组织分发，所以没能被集成在Linux操作系统内核自带固件全家桶`linux-firmware`中，必须由用户自行安装：
+  此外，关于无线网卡驱动，俺的笔电使用的无线网卡芯片为高通的BCM43142，不被高通官方开源网卡驱动支持。而官方的专有驱动[`wl`](https://wiki.archlinux.org/index.php/Broadcom_wireless#broadcom-wl)则似乎由于知识产权问题，不能由其他组织分发，所以没能被集成在Linux操作系统内核自带固件全家桶`linux-firmware`中，必须由自行安装。对应的，俺不用安装`linux-firmware`似乎也没事：
 
   ```bash
   pacman -S broadcom-wl
@@ -487,7 +501,7 @@ pacman -S intel-ucode
    > 运行完脚本后，efibootmgr自动将`Arch Linux`项设置为第一启动项，故此步骤可以跳过。
 
    ```bash
-   efibootmgr --bootorder XXXX,XXXX --verbose
+   efibootmgr -o XXXX,XXXX --verbose
    ```
 
    其中XXXX即efibootmgr的输出中各启动项前的四位数。
@@ -502,7 +516,7 @@ pacman -S intel-ucode
    exit
    ```
 
-2. 卸载文件系统：
+2. 卸载文件系统（可选）：
 
    ```bash
    umount -R /mnt
@@ -516,7 +530,7 @@ pacman -S intel-ucode
    shutdown now
    ```
 
-   所有仍然挂载的文件系统会被*systemd*自动卸载。
+   所有仍然挂载的文件系统会被`systemd`自动卸载。
 
    移除安装介质：
 
