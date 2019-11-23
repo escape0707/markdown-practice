@@ -7,7 +7,7 @@ title: 初装Arch Linux后的软件和设置建议
 
 本文是接续前文的Linux自用安装记录后篇，旨在记录俺完善自己的Linux系统使用体验的过程中，安装并使用了哪些工具、修改了哪些配置。作为备忘之用。
 
-欢迎各位读者分享自己的技巧和建议！
+> 欢迎各位分享自己的技巧和建议！
 
 - [bash-completion](#bash-completion)
 - [Readline](#readline)
@@ -36,7 +36,7 @@ sudo pacman -S bash-completion
 Readline中按上下箭头默认会在历史输入中选择，修改`inputrc`可以使其只匹配当前已输入内容进行搜索：
 
 ```bash
-sudo -e /etc/inputrc
+vi ~/.inputrc
 "\e[A": history-search-backward
 "\e[B": history-search-forward
 # ctrl+d
@@ -69,8 +69,11 @@ sudo systemctl enable paccache.timer
 
 ```bash
 installed_groups="base-devel xfce4 xfce4-goodies"
-append_apps="git sudo xfce4-windowck-plugin"
-(comm -23 <(pacman -Qqtt) <(pacman -Qqg $installed_groups | sort); printf %"s\n" $append_apps $installed_groups) | sort
+echo Native:
+(comm -23 <(pacman -Qnqtt) <(pacman -Qgq $installed_groups | sort); printf %"s\n" $installed_groups) | sort
+echo
+echo Foreign:
+pacman -Qm
 ```
 
 > 其中`comm`比较两个文件，左边列出第一个文件独有的内容，中间列出第二个文件独有的内容，右边列出两个文件共有的内容。可用`-`配合`1`、`2`或/和`3`来隐藏对应列的输出。此处`-23`即只列出第一个文件中独有的内容。
@@ -78,8 +81,46 @@ append_apps="git sudo xfce4-windowck-plugin"
 > `<()`运算符表示将括号内的表达式的输出当作输入命令中所需要的一个文件。
 >
 > `installed_groups`应该填写我们手动安装的软件包组
+
+## Arch Linux CN
+
+Arch Linux CN的[主页](https://www.archlinuxcn.org/)、[群组](https://www.archlinuxcn.org/archlinuxcn-group-mailling-list/)、[Telegram](https://t.me/archlinuxcn_group)。
+
+> 进了里面去个个都是人才，说话又好听，哎哟超喜欢在里面！百万大佬，在线聊骚（指年薪、迫真），还不快快行动起来！
 >
-> `append_apps`应填写一些意外被排除的软件包。例如，`yay-bin`依赖于`git`和`sudo`，但是`yay-bin`输入AUR，其安装本身就会用到后两者，所以还是难免显式安装。又或者`xfce4-windowck-plugin`错误的将其加入了`xfce4`组，只好显式地追加上它。
+> 咳咳，这里主要讲一下用ArchLinuxCN源有什么用，以及如何使用。之前在[使用powerpill缓存软件包](install-arch-on-laptop-and-vm.md#使用powerpill缓存软件包)的环节已经讲过了一些。但是与`/etc/pacman.d/mirrorlist`不同的是，`pacstrap`不会自动拷贝`/etc/pacman.conf`。不过无妨，反正我们还要添加`archlinuxcn-mirrolist`，这里正好重新讲一遍。
+
+ArchLinuxCN源是国内ArchLinux爱好者自行打包并维护的软件源，ArchLinux官网[可考](https://wiki.archlinux.org/index.php/Unofficial_user_repositories#archlinuxcn)。内有`powerpill`、`yay`、`aria2-fast`、`fcitx5`等许多AUR包的编译打包版。社群里有ArchLinux的开发者、TU、`fcitx5`的开发者等。知名度和可信度很高，大家也可以去混个脸熟，[问些好问题](https://github.com/ryanhanwu/How-To-Ask-Questions-The-Smart-Way/blob/master/README-zh_CN.md)之类的。
+
+[添加ArchLinuxCN源](https://www.archlinuxcn.org/archlinux-cn-repo-and-mirror/)：
+
+```bash
+sudo -e /etc/pacman.conf
+# 文件尾部追加：
+[archlinuxcn]
+Server = https://repo.archlinuxcn.org/$arch
+```
+
+导入GPG key，由ArchLinux Trusted User [farseerfc](https://www.archlinux.org/people/trusted-users/#farseerfc)签名，故依赖ArchLinux自带的`archlinux-keyring`即可安装：
+
+```bash
+sudo pacman -Sy archlinuxcn-keyring
+```
+
+安装`archlinuxcn-mirrorlist-git`包以获得镜像列表，并在`/etc/pacman.conf`引用：
+
+```bash
+sudo pacman -S archlinuxcn-mirrorlist-git
+sudo -e /etc/pacman.d/archlinuxcn-mirrorlist
+# 去掉想要的镜像服务器前的注释
+
+sudo -e /etc/pacman.conf
+# 修改之前添加的内容为：
+[archlinuxcn]
+Include = /etc/pacman.d/archlinuxcn-mirrorlist
+```
+
+之后便可享受ArchLinuxCN源的便利了。
 
 ## Git与AUR与pacman wrapper
 
