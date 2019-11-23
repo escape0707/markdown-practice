@@ -176,15 +176,27 @@ makepkg -si
 
 ### Powerpill
 
-之后我们可以像用`pacman`一样使用`yay`来更新或安装官方包和AUR包，例如[`powerpill`](https://wiki.archlinux.org/index.php/Powerpill)。但是不要和`sudo`一起用，`yay`会在需要时自行申请提权：
+之后我们可以像用`pacman`一样使用`yay`来更新或安装官方包和AUR包，例如CN源的不限单服务器连接数的[`aria2c-fast`](https://aur.archlinux.org/packages/aria2-fast/)、[`powerpill`](https://wiki.archlinux.org/index.php/Powerpill)。但是不要和`sudo`一起用，`yay`会在需要时自行申请提权：
 
 ```bash
-yay -S powerpill
+yay -S aria2c-fast powerpill
 ```
 
 将`/etc/pacman.conf`的默认`SigLevel`改为`PackageRequired`，参见[Wiki#Troubleshooting](https://wiki.archlinux.org/index.php/Powerpill#Troubleshooting)
 
-此后即可使用`powerpill`，精调请参考[`powerpill.json(1)`](https://xyne.archlinux.ca/projects/powerpill/#powerpill.json1)手册页，主要调整其中`aria2c`参数部分。// Todo
+此后即可使用`powerpill`，调优参考[`powerpill.json(1)`](https://xyne.archlinux.ca/projects/powerpill/#powerpill.json1)手册页：
+
+```bash
+vi /etc/powerpill/powerpill.json
+```
+
+主要需要调整其中`aria2c`参数部分（如果安装的原版`aria2c`、单服务器最大连接数必须小于等于`16`）：
+
+```json
+"--max-concurrent-downloads=100",
+"--max-connection-per-server=32",
+"--min-split-size=1M",
+```
 
 ## 将CapsLock映射到Esc和Ctrl
 
