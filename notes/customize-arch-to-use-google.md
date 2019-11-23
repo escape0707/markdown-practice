@@ -75,9 +75,15 @@ your-username ALL=(ALL) ALL
 logout
 ```
 
+（可选）登陆后，（俺的强迫症会促使）俺将个人文件夹设置成Git Repo来追踪配置文件的更改：
+
+```bash
+git init && git add -A && git commit -m initial\ commit
+```
+
 ## 显卡驱动与图形化界面
 
-为了启动`Firefox`、`Chromium`等图形化浏览器，建议安装好[显卡驱动](https://wiki.archlinux.org/index.php/Xorg#Driver_installation)和一套[桌面环境](https://wiki.archlinux.org/index.php/Desktop_environment)。
+为了启动`Firefox`、`Chromium`等图形化浏览器，安装[显卡驱动](https://wiki.archlinux.org/index.php/Xorg#Driver_installation)和一套[桌面环境](https://wiki.archlinux.org/index.php/Desktop_environment)。
 
 ### 显卡驱动
 
@@ -114,7 +120,7 @@ startxfce4
 
 用这种方法试几个之后自然就能找到适合自己习惯和电脑配置的桌面环境了。
 
-另外俺建议在测试并确定好了想要使用的桌面环境，准备正式安装前删除并重建自己的账户和专用文件夹，以清除测试时各种软件遗留的配置和文件：
+另外俺建议在测试并确定好了想要使用的桌面环境，准备正式安装前，删除并重建自己的账户和专有文件夹，以清除测试时各种软件遗留的配置和文件：
 
 ```bash
 userdel -r your-username
@@ -130,18 +136,18 @@ passwd your-username
 
 需要安装的包：
 
-- 支持回收站机制：`gvfs`
+- 回收站：`gvfs`
 - 托盘区网络管理：`network-manager-applet`
-- Noto汉字系字体：`noto-fonts-cjk`
+- Noto字系、汉字、Emoji：`noto-fonts`、`noto-fonts-cjk`、`noto-fonts-emoji`
 - 声音服务器：`pulseaudio`
 - Xfce基础包：`xfce4`
 - Xfce额外组件包：`xfce4-goodies`
 
 ```bash
-sudo pacman -S gvfs network-manager-applet noto-fonts-cjk pulseaudio xfce4 xfce4-goodies
+sudo pacman -S gvfs network-manager-applet noto-fonts noto-fonts-cjk noto-fonts-emoji pulseaudio xfce4 xfce4-goodies
 ```
 
-设置登录后[静默](https://wiki.archlinux.org/index.php/Silent_boot#startx)地[自启动`startx`](https://wiki.archlinux.org/index.php/Xinit#Autostart_X_at_login)（对于Zsh，修改`~/.zprofile`）：
+登录后[静默](https://wiki.archlinux.org/index.php/Silent_boot#startx)地[自启动`startx`](https://wiki.archlinux.org/index.php/Xinit#Autostart_X_at_login)（对于Zsh，修改`~/.zprofile`）：
 
 ```bash
 cat >> ~/.bash_profile
@@ -151,12 +157,12 @@ fi
 # ctrl+d
 ```
 
-（可选的）设置[静默自动登录](https://wiki.archlinux.org/index.php/Silent_boot#agetty)：
+（可选）[静默自动登录](https://wiki.archlinux.org/index.php/Silent_boot#agetty)：
 
 > username更换为想要自动登入的用户名
 
 ```bash
-systemctl edit getty@tty1
+sudo systemctl edit getty@tty1
 # 填入以下内容
 [Service]
 ExecStart=
@@ -169,7 +175,7 @@ Type=simple
 安装`Noto`字体、KDE、[`wayland`](https://wiki.archlinux.org/index.php/KDE#KDE_applications)后端支持（可选）、以及文件管理、终端、记事本等应用，并且启用[SDDM](https://wiki.archlinux.org/index.php/SDDM)显示管理器：
 
 ```bash
-sudo pacman -S noto-fonts-cjk plasma-meta plasma-wayland-session dolphin-plugins kdegraphics-meta kdeutils-meta khelpcenter konsole kwrite
+sudo pacman -S noto-fonts noto-fonts-cjk noto-fonts-emoji plasma-meta plasma-wayland-session dolphin-plugins kdegraphics-meta kdeutils-meta khelpcenter konsole kwrite
 sudo systemctl enable sddm
 ```
 
@@ -177,19 +183,24 @@ sudo systemctl enable sddm
 
 ## 网页浏览与科学上网
 
-其实不需要桌面环境也可以使用[各种浏览器](https://wiki.archlinux.org/index.php/Web_browser)浏览网页、使用终端执行命令……这里俺以不需要代理就可以正常使用全部功能的Firefox为例，您也可以选择Chrome等：
+俺以不需要代理就可以正常使用全部功能的Firefox为例，您也可以选择Chrome等：
 
 ```bash
 sudo pacman -S firefox
+
+# about:config：
+
+# 和Windows下一样，返回上一页的`Backspace`：
+browser.backspace_action=0
+
+# 若火狐在卷动页面时出现屏幕撕裂
+# https://wiki.archlinux.org/index.php/firefox#Tearing_video_in_fullscreen_mode：
+layers.acceleration.force-enabled=true
 ```
 
-> 为了让`Backspace`在Linux下也和Windows下一样让火狐返回上一页，可以在`about:config`中设置`browser.backspace_action`为`0`。
->
-> 为了让标题栏和标签页栏也和Windows下一样在一行，可以在自定义火狐浏览器布局时取消勾选`Title Bar`
->
-> 俺的机器上火狐在卷动页面时会出现屏幕撕裂，依照[官方Wiki上的策略](https://wiki.archlinux.org/index.php/firefox#Tearing_video_in_fullscreen_mode)，在`about:config`中设置`layers.acceleration.force-enabled`为`true`可以解决。
+> 为了让标题栏和标签页栏也和Windows下一样在一行，可以在自定义火狐浏览器布局时取消勾选`Title Bar`。俺直接将[标题栏和Xfce4顶栏合体]()了，故不调整此项。
 
-为了能够使用Google搜索引擎，还需要[Shadowsocks](https://wiki.archlinux.org/index.php/Shadowsocks)、[V2Ray]等科学上网工具。
+接下来，为了使用Google搜索引擎，还需要[Shadowsocks](https://wiki.archlinux.org/index.php/Shadowsocks)、[V2Ray](https://www.v2ray.com)等科学上网工具。
 
 ### Shadowsocks
 
@@ -197,7 +208,7 @@ sudo pacman -S firefox
 
 安装、创建服务器配置文件、然后启动并启用：
 
-> 用您喜欢的名字替换下文的`config`
+> 用喜欢的名字替换下文的`config`
 
 ```bash
 sudo pacman -S shadowsocks-libev
