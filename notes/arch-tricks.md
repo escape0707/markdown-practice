@@ -417,3 +417,24 @@ sudo pacman -S xcape
 ```
 
 并且设置自启动项`xcape -e 'Super_L=Alt_L|F1;Super_R=Alt_L|F1'`
+
+## Xfce4最大化启动Terminal
+
+参考[这个回答](https://unix.stackexchange.com/a/426934/352668)：
+
+```bash
+mkdir -p ~/.local/share/applications
+cp /usr/share/applications/xfce4-terminal.desktop ~/.local/share/applications
+vi ~/.local/share/applications/xfce4-terminal.desktop
+# 将Exec=xfce4-terminal改为
+Exec=xfce4-terminal --maximize
+```
+
+之后从开始菜单启动Xfce Terminal即为最大化。但通过`exo-open`启动的，即默认终端还不是。所以我们要在开始菜单中`Preferred Applications`里，给默认终端新加一个，内容还是“xfce4-terminal`。然后去改生成的文件：
+
+```bash
+vi ~/.local/share/xfce4/helpers/custom-TerminalEmulator.desktop
+# 修改对应的两行，加上--maximize
+X-XFCE-CommandsWithParameter=/usr/bin/xfce4-terminal --maximize "%s"
+X-XFCE-Commands=/usr/bin/xfce4-terminal --maximize
+```
