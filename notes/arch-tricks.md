@@ -344,13 +344,13 @@ sudo pacman -S code
 当使用C/C++插件排版文件时，可能会提示无法找到`libtinfi.so.5`，这是因为Arch Linux自带的是`libtinfi.so.6`，我们可以检查一下：
 
 ```bash
-ls /lib/ | grep libtinfo.
+ls /lib/libtinfo.*
 ```
 
-而且第六版向下兼容第五版，所以我们只需要建立一个hard link即可：
+而且第六版向下兼容第五版，所以我们只需要建立一个symlink即可：
 
 ```bash
-sudo ln /lib/libtinfo.so.6 /lib/libtinfo.so.5
+sudo ln -s libtinfo.so.6 /lib/libtinfo.so.5
 ```
 
 ## 结语 // Todo
@@ -437,4 +437,12 @@ vi ~/.local/share/xfce4/helpers/custom-TerminalEmulator.desktop
 # 修改对应的两行，加上--maximize
 X-XFCE-CommandsWithParameter=/usr/bin/xfce4-terminal --maximize "%s"
 X-XFCE-Commands=/usr/bin/xfce4-terminal --maximize
+```
+
+## 手机USB热点
+
+使用手机热点比Windows上还要方便，如果Wi-Fi自不必说，即便是最优选择USB，Android 2.2以上无需驱动即可连接；iPhone也只需要安装一个仅`370KB`的`libimobiledevice`驱动包即可：
+
+```bash
+sudo pacman -S libimobiledevice
 ```
