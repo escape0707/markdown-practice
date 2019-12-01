@@ -332,7 +332,6 @@ sudo pacman -S goldendict-qt5-git
 
 > Linux上GoldenDict可以使用Scan Popup直接划词翻译，但是使用起来有时不如Windows上用[AutoHotKey脚本](https://github.com/escape0707/scripts/blob/master/GoldenDict%20Select%20To%20Translate.ahk)实现的稳定。
 
-
 ## Visual Studio Code
 
 俺安装的是开源编译版VSCode：
@@ -352,6 +351,26 @@ ls /lib/libtinfo.*
 ```bash
 sudo ln -s libtinfo.so.6 /lib/libtinfo.so.5
 ```
+
+## Proxychains
+
+让单个命令运行在代理环境下：
+
+```bash
+sudo pacma -S proxychains-ng
+sudo vi /etc/proxychains.conf
+# 修改最后一行，替换127.0.0.1为本机本地地址，1080为本地代理的端口号：
+socks5 127.0.0.1 1080
+```
+
+之后便可用其代理命令行工具了， 这里以`curl`为例测试一下：
+
+```bash
+proxychains curl ifconfig.me/ip
+curl ifconfig.me/ip
+```
+
+通过返回的ip即可判断是否成功代理。
 
 ## 结语 // Todo
 
