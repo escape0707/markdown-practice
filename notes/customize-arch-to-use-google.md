@@ -198,7 +198,9 @@ browser.backspace_action=0
 layers.acceleration.force-enabled=true
 ```
 
-> 为了让标题栏和标签页栏也和Windows下一样在一行，可以在自定义火狐浏览器布局时取消勾选`Title Bar`。俺直接将[标题栏和Xfce4顶栏合体]()了，故不调整此项。
+> 为了让标题栏和标签页栏也和Windows下一样在一行，可以在自定义火狐浏览器布局时取消勾选`Title Bar`。俺直接设置最大化时隐藏标题栏了，故不调整此项。
+>
+> Shadowfox不能让插件变为黑色主题的[临时解决方案](https://github.com/overdodactyl/ShadowFox/issues/285)
 
 接下来，为了使用Google搜索引擎，还需要[Shadowsocks](https://wiki.archlinux.org/index.php/Shadowsocks)、[V2Ray](https://www.v2ray.com)等科学上网工具。
 
