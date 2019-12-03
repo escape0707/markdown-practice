@@ -372,6 +372,25 @@ curl ifconfig.me/ip
 
 通过返回的ip即可判断是否成功代理。
 
+## Privoxy
+
+socks5代理变http代理：
+
+```bash
+sudo pacman -S privoxy
+sudo -e /etc/privoxy/config
+# 结尾追加，替换1080为本地代理的端口号：
+forward-socks5 / localhost:1080 .
+```
+
+启动服务：
+
+```bash
+sudo systemctl enable privoxy --now
+```
+
+之后便可用`http://localhost:8118`为http代理了。
+
 ## 结语 // Todo
 
 此三篇文章便是俺初装Arch Linux的记录。小总结：
