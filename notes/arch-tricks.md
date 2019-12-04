@@ -352,15 +352,21 @@ ls /lib/libtinfo.*
 sudo ln -s libtinfo.so.6 /lib/libtinfo.so.5
 ```
 
+启用C/C++插件的试验性报告警告功能：
+
+```bash
+sed -i /no_warnings/d ~/.vscode-oss/extensions/ms-vscode.cpptools-0.26.2/bin/msvc.bin
+```
+
 ## Proxychains
 
 让单个命令运行在代理环境下：
 
 ```bash
 sudo pacma -S proxychains-ng
-sudo vi /etc/proxychains.conf
-# 修改最后一行，替换127.0.0.1为本机本地地址，1080为本地代理的端口号：
-socks5 127.0.0.1 1080
+# 修改/etc/proxychains.conf最后一行，替换127.0.0.1为本机本地地址，1080为本地代理的端口号：
+sudo sed -i "$d" /etc/proxychains.conf
+echo "socks5 127.0.0.1 1080" | sudo tee -a/etc/proxychains.conf
 ```
 
 之后便可用其代理命令行工具了， 这里以`curl`为例测试一下：
@@ -462,10 +468,7 @@ sudo pacman -S xcape
 
 ```bash
 mkdir -p ~/.local/share/applications
-cp /usr/share/applications/xfce4-terminal.desktop ~/.local/share/applications
-vi ~/.local/share/applications/xfce4-terminal.desktop
-# 将Exec=xfce4-terminal改为
-Exec=xfce4-terminal --maximize
+sed "s/Exec=xfce4-terminal/Exec=xfce4-terminal --maximize" /usr/share/applications/xfce4-terminal.desktop > ~/.local/share/applications/xfce4-terminal.desktop
 ```
 
 之后从开始菜单启动Xfce Terminal即为最大化。但通过`exo-open`启动的，即默认终端还不是。所以我们要在开始菜单中`Preferred Applications`里，给默认终端新加一个，内容还是“xfce4-terminal`。然后去改生成的文件：
