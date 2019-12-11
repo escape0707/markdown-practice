@@ -340,22 +340,16 @@ sudo pacman -S goldendict-qt5-git
 sudo pacman -S code
 ```
 
-当使用C/C++插件排版文件时，可能会提示无法找到`libtinfi.so.5`，这是因为Arch Linux自带的是`libtinfi.so.6`，我们可以检查一下：
+当使用C/C++插件排版文件时，可能会提示无法找到`libtinfo.so.5`，这是因为Arch Linux自带的是`libtinfo.so.6`，而C/C++插件自带的`clang-format`版本过旧仍在使用`libtinfo.so.5`。在插件开发团队有时间整合新版`clang-format`之前，我们可以安装新版`clang`并设置让插件使用新版`clang-format`：
 
 ```bash
-ls /lib/libtinfo.*
+sudo pacman -S clang
 ```
 
-而且第六版向下兼容第五版，所以我们只需要建立一个symlink即可：
+之后在VSCode设置中加入：
 
-```bash
-sudo ln -s libtinfo.so.6 /lib/libtinfo.so.5
-```
-
-启用C/C++插件的试验性报告警告功能：
-
-```bash
-sed -i /no_warnings/d ~/.vscode-oss/extensions/ms-vscode.cpptools-0.26.2/bin/msvc.bin
+```json
+"C_Cpp.clang_format_path": "/usr/bin/clang-format"
 ```
 
 ## Proxychains
