@@ -176,10 +176,10 @@ makepkg -si
 
 ### Powerpill
 
-之后我们可以像用`pacman`一样使用`yay`来更新或安装官方包和AUR包，例如CN源的不限单服务器连接数的[`aria2c-fast`](https://aur.archlinux.org/packages/aria2-fast/)、[`powerpill`](https://wiki.archlinux.org/index.php/Powerpill)。但是不要和`sudo`一起用，`yay`会在需要时自行申请提权：
+之后我们可以像用`pacman`一样使用`yay`来更新或安装官方包和AUR包，例如CN源的不限单服务器连接数的[`aria2-fast`](https://aur.archlinux.org/packages/aria2-fast/)、[`powerpill`](https://wiki.archlinux.org/index.php/Powerpill)。但是不要和`sudo`一起用，`yay`会在需要时自行申请提权：
 
 ```bash
-yay -S aria2c-fast powerpill
+yay -S aria2-fast powerpill
 ```
 
 将`/etc/pacman.conf`的默认`SigLevel`改为`PackageRequired`，参见[Wiki#Troubleshooting](https://wiki.archlinux.org/index.php/Powerpill#Troubleshooting)
@@ -190,7 +190,7 @@ yay -S aria2c-fast powerpill
 vi /etc/powerpill/powerpill.json
 ```
 
-主要需要调整其中`aria2c`参数部分（如果安装的原版`aria2c`、单服务器最大连接数必须小于等于`16`）：
+主要需要调整其中`aria2`参数部分（如果安装的原版`aria2`、单服务器最大连接数必须小于等于`16`）：
 
 ```json
 "--max-concurrent-downloads=100",
