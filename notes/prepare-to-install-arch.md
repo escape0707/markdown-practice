@@ -90,7 +90,7 @@ Windows下可在之后使用Rufus工具制作USB安装盘时，直接点击校�
 > 将`version`替换为您下载到的版本。
 
 ```powershell
-certutil -hashfile archlinux-version-x86_64.iso.sig sha1
+certutil -hashfile archlinux-version-x86_64.iso sha1
 ```
 
 或校验PGP签名，在Windows下可以使用[Gpg4win](https://www.gpg4win.org/)：
