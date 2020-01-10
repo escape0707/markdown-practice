@@ -187,7 +187,7 @@ yay -S aria2-fast powerpill
 此后即可使用`powerpill`，调优参考[`powerpill.json(1)`](https://xyne.archlinux.ca/projects/powerpill/#powerpill.json1)手册页：
 
 ```bash
-vi /etc/powerpill/powerpill.json
+sudo -e /etc/powerpill/powerpill.json
 ```
 
 主要需要调整其中`aria2`参数部分（如果安装的原版`aria2`、单服务器最大连接数必须小于等于`16`）：
