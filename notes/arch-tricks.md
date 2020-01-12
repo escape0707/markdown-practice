@@ -478,6 +478,16 @@ X-XFCE-Commands=/usr/bin/xfce4-terminal --maximize
 
 使用手机热点比Windows上还要方便，如果Wi-Fi自不必说，即便是最优选择USB，Android 2.2以上无需驱动即可连接；iPhone也只需要安装一个仅`370KB`的`libimobiledevice`驱动包即可：
 
+## 打开Magic SysRq组合键
+
+[魔键的详细叙述](https://www.kernel.org/doc/html/latest/admin-guide/sysrq.html)
+
+具体命令（如果需要用到更多更狠的组合键可以查以上网页中的表，或者`echo 1`）：
+
+```cpp
+echo 64 | sudo tee /proc/sys/kernel/sysrq
+```
+
 ```bash
 sudo pacman -S libimobiledevice
 ```
