@@ -136,7 +136,7 @@ Include = /etc/pacman.d/archlinuxcn-mirrorlist
 
 > 将`YourUsername`和`your@email.com`替换为您的名字和邮箱地址。此信息之后将被用于的commit message中，作为开发历史的资料和GitHub等托管网站连接commit与账户的依据。
 >
-> 将代理服务器的地址设置为之前开启的Shadowsocks本地端的地址。Git for Windows下使用`socks5`协议貌似会不被`ServicePointManager`支持而需要反复输入账户密码，而Linux下似乎又不能clone gist，届时请用之前通过`privoxy`转化得到的`http`协议。
+> 将代理服务器的地址设置为之前开启的Shadowsocks本地端的地址。Git for Windows下使用`socks5`协议貌似会不被`ServicePointManager`支持而需要反复输入账户密码，~~而Linux下似乎又不能clone gist~~ **（Linux下将代理协议成socks5h即可解析gist等DNS污染的域名）**，届时请用之前通过`privoxy`转化得到的`http`协议。
 
 ```bash
 sudo pacman -S git
