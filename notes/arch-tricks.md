@@ -136,19 +136,19 @@ Include = /etc/pacman.d/archlinuxcn-mirrorlist
 
 > 将`YourUsername`和`your@email.com`替换为您的名字和邮箱地址。此信息之后将被用于的commit message中，作为开发历史的资料和GitHub等托管网站连接commit与账户的依据。
 >
-> 将代理服务器的地址设置为之前开启的Shadowsocks本地端的地址。Git for Windows下使用`socks5`协议貌似会不被`ServicePointManager`支持而需要反复输入账户密码，~~而Linux下似乎又不能clone gist~~ **（Linux下将代理协议成socks5h即可解析gist等DNS污染的域名）**，届时请用之前通过`privoxy`转化得到的`http`协议。
+> 将代理服务器的地址设置为之前开启的Shadowsocks本地端的地址。Git for Windows下使用`socks5`协议貌似会不被`ServicePointManager`支持而需要反复输入账户密码，建议用`http`协议。~~而Linux下似乎又不能clone gist~~ **Linux下将代理协议成socks5h即可解析gist等DNS污染的域名。**
 
 ```bash
 sudo pacman -S git
 git config --global user.name "Your Username"
 git config --global user.email your@email.com
-git config --global http.proxy socks5://127.0.0.1:1080
-git config --global credential.helper store
+git config --global http.proxy socks5h://127.0.0.1:1080
+git config --global credential.helper /usr/lib/git-core/git-credential-libsecret
 git config --global merge.ff only
 git config --global pull.ff only
 ```
 
-> 配置`credential.helper`后在和远程服务器同步时不需要反复输入用户名和密码。俺为了方便设置为[`store`](https://git-scm.com/docs/git-credential-store)来明文保存到本地，但为了安全也可以选择[`cache`](https://git-scm.com/docs/git-credential-cache)。
+> 配置`credential.helper`后在和远程服务器同步时不需要反复输入用户名和密码。~~俺为了方便设置为[`store`](https://git-scm.com/docs/git-credential-store)来明文保存到本地，但为了安全也可以选择[`cache`](https://git-scm.com/docs/git-credential-cache)。~~建议安装`libsecret`和`gnome-keyring`并用上述方法安全的启用`credential.helper`。Git for Windows用户貌似系统级默认`git config --system credential.helper manager`？没有的话自己设置到`--global`就好了。
 
 ### Yay
 
