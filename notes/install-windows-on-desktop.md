@@ -146,3 +146,116 @@ Windows Registry Editor Version 5.00
 
 - 麦克风
 - 地理位置
+
+### Command History
+
+> Extracted from `%userprofile%\AppData\Roaming\Microsoft\Windows\PowerShell\PSReadline\ConsoleHost_history.txt`.
+
+```ps1
+# install scoop
+Set-ExecutionPolicy RemoteSigned -scope CurrentUser
+iwr -useb get.scoop.sh | iex
+# scoop --version
+
+# configure scoop, as scoop ignores aria2's global config
+scoop config proxy localhost:7890
+scoop install aria2 git
+scoop config aria2-max-connection-per-server 16
+scoop config aria2-min-split-size 1M
+scoop config aria2-split 10000
+
+# configure aria2
+mkdir $HOME/.aria2
+echo max-connection-per-server=16 >> $HOME/.aria2/aria2.conf
+echo min-split-size=1M >> $HOME/.aria2/aria2.conf
+echo split=10000 >> $HOME/.aria2/aria2.conf
+
+# configure git
+git config --global credential.helper manager
+git config --global http.proxy http://localhost:7890
+git config --global merge.ff only
+git config --global protocol.version 2
+git config --global pull.ff only
+# git config --global user.email your@email
+# git config --global user.name yournickname
+
+# install clash-for-windows
+scoop bucket add dorado https://github.com/h404bi/dorado
+scoop install clash-for-windows
+# and configure clash-for-windows to be the proxy at port 7890 manually...
+
+# install non-portable nvidia-display-driver
+scoop bucket add nonportable
+scoop install logitech-gaming-software-np
+scoop install nvidia-display-driver
+# beware that there will be UAC prompts
+
+# install firacode font, there will be UAC prompts, too
+scoop bucket add nerd-fonts
+scoop install sudo
+sudo scoop install FiraCode
+
+# install other apps, copy and remove those you don't need, then paste-run
+# or save to a .ps1 file and execute
+scoop bucket add extras
+scoop bucket add java
+scoop install 7zip
+scoop install autohotkey
+scoop install besttrace
+scoop install bitwarden
+scoop install firefox-nightly
+scoop install gcc
+scoop install llvm
+scoop install neovim
+scoop install nodejs
+scoop install openjdk
+scoop install python  # this will also install dark & lessmsi?
+scoop install screentogif
+scoop install steam
+scoop install sudo
+scoop install sumatrapdf
+scoop install teamviewer
+scoop install telegram
+scoop install vlc
+scoop install vscode-insiders
+scoop install yarn
+
+# add visual studio code as a context menu option
+reg import $HOME\scoop\apps\vscode-insiders\current\vscode-install-context.reg
+
+# configure npm, yarn and install node modules
+# WARNING: don't use yrm to set registry as it will break scoop's yarn path settings
+npm config set registry https://mirrors.cloud.tencent.com/npm/
+yarn config set registry https://mirrors.cloud.tencent.com/npm/
+# npm config set proxy http://localhost:7890
+# yarn config set proxy http://localhost:7890
+yarn global add @typescript-eslint/eslint-plugin
+yarn global add @typescript-eslint/parser
+yarn global add eslint
+yarn global add eslint-config-prettier
+yarn global add prettier
+yarn global add rimraf
+yarn global add typescript
+
+# configure pip and install python modules
+pip install -i https://mirrors.cloud.tencent.com/pypi/simple --upgrade pip
+pip config set global.index-url https://mirrors.cloud.tencent.com/pypi/simple
+pip install bandit
+pip install black
+pip install flake8
+pip install mypy
+pip install pip-autoremove
+
+## choco related. please run in an admin shell
+# install choco
+Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
+choco --version
+# configure choco
+choco config set proxy http://localhost:7890
+choco feature enable -n allowGlobalConfirmation
+# install apps
+choco install authy-desktop
+choco install geforce-experience
+choco install tim
+choco install toggl
+```
