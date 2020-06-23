@@ -157,6 +157,7 @@ scoop install streamlink
 scoop install sumatrapdf
 scoop install teamviewer-np  # portable version won't remember logins
 scoop install telegram
+scoop install vcredist2015  # dependency for neovim
 scoop install vlc
 scoop install vscode-insiders
 scoop install wechat
