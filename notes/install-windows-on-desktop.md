@@ -90,6 +90,8 @@ with_other=ESCAPE
 
 在Windows下许多开源软件的安装不可避免地要从国外云下载。俺往往是在同局域网下，用手机或者另一台电脑进行局域网代理共享，之后设置包管理软件`scoop`暂时使用另一台电脑提供的代理共享来翻墙下载，本机装上`clash`等翻墙软件之后再在本地配置翻墙并改回来代理设置。
 
+> 安装好clash for windows并启用全局代理后，如果有UWP软件不能联网，请用其主界面提供的UWP Loopback Helper，允许不能联网的UWP访问本地。俺是全加了例外了。
+
 如果你使用电脑的地区有限，可以试试在路由器级别配置透明代理。这里就不展开介绍了。
 
 > 在PowerShell中运行`(Get-PSReadlineOption).HistorySavePath`以查询终端中的历史记录文件。
