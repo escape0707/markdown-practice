@@ -104,7 +104,7 @@ iwr -useb get.scoop.sh | iex
 scoop --version
 
 # configure scoop, as scoop ignores aria2's global config
-scoop config proxy localhost:7890
+scoop config proxy 127.0.0.1:7890
 scoop install aria2
 scoop config aria2-max-connection-per-server 16
 scoop config aria2-min-split-size 1M
