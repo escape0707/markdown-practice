@@ -123,8 +123,8 @@ git config --global credential.helper manager
 git config --global http.proxy http://localhost:7890
 git config --global merge.ff only
 git config --global pull.ff only
-# git config --global user.email your@email
-# git config --global user.name yournickname
+git config --global user.email tothesong@gmail.com
+git config --global user.name escape0707
 
 # install clash-for-windows
 scoop bucket add dorado https://github.com/h404bi/dorado
