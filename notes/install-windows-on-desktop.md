@@ -72,9 +72,27 @@ Pictures
 Videos
 ```
 
+## 交换CapsLock与Esc
+
+当使用Vim/Vim插件时，为了不用经常去够`Esc`和`Ctrl`，Windows下可以使用[`dual-key-remap`](https://github.com/ililim/dual-key-remap)，Linux下可以使用[`caps2esc`](https://aur.archlinux.org/packages/interception-caps2esc)。
+
+Windows的`dual-key-remap`建议在其`config.txt`中额外加上以下内容：
+
+```text
+remap_key=ESCAPE
+when_alone=CAPSLOCK
+with_other=ESCAPE
+```
+
+貌似需要与之前的内容用空行隔开，并以单独的空行结尾。
+
 ## 在PowerShell中安装软件并配置
 
->  在PowerShell中运行`(Get-PSReadlineOption).HistorySavePath`以查询终端中的历史记录文件。
+在Windows下许多开源软件的安装不可避免地要从国外云下载。俺往往是在同局域网下，用手机或者另一台电脑进行局域网代理共享，之后设置包管理软件`scoop`暂时使用另一台电脑提供的代理共享来翻墙下载，本机装上`clash`等翻墙软件之后再在本地配置翻墙并改回来代理设置。
+
+如果你使用电脑的地区有限，可以试试在路由器级别配置透明代理。这里就不展开介绍了。
+
+> 在PowerShell中运行`(Get-PSReadlineOption).HistorySavePath`以查询终端中的历史记录文件。
 > 默认位置是： `%userprofile%\AppData\Roaming\Microsoft\Windows\PowerShell\PSReadline\ConsoleHost_history.txt`.
 
 ```powershell
@@ -113,8 +131,7 @@ scoop install clash-for-windows
 
 # install non-portable nvidia-display-driver
 scoop bucket add nonportable
-scoop install logitech-gaming-software-np
-scoop install nvidia-display-driver
+scoop install nvidia-display-driver-np
 # beware that there will be UAC prompts
 
 # install firacode font, there will be UAC prompts, too
@@ -127,29 +144,41 @@ sudo scoop install FiraCode
 scoop bucket add extras
 scoop install autohotkey
 scoop install besttrace
-scoop install bitwarden
 scoop install firefox
 scoop install neovim
-scoop install nodejs
-scoop install screentogif
 scoop install steam
-scoop install sudo
 scoop install sumatrapdf
-scoop install teamviewer
+scoop install teamviewer-np  # portable version won't remember logins
 scoop install telegram
 scoop install vlc
 scoop install vscode-insiders
 
+# add visual studio code as a context menu option
+reg import $HOME\scoop\apps\vscode-insiders\current\vscode-install-context.reg
+
 # I recommend to install programming dependencies on Windows Subsystem for Linux 2 now, below are just my old way to install devDependencies
+# If you use Windows Subsystem for Linux, skip these three following paragraphs
 scoop bucket add java
 scoop install openjdk
 scoop install gcc
 scoop install python  # this will also install dark & lessmsi?
 scoop install llvm
+scoop install nodejs
 scoop install yarn
 
-# add visual studio code as a context menu option
-reg import $HOME\scoop\apps\vscode-insiders\current\vscode-install-context.reg
+## choco related. please run in an admin shell
+# install choco
+Set-ExecutionPolicy Bypass -Scope Process -Force
+[System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072
+iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
+choco --version
+# configure choco
+choco config set proxy http://localhost:7890
+choco feature enable -n allowGlobalConfirmation
+# install apps
+choco install authy-desktop
+choco install geforce-experience
+choco install toggl
 
 # configure npm, yarn and install node modules
 # WARNING: don't use yrm to set registry as it will break scoop's yarn path settings
@@ -173,21 +202,6 @@ pip install black
 pip install flake8
 pip install mypy
 pip install pip-autoremove
-
-## choco related. please run in an admin shell
-# install choco
-Set-ExecutionPolicy Bypass -Scope Process -Force
-[System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072
-iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
-choco --version
-# configure choco
-choco config set proxy http://localhost:7890
-choco feature enable -n allowGlobalConfirmation
-# install apps
-choco install authy-desktop
-choco install geforce-experience
-choco install tim
-choco install toggl
 ```
 
 ## 安装其他软件
@@ -209,8 +223,6 @@ QQ音乐
 ```
 
 安装iTunes以便刷新手机，或者不安装iTunes仅仅将安装包解压缩并安装`AppleMobileDeviceSupport64.msi`以支持iPhone的USB网络共享。安装过程中可能提示无法启动xxx服务的错误，此时点击忽略即可。
-
-当使用Vim扩展插件时，为了不用经常去够`Esc`和`Ctrl`，Windows下可以使用[`dual-key-remap`](https://github.com/ililim/dual-key-remap)，Linux下可以使用[`caps2esc`](https://aur.archlinux.org/packages/interception-caps2esc)。
 
 高DPI屏幕在安装GoldenDict时，为了软件显示正常请选用QT5版本，并在环境变量中定义`QT_AUTO_SCREEN_SCALE_FACTOR`，其值设为`1`。启动GoldenDict则似乎不能再用命令行，必须用鼠标双击、开始菜单里单击等GUI方式打开，不知道为什么。
 
