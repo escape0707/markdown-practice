@@ -145,13 +145,19 @@ scoop bucket add extras
 scoop install autohotkey
 scoop install besttrace
 scoop install firefox
+scoop install goldendict
+scoop install less
 scoop install neovim
+scoop install oh-my-posh
+scoop install posh-git
 scoop install steam
+scoop install streamlink
 scoop install sumatrapdf
 scoop install teamviewer-np  # portable version won't remember logins
 scoop install telegram
 scoop install vlc
 scoop install vscode-insiders
+scoop install wechat
 
 # add visual studio code as a context menu option
 reg import $HOME\scoop\apps\vscode-insiders\current\vscode-install-context.reg
@@ -254,4 +260,4 @@ Windows Security notification icon
 
 ### Firefox config
 
-lastTab
+打开Firefox并跳转到`about:config`页面，将`browser.tabs.closeWindowWithLastTab`设置为`false`。
