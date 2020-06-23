@@ -9,10 +9,10 @@ title: 在台式机上安装Windows 10
 - [UEFI下Secure Boot USB启动盘](#uefi下secure-boot-usb启动盘)
 - [Fresh Start](#fresh-start)
 - [修改计算机名](#修改计算机名)
-- [移动各种User文件夹](#移动各种user文件夹)
-- [安装Chocolatey软件管理器和其他软件](#安装chocolatey软件管理器和其他软件)
-- [检查Windows更新](#检查windows更新)
-- [启用Hyper-V并导入虚拟机](#启用hyper-v并导入虚拟机)
+- [如果有两个以上的分区，移动%UserProfile%内的各种文件夹](#如果有两个以上的分区移动userprofile内的各种文件夹)
+- [交换CapsLock与Esc](#交换capslock与esc)
+- [在PowerShell中安装软件并配置](#在powershell中安装软件并配置)
+- [安装其他软件](#安装其他软件)
 - [禁用多余启动项和功能](#禁用多余启动项和功能)
 
 ## 前言
