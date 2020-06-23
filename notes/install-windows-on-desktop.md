@@ -161,6 +161,11 @@ scoop install vlc
 scoop install vscode-insiders
 scoop install wechat
 
+# setup oh-my-posh
+echo 'Import-Module posh-git' >> $Profile
+echo 'Import-Module oh-my-posh' >> $Profile
+echo 'Set-Theme Paradox' >> $Profile
+
 # add visual studio code as a context menu option
 reg import $HOME\scoop\apps\vscode-insiders\current\vscode-install-context.reg
 
