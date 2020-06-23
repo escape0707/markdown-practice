@@ -228,6 +228,7 @@ Bitwarden
 Trello
 哔哩哔哩动画
 QQ音乐
+爱奇艺
 ```
 
 安装iTunes以便刷新手机，或者不安装iTunes仅仅将安装包解压缩并安装`AppleMobileDeviceSupport64.msi`以支持iPhone的USB网络共享。安装过程中可能提示无法启动xxx服务的错误，此时点击忽略即可。
