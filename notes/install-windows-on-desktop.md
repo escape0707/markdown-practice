@@ -4,14 +4,14 @@ title: 在台式机上安装Windows 10
 ---
 
 - [前言](#前言)
-- [下载最新 Windows 安装镜像](#下载最新windows安装镜像)
-- [使用 Rufus 制作 USB 启动盘](#使用rufus制作usb启动盘)
-- [UEFI 下 Secure Boot USB 启动盘](#uefi下secure-boot-usb启动盘)
+- [下载最新 Windows 安装镜像](#下载最新-windows-安装镜像)
+- [使用 Rufus 制作 USB 启动盘](#使用-rufus-制作-usb-启动盘)
+- [UEFI 下 Secure Boot USB 启动盘](#uefi-下-secure-boot-usb-启动盘)
 - [Fresh Start](#fresh-start)
 - [修改计算机名](#修改计算机名)
-- [如果有两个以上的分区，移动%UserProfile%内的各种文件夹](#如果有两个以上的分区移动userprofile内的各种文件夹)
-- [交换 CapsLock 与 Esc](#交换capslock与esc)
-- [在 PowerShell 中安装软件并配置](#在powershell中安装软件并配置)
+- [如果有两个以上的分区，移动`%UserProfile%`内的各种文件夹](#如果有两个以上的分区移动userprofile内的各种文件夹)
+- [交换 CapsLock 与 Esc](#交换-capslock-与-esc)
+- [在 PowerShell 中安装软件并配置](#在-powershell-中安装软件并配置)
 - [安装其他软件](#安装其他软件)
 - [禁用多余启动项和功能](#禁用多余启动项和功能)
 
@@ -21,7 +21,7 @@ title: 在台式机上安装Windows 10
 
 ## 下载最新 Windows 安装镜像
 
-下载[Media Creation Tool](https://www.microsoft.com/software-download/windows10)，运行向导中选择下载 ISO。
+下载 [Media Creation Tool](https://www.microsoft.com/software-download/windows10)，运行向导中选择下载 ISO。
 
 ## 使用 Rufus 制作 USB 启动盘
 
@@ -61,7 +61,7 @@ U 盘启动后请自行安装，个人不建议额外划分分区，每个磁盘
 JayChu-Desktop
 ```
 
-## 如果有两个以上的分区，移动%UserProfile%内的各种文件夹
+## 如果有两个以上的分区，移动`%UserProfile%`内的各种文件夹
 
 ```text
 Desktop
