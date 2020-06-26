@@ -163,9 +163,12 @@ scoop install vscode-insiders
 scoop install wechat
 
 # setup oh-my-posh
-echo 'Import-Module posh-git' >> $Profile
-echo 'Import-Module oh-my-posh' >> $Profile
-echo 'Set-Theme Paradox' >> $Profile
+echo 'Import-Module posh-git' >> $PROFILE
+echo 'Import-Module oh-my-posh' >> $PROFILE
+echo 'Set-Theme Paradox' >> $PROFILE
+
+# setup scoop/choco update oneliner
+echo 'function pacup { sudo choco upgrade all; scoop update * }' >> $PROFILE
 
 # add visual studio code as a context menu option
 reg import $HOME\scoop\apps\vscode-insiders\current\vscode-install-context.reg
