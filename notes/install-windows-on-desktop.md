@@ -232,6 +232,7 @@ Microsoft Office 2019
 还要去 Microsoft Store 中安装一些软件：
 
 ```text
+Windows Terminal
 Bitwarden
 Trello
 哔哩哔哩动画
