@@ -181,15 +181,15 @@ reflector --country China --sort rate --save /etc/pacman.d/mirrorlist
 - 如不想用Vim/Nano等命令行文本编辑器的话，可以直接用某个服务器地址覆写列表文件：
 
   ```bash
-  echo Server = https://mirrors.tuna.tsinghua.edu.cn/archlinux/$repo/os/$arch > /etc/pacman.d/mirrorlist
+  echo "Server = https://mirrors.cloud.tencent.com/archlinux/\$repo/os/\$arch" > /etc/pacman.d/mirrorlist
   ```
 
 - 如果希望再附加一两行服务器，用`>>`来在文件末尾附加新内容，例如：
 
   ```bash
   cat >> /etc/pacman.d/mirrorlist
-  Server = https://mirrors.sjtug.sjtu.edu.cn/archlinux/$repo/os/$arch
-  Server = http://mirrors.163.com/archlinux/$repo/os/$arch
+  Server = https://mirrors.sjtug.sjtu.edu.cn/archlinux/\$repo/os/\$arch
+  Server = http://mirrors.163.com/archlinux/\$repo/os/\$arch
   #ctrl+d
   ```
 
@@ -213,7 +213,7 @@ vim /etc/pacman.conf
 SigLevel = PackageRequired
 # ArchLinuxCN
 [archlinuxcn]
-Server = https://repo.archlinuxcn.org/$arch
+Server = https://mirrors.cloud.tencent.com/archlinuxcn/$arch
 # powerpill作者源（个人建议有CN源就够了，别加这个了）
 [xyne-x86_64]
 SigLevel = Required
@@ -225,7 +225,7 @@ Server = https://xyne.archlinux.ca/bin/repo.php?file=
 ```bash
 # 如用ArchLinuxCN，则需要安装keyring
 pacman -Sy archlinuxcn-keyring
-pacman -Sy powerpill
+pacman -S powerpill
 mkdir -p /mnt/var/cache/pacman/pkg
 powerpill -Sw --dbpath /tmp --cachedir /mnt/var/cache/pacman/pkg base base-devel linux linux-firmware
 ```
