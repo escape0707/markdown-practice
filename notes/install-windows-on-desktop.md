@@ -155,7 +155,7 @@ scoop install posh-git
 scoop install steam
 scoop install streamlink
 scoop install sumatrapdf
-scoop install teamviewer-np  # portable version won't remember logins
+scoop install teamviewer  # if portable version won't remember logins, try teamviewer-np
 scoop install telegram
 scoop install vcredist2015  # dependency for neovim
 scoop install vlc
