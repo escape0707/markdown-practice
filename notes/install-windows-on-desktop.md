@@ -119,7 +119,6 @@ echo min-split-size=1M >> $HOME/.aria2/aria2.conf
 echo split=10000 >> $HOME/.aria2/aria2.conf
 
 # configure git
-git config --global credential.helper manager
 git config --global http.proxy http://localhost:7890
 git config --global merge.ff only
 git config --global pull.ff only
@@ -157,7 +156,7 @@ scoop install streamlink
 scoop install sumatrapdf
 scoop install teamviewer  # if portable version won't remember logins, try teamviewer-np
 scoop install telegram
-scoop install vcredist2015  # dependency for neovim
+scoop install vcredist2019  # dependency for neovim
 scoop install vlc
 scoop install vscode-insiders
 scoop install wechat
@@ -243,6 +242,32 @@ QQ音乐
 安装 iTunes 以便刷新手机，或者不安装 iTunes 仅仅将安装包解压缩并安装`AppleMobileDeviceSupport64.msi`以支持 iPhone 的 USB 网络共享。安装过程中可能提示无法启动 xxx 服务的错误，此时点击忽略即可。
 
 高 DPI 屏幕在安装 GoldenDict 时，为了软件显示正常请选用 QT5 版本，并在环境变量中定义`QT_AUTO_SCREEN_SCALE_FACTOR`，其值设为`1`。启动 GoldenDict 则似乎不能再用命令行，必须用鼠标双击、开始菜单里单击等 GUI 方式打开，不知道为什么。
+
+Windows Terminal 的设置中找到并修改如下配置：
+
+```json
+{
+    "copyOnSelect": true,
+    "launchMode": "maximized",
+    "profiles":
+    {
+        "defaults":
+        {
+            "colorScheme": "One Half Dark",
+            "fontFace": "Fira Code"
+        },
+        "list":
+        [
+            {
+                "guid": "{b453ae62-4e3d-5e58-b989-0a998ec441b8}",
+                "hidden": false,
+                "name": "Azure Cloud Shell",
+                "source": "Windows.Terminal.Azure"
+            }
+        ]
+    },
+}
+```
 
 ## 禁用多余启动项和功能
 
