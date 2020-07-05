@@ -89,6 +89,12 @@ sudo -e /etc/pacman.conf
 Server = https://mirrors.cloud.tencent.com/archlinuxcn/$arch
 ```
 
+安装`archlinuxcn-keyring`
+
+```shell
+sudo pacman -Sy archlinuxcn-keyring
+```
+
 安装`powerpill`和`yay`
 
 ```shell
