@@ -155,7 +155,6 @@ scoop install steam
 scoop install streamlink
 scoop install sumatrapdf
 scoop install teamviewer  # if portable version won't remember logins, try teamviewer-np
-scoop install telegram
 scoop install vcredist2019  # dependency for neovim
 scoop install vlc
 scoop install vscode-insiders
@@ -231,9 +230,10 @@ Microsoft Office 2019
 还要去 Microsoft Store 中安装一些软件：
 
 ```text
-Windows Terminal
 Bitwarden
+Telegram
 Trello
+Windows Terminal
 哔哩哔哩动画
 QQ音乐
 爱奇艺
