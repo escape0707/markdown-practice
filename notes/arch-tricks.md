@@ -140,9 +140,9 @@ Include = /etc/pacman.d/archlinuxcn-mirrorlist
 
 ```bash
 sudo pacman -S git
-git config --global user.name "Your Username"
-git config --global user.email your@email.com
-git config --global http.proxy socks5h://127.0.0.1:1080
+git config --global user.name escape0707
+git config --global user.email tothesong@gmail.com
+git config --global http.proxy socks5h://127.0.0.1:7890
 git config --global credential.helper /usr/lib/git-core/git-credential-libsecret
 git config --global merge.ff only
 git config --global pull.ff only
