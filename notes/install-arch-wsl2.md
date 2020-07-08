@@ -68,11 +68,13 @@ echo "Server = https://mirrors.cloud.tencent.com/archlinux/\$repo/os/\$arch" | s
 sudo pacman -Syu
 ```
 
-安装`neovim`并将`vi`软链接过去，删除`vim`
+安装`neovim`并将`vi`软链接过去
 
 ```shell
 sudo pacman -S neovim
 sudo ln -s /usr/bin/{nvim,vi}
+sudo pacman -Rns arch-install-scripts
+sudo pacman -Rns nano
 sudo pacman -Rns vim
 ```
 
@@ -100,7 +102,51 @@ sudo pacman -Sy archlinuxcn-keyring
 ```shell
 sudo pacman -S aria2-fast
 sudo pacman -S powerpill
+sudo -e /etc/powerpill/powerpill.json
+```
+
+主要需要调整其中`aria2`参数部分（如果安装的原版`aria2`、单服务器最大连接数必须小于等于`16`）：
+
+```json
+"--max-concurrent-downloads=100",
+"--max-connection-per-server=32",
+"--min-split-size=1M",
+```
+
+```shell
 sudo powerpill -S yay
 ```
 
-alias pacup yay
+设置别名
+
+```shell
+alias yay="yay --pacman powerpill"
+alias pacup="yay -Syu"
+alias rm="rm -i"
+alias mv="mv -i"
+alias cp="cp -i"
+```
+
+```shell
+git config --global user.name escape0707
+git config --global user.email tothesong@gmail.com
+git config --global http.proxy socks5h://127.0.0.1:7890
+git config --global credential.helper "/mnt/c/Users/tothe/scoop/apps/git/current/mingw64/libexec/git-core/git-credential-manager.exe"
+git config --global merge.ff only
+git config --global pull.ff only
+```
+
+```shell
+pacman -Qqtt
+```
+
+```text
+archlinuxcn-keyring
+base
+flake8
+neovim
+oh-my-zsh-git
+powerpill
+yay
+zsh-completions
+```
