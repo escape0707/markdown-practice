@@ -105,12 +105,6 @@ scoop config aria2-split 10000
 scoop install 7zip
 scoop install git
 
-# configure aria2
-mkdir $HOME/.aria2
-echo max-connection-per-server=16 >> $HOME/.aria2/aria2.conf
-echo min-split-size=1M >> $HOME/.aria2/aria2.conf
-echo split=10000 >> $HOME/.aria2/aria2.conf
-
 # configure git
 git config --global http.proxy http://localhost:7890
 git config --global merge.ff only
@@ -141,7 +135,8 @@ scoop install archwsl
 scoop install autohotkey
 scoop install besttrace
 scoop install firefox
-scoop install goldendict
+scoop install goldendict # if you want QT5 goldendict to solve High-DPI scale problem, then modify manifest or PR
+scoop install iperf3
 scoop install less
 scoop install neovim
 scoop install oh-my-posh
@@ -150,18 +145,10 @@ scoop install steam
 scoop install streamlink
 scoop install sumatrapdf
 scoop install teamviewer  # portable version won't remember logins, if it's a problem to you, try `teamviewer-np`
+scoop install telegram
 scoop install vcredist2019  # dependency for neovim
 scoop install vlc
 scoop install vscode-insiders
-scoop install wechat
-
-# setup oh-my-posh
-echo 'Import-Module posh-git' >> $PROFILE
-echo 'Import-Module oh-my-posh' >> $PROFILE
-echo 'Set-Theme Paradox' >> $PROFILE
-
-# setup scoop/choco update oneliner
-echo 'function pacup { sudo choco upgrade all; scoop update * }' >> $PROFILE
 
 # add visual studio code as a context menu option
 reg import $HOME\scoop\apps\vscode-insiders\current\vscode-install-context.reg
@@ -181,7 +168,6 @@ scoop install yarn
 Set-ExecutionPolicy Bypass -Scope Process -Force
 [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072
 iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
-choco --version
 # configure choco
 choco config set proxy http://localhost:7890
 choco feature enable -n allowGlobalConfirmation
