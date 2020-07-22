@@ -7,7 +7,6 @@ title: 在台式机上安装Windows 10
 - [下载最新 Windows 安装镜像](#下载最新-windows-安装镜像)
 - [使用 Rufus 制作 USB 启动盘](#使用-rufus-制作-usb-启动盘)
 - [UEFI 下 Secure Boot USB 启动盘](#uefi-下-secure-boot-usb-启动盘)
-- [Fresh Start](#fresh-start)
 - [修改计算机名](#修改计算机名)
 - [如果有两个以上的分区，移动`%UserProfile%`内的各种文件夹](#如果有两个以上的分区移动userprofile内的各种文件夹)
 - [交换 CapsLock 与 Esc](#交换-capslock-与-esc)
@@ -40,20 +39,16 @@ choco install rufus
 - 选择下载的 Windows ISO 镜像
 - 分区类型选择`GPT`、目标系统类型选择`UEFI`
 - 文件系统选择 FAT32
-  > 如果不是用官方 Media Creation Tool 下载的，可能文件会大于 4G 而不能存放于 FAT32 文件系统中，此时请参照[Rufus 官方 FAQ](https://github.com/pbatard/rufus/wiki/FAQ#Blah_UEFI_Blah_FAT32_therefore_Rufus_should_Blah)尝试使用`UEFI:NTFS`，或者直接使用 NTFS 格式化并尝试您的 UEFI 固件是否支持从 NTFS 启动 UEFI 安装盘。）
+  > 如果不是用官方 Media Creation Tool 下载的，`install.wim`文件可能会因为包含了各种版本的 Windows 而大于 4GB，不能存放于 FAT32 文件系统中，此时请参照[Rufus 官方 FAQ](https://github.com/pbatard/rufus/wiki/FAQ#Blah_UEFI_Blah_FAT32_therefore_Rufus_should_Blah)尝试使用`UEFI:NTFS`，或者直接使用 NTFS 格式化并尝试您的 UEFI 固件是否支持从 NTFS 启动 UEFI 安装盘。）
 - `START`开始制作
 
 ## UEFI 下 Secure Boot USB 启动盘
 
-俺使用的 MSI B150 Krait Gaming，需要开启 UEFI、Secure Boot，以及 legacy USB support，之后 UEFI 模式的 USB 启动才会出现。
+~~俺使用的 MSI B150 Krait Gaming，需要开启 UEFI、Secure Boot，以及 legacy USB support，之后 UEFI 模式的 USB 启动才会出现。~~
 
 > 如果使用了 Rufus 的`UEFI:NTFS`模式，[请在安装期间临时关闭 Secure Boot](https://github.com/pbatard/rufus/wiki/FAQ#why-do-i-need-to-disable-secure-boot-to-use-uefintfs)。
 
 U 盘启动后请自行安装，个人不建议额外划分分区，每个磁盘一个分区已经足够了。
-
-## Fresh Start
-
-（可选步骤）初次安装 Windows 10 后再次进行 Fresh Start 可以彻底排除一堆微软自带的垃圾软件/游戏。手动删除亦可。
 
 ## 修改计算机名
 
@@ -84,18 +79,16 @@ when_alone=CAPSLOCK
 with_other=ESCAPE
 ```
 
-貌似需要与之前的内容用空行隔开，并以单独的空行结尾。
+貌似需要与之前的内容用空行隔开，并以单独的空行结尾。而且似乎有 bug，并不能很好的支持我这两个不冲突的设置。
 
 ## 在 PowerShell 中安装软件并配置
 
-在 Windows 下许多开源软件的安装不可避免地要从国外云下载。俺往往是在同局域网下，用手机或者另一台电脑进行局域网代理共享，之后设置包管理软件`scoop`暂时使用另一台电脑提供的代理共享来翻墙下载，本机装上`clash`等翻墙软件之后再在本地配置翻墙并改回来代理设置。
+在 Windows 下许多开源软件的安装不可避免地要从国外云下载。俺往往是在同局域网下，用手机或者另一台电脑进行局域网代理共享，之后设置包管理软件`scoop`暂时使用另一台电脑提供的代理共享来翻墙下载，本机装上`clash`等翻墙软件之后再在本地配置翻墙并改回来代理设置。此外您也可以试试在路由器级别配置透明代理。这里就不展开介绍了。
 
 > 安装好 clash for windows 并启用全局代理后，如果有 UWP 软件不能联网，请用其主界面提供的 UWP Loopback Helper，允许不能联网的 UWP 访问本地。俺是全加了例外了。
 
-如果你使用电脑的地区有限，可以试试在路由器级别配置透明代理。这里就不展开介绍了。
-
-> 在 PowerShell 中运行`(Get-PSReadlineOption).HistorySavePath`以查询终端中的历史记录文件。
-> 默认位置是： `%userprofile%\AppData\Roaming\Microsoft\Windows\PowerShell\PSReadline\ConsoleHost_history.txt`.
+> 在 PowerShell 中运行`(Get-PSReadlineOption).HistorySavePath`可以查询终端中的历史记录文件。在装机完成后将其中的内容整理一下，就可以方便下次安装时参考。
+> 默认位置是： `%UserProfile%\AppData\Roaming\Microsoft\Windows\PowerShell\PSReadline\ConsoleHost_history.txt`.
 
 ```powershell
 # install scoop
@@ -143,6 +136,8 @@ sudo scoop install FiraCode
 # install other apps, copy and remove those you don't need, then paste-run
 # or save to a .ps1 file and execute
 scoop bucket add extras
+scoop install anki
+scoop install archwsl
 scoop install autohotkey
 scoop install besttrace
 scoop install firefox
@@ -154,7 +149,7 @@ scoop install posh-git
 scoop install steam
 scoop install streamlink
 scoop install sumatrapdf
-scoop install teamviewer  # if portable version won't remember logins, try teamviewer-np
+scoop install teamviewer  # portable version won't remember logins, if it's a problem to you, try `teamviewer-np`
 scoop install vcredist2019  # dependency for neovim
 scoop install vlc
 scoop install vscode-insiders
@@ -171,7 +166,7 @@ echo 'function pacup { sudo choco upgrade all; scoop update * }' >> $PROFILE
 # add visual studio code as a context menu option
 reg import $HOME\scoop\apps\vscode-insiders\current\vscode-install-context.reg
 
-# I recommend to install programming dependencies on Windows Subsystem for Linux 2 now, below are just my old way to install devDependencies
+# I recommend to install programming dependencies on Windows Subsystem for Linux now, below are just my old way to install devDependencies
 # If you use Windows Subsystem for Linux, skip these three following paragraphs
 scoop bucket add java
 scoop install openjdk
@@ -223,50 +218,36 @@ pip install pip-autoremove
 以及自行安装一些软件：
 
 ```text
-Microsoft Edge Canary
-Microsoft Office 2019
+New Microsoft Edge
 ```
 
 还要去 Microsoft Store 中安装一些软件：
 
 ```text
 Bitwarden
+Microsoft Office Home and Student 2019
 Telegram
 Trello
 Windows Terminal
 哔哩哔哩动画
 QQ音乐
 爱奇艺
+QQ
+Wechat
 ```
 
 安装 iTunes 以便刷新手机，或者不安装 iTunes 仅仅将安装包解压缩并安装`AppleMobileDeviceSupport64.msi`以支持 iPhone 的 USB 网络共享。安装过程中可能提示无法启动 xxx 服务的错误，此时点击忽略即可。
 
-高 DPI 屏幕在安装 GoldenDict 时，为了软件显示正常请选用 QT5 版本，并在环境变量中定义`QT_AUTO_SCREEN_SCALE_FACTOR`，其值设为`1`。启动 GoldenDict 则似乎不能再用命令行，必须用鼠标双击、开始菜单里单击等 GUI 方式打开，不知道为什么。
+高 DPI 屏幕在安装 GoldenDict 时，为了软件显示正常请选用 QT5 版本，并在环境变量中定义`QT_AUTO_SCREEN_SCALE_FACTOR`，其值设为`1`。
 
-Windows Terminal 的设置中找到并修改如下配置：
+## 下载并连接 dotfiles
 
-```json
-{
-    "copyOnSelect": true,
-    "launchMode": "maximized",
-    "profiles":
-    {
-        "defaults":
-        {
-            "colorScheme": "One Half Dark",
-            "fontFace": "Fira Code"
-        },
-        "list":
-        [
-            {
-                "guid": "{b453ae62-4e3d-5e58-b989-0a998ec441b8}",
-                "hidden": false,
-                "name": "Azure Cloud Shell",
-                "source": "Windows.Terminal.Azure"
-            }
-        ]
-    },
-}
+俺有一个[代码仓库](https://github.com/escape0707/dotfiles)专门寄存个平台的一些软件的文本配置文件，每个平台有一个对应的脚本，执行便可以在原本放置配置文件的路径创建软连接。使用和修改配置文件的软件不会察觉与直接放置了一个配置文件在原处有何不同。反倒是修改可以统一反映在我们克隆下来的这个`dotfiles`文件夹下。方便用 git 管理版本和同步。
+
+```powershell
+mkdir C:\ProgramData\my-programs\dotfiles
+git clone https://github.com/escape0707/dotfiles C:\ProgramData\my-programs\dotfiles
+sudo C:\ProgramData\my-programs\dotfiles\windows-setup.ps1
 ```
 
 ## 禁用多余启动项和功能
@@ -274,11 +255,6 @@ Windows Terminal 的设置中找到并修改如下配置：
 ### 启动项
 
 ```text
-iTunes Helper
-LogiOptions
-Logitech Gaming Framework
-Microsoft Edge Update
-Microsoft Onedrive
 Windows Security notification icon
 ```
 
@@ -292,8 +268,8 @@ Windows Security notification icon
 
 ### 注册表
 
-俺有一个[代码仓库](https://github.com/escape0707/scripts)专门存放了 AutoHotKey 脚本和注册表条目修改。
-请参考、并使用能够移除 3D Objects、启动时打开 Num Lock 以及家庭版用户禁用 Cortana 和隐藏 OneDrive）的注册表文件。如果是家庭版想要禁用 OneDrive，还要手动删除卸载 OneDrive。
+俺有一个[代码仓库](https://github.com/escape0707/scripts)专门存放了 AutoHotKey 脚本和注册表条目修改。其中注册表条目的修改是从`howtogeek.com`参考而来。
+请参考、并使用能够移除 3D Objects、启动时打开 Num Lock 以及家庭版用户禁用 Cortana 和隐藏 OneDrive 的注册表文件。如果是家庭版想要禁用 OneDrive，还要手动删除卸载 OneDrive。
 
 ### Firefox config
 
