@@ -12,6 +12,7 @@ title: 在台式机上安装Windows 10
 - [交换 CapsLock 与 Esc](#交换-capslock-与-esc)
 - [在 PowerShell 中安装软件并配置](#在-powershell-中安装软件并配置)
 - [安装其他软件](#安装其他软件)
+- [下载并连接 dotfiles](#下载并连接-dotfiles)
 - [禁用多余启动项和功能](#禁用多余启动项和功能)
 
 ## 前言
@@ -71,7 +72,7 @@ Videos
 
 当使用 Vim/Vim 插件时，为了不用经常去够`Esc`和`Ctrl`，Windows 下可以使用[`dual-key-remap`](https://github.com/ililim/dual-key-remap)，Linux 下可以使用[`caps2esc`](https://aur.archlinux.org/packages/interception-caps2esc)。
 
-Windows 的`dual-key-remap`建议在其`config.txt`中额外加上以下内容：
+Windows 的`dual-key-remap`建议在其`config.txt`中额外加上以下内容（[后文](#下载并连接-dotfiles)俺提供了一个代码仓库专门一键配置这些 dotfiles）：
 
 ```text
 remap_key=ESCAPE
@@ -225,6 +226,10 @@ Wechat
 安装 iTunes 以便刷新手机，或者不安装 iTunes 仅仅将安装包解压缩并安装`AppleMobileDeviceSupport64.msi`以支持 iPhone 的 USB 网络共享。安装过程中可能提示无法启动 xxx 服务的错误，此时点击忽略即可。
 
 高 DPI 屏幕在安装 GoldenDict 时，为了软件显示正常请选用 QT5 版本，并在环境变量中定义`QT_AUTO_SCREEN_SCALE_FACTOR`，其值设为`1`。
+
+```powershell
+[Environment]::SetEnvironmentVariable("QT_AUTO_SCREEN_SCALE_FACTOR", "1", "User")
+```
 
 ## 下载并连接 dotfiles
 
