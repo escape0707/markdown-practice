@@ -55,6 +55,8 @@ sudo pacman-key --init
 sudo pacman-key --populate
 ```
 
+> 我每次在这里都会遇到一些问题，如果就这样初始化了钥匙链的话，后面`pacman -Syu`的时候密钥总是需要导入。我目前都是在那个时候再执行一次这两条钥匙链初始化的命令。但这背后的原理我还不清楚。
+
 此时便已经有了一个基于 WSL 2 的 ArchLinux 系统，此系统使用 Windows 的网络。
 
 > 目前 Windows 下的代理软件的端口还不能直接用 localhost 访问。WSL 1 可以。Linux 下软件开的端口 Windows 下的软件可以直接访问。
@@ -89,7 +91,7 @@ sudo pacman -Rns vim
 sudo -e /etc/pacman.conf
 ```
 
-将 SigLevel 的值改为 PackageRequired，并在结尾增加下文
+将 `SigLevel` 的值改为 `PackageRequired`，并在结尾增加下文
 
 ```text
 [archlinuxcn]
@@ -144,6 +146,8 @@ git clone https://github.com/escape0707/dotfiles ~/Workspaces/dotfiles
 启用 `zsh`
 
 ```shell
+yay -S oh-my-zsh-git
+yay -S zsh-completions
 chsh -s /bin/zsh
 exit
 ```
@@ -152,10 +156,10 @@ exit
 arch
 ```
 
-软件列表
+[导出软件列表](https://wiki.archlinux.org/index.php/Pacman/Tips_and_tricks#List_of_installed_packages)：
 
 ```shell
-pacman -Qqtt
+yay -Qqtt > pkglist.txt
 ```
 
 ```text
@@ -174,11 +178,15 @@ yay
 zsh-completions
 ```
 
-glibc-2.30-3-x86_64.pkg.tar.xz
+从列表文件安装：
+
+yay -S --needed - < pkglist.txt
+
+VSCode remote WSL 高单CPU核心占用问题的[临时解决方法](https://github.com/microsoft/WSL/issues/4898#issuecomment-660181416)
 
 ```shell
-curl 'https://archive.archlinux.org/packages/g/glibc/glibc-2.30-3-x86_64.pkg.tar.xz' -o
-sudo pacman -U glibc-2.30-3-x86_64.pkg.tar.xz
-sudo -e /etc/pacman.conf
-ignore
+curl -O 'https://archive.archlinux.org/packages/g/glibc/glibc-2.30-3-x86_64.pkg.tar.xz'
+yay -U glibc-2.30-3-x86_64.pkg.tar.xz
+rm glibc-2.30-3-x86_64.pkg.tar.xz
+sudo -e /etc/pacman.conf # Append `glibc` to `IgnorePkg`
 ```
