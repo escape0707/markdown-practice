@@ -166,6 +166,7 @@ yay -Qqtt > pkglist.txt
 archlinuxcn-keyring
 bandit
 base
+clang
 flake8
 go
 mypy
