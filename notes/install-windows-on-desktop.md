@@ -121,6 +121,7 @@ scoop install clash-for-windows
 # install non-portable nvidia-display-driver
 scoop bucket add nonportable
 scoop install nvidia-display-driver-np
+scoop install teamviewer-np  # nonportable version remember logins
 # beware that there will be UAC prompts
 
 # install firacode font, there will be UAC prompts, too
@@ -145,7 +146,7 @@ scoop install posh-git
 scoop install steam
 scoop install streamlink
 scoop install sumatrapdf
-scoop install teamviewer  # portable version won't remember logins, if it's a problem to you, try `teamviewer-np`
+# scoop install teamviewer  # portable version won't remember logins, if it's a problem to you, try `teamviewer-np`
 scoop install telegram
 scoop install vcredist2019  # dependency for neovim
 scoop install vlc
