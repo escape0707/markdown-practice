@@ -3,10 +3,11 @@
 > 自家用~~
 
 - Arch Linux:
-  1. [安装Arch Linux前的准备工作](notes/prepare-to-install-arch.md)
-  2. [为Arch Linux创建Hyper-V虚拟机](notes/create-vm-for-arch.md)
-  3. [在虚拟机/物理机中安装Arch Linux](notes/install-arch-on-laptop-and-vm.md)
-  4. [让Arch新机用上Google](notes/customize-arch-to-use-google.md)
-  5. [初装Arch Linux后的软件和设置建议](notes/arch-tricks.md)
+  1. [安装 Arch Linux 前的准备工作](notes/prepare-to-install-arch.md)
+  2. [为 Arch Linux 创建 Hyper-V 虚拟机](notes/create-vm-for-arch.md)
+  3. [在虚拟机 / 物理机中安装 Arch Linux](notes/install-arch-on-laptop-and-vm.md)
+  4. [让 Arch 新机用上 Google](notes/customize-arch-to-use-google.md)
+  5. [初装 Arch Linux 后的软件和设置建议](notes/arch-tricks.md)
 - Windows:
-  1. [在台式机上安装Windows 10](notes/install-windows-on-desktop.md)
+  1. [在台式机上安装 Windows 10](notes/install-windows-on-desktop.md)
+  2. [在 Windows 10 上安装 WSL 2 的 Arch](notes/install-arch-wsl2.md)
