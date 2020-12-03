@@ -98,7 +98,7 @@ iwr -useb get.scoop.sh | iex
 scoop --version
 
 # configure scoop, as scoop ignores aria2's global config
-scoop config proxy 127.0.0.1:7890
+# scoop config proxy 127.0.0.1:7890  # scoop uses system proxy by default
 scoop install aria2
 scoop config aria2-max-connection-per-server 16
 scoop config aria2-min-split-size 1M
@@ -107,7 +107,7 @@ scoop install 7zip
 scoop install git
 
 # configure git
-git config --global http.proxy http://localhost:7890
+# git config --global http.proxy http://localhost:7890  # git uses system proxy by default
 git config --global merge.ff only
 git config --global pull.ff only
 git config --global user.email tothesong@gmail.com
@@ -115,7 +115,7 @@ git config --global user.name escape0707
 
 # install clash-for-windows
 scoop bucket add dorado https://github.com/h404bi/dorado
-scoop install clash-for-windows
+scoop install clash-for-windows-portable
 # and configure clash-for-windows to be the proxy at port 7890 manually...
 
 # install non-portable nvidia-display-driver
@@ -135,32 +135,35 @@ scoop bucket add extras
 scoop install anki
 scoop install archwsl
 scoop install autohotkey
-scoop install besttrace
-scoop install firefox
-scoop install goldendict # if you want QT5 goldendict to solve High-DPI scale problem, then modify manifest or PR
-scoop install iperf3
+scoop install bitwarden-cli
+# scoop install besttrace
+# scoop install firefox  # I don't recommend using package managers to install frequently updated softwares like browsers when they officially provide more efficient ways to update themselves
+scoop install goldendict # if you want QT5 goldendict to solve High-DPI scale problem, then modify manifest or create a pull request to add goldendict-qt5
+# scoop install iperf3
 scoop install less
 scoop install neovim
 scoop install oh-my-posh
 scoop install posh-git
+scoop install qbittorrent-portable
 scoop install steam
-scoop install streamlink
+# scoop install streamlink
 scoop install sumatrapdf
 # scoop install teamviewer  # portable version won't remember logins, if it's a problem to you, try `teamviewer-np`
 scoop install telegram
 scoop install vcredist2019  # dependency for neovim
 scoop install vlc
-scoop install vscode-insiders
+scoop install vscode-portable
 
 # add visual studio code as a context menu option
-reg import $HOME\scoop\apps\vscode-insiders\current\vscode-install-context.reg
+reg import $SCOOP\apps\vscode-portable\current\vscode-install-context.reg
 
-# I recommend to install programming dependencies on Windows Subsystem for Linux now, below are just my old way to install devDependencies
-# If you use Windows Subsystem for Linux, skip these three following paragraphs
+# I recommend to install programming utilities on Windows Subsystem for Linux now, below are just my old way to install devDependencies
+# If you use Windows Subsystem for Linux, skip the following three paragraphs
 scoop bucket add java
+scoop install octave
 scoop install openjdk
 scoop install gcc
-scoop install python  # this will also install dark & lessmsi?
+scoop install python  # this will also install dark & lessmsi
 scoop install llvm
 scoop install nodejs
 scoop install yarn
@@ -171,7 +174,7 @@ Set-ExecutionPolicy Bypass -Scope Process -Force
 [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072
 iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
 # configure choco
-choco config set proxy http://localhost:7890
+# choco config set proxy http://localhost:7890  # choco uses system proxy by default
 choco feature enable -n allowGlobalConfirmation
 # install apps
 choco install authy-desktop
@@ -181,8 +184,8 @@ choco install geforce-experience
 # WARNING: don't use yrm to set registry as it will break scoop's yarn path settings
 npm config set registry https://mirrors.cloud.tencent.com/npm/
 yarn config set registry https://mirrors.cloud.tencent.com/npm/
-# npm config set proxy http://localhost:7890
-# yarn config set proxy http://localhost:7890
+# npm config set proxy http://localhost:7890  # npm uses system proxy by default
+# yarn config set proxy http://localhost:7890  # yarn uses system proxy by default
 yarn global add @typescript-eslint/eslint-plugin
 yarn global add @typescript-eslint/parser
 yarn global add eslint
@@ -206,16 +209,19 @@ pip install pip-autoremove
 以及自行安装一些软件：
 
 ```text
-New Microsoft Edge
+# New Microsoft Edge  # shipped with Windows 10 by default now
 ```
 
 还要去 Microsoft Store 中安装一些软件：
 
 ```text
 Bitwarden
+# Lenovo Vantage
 Microsoft Office Home and Student 2019
-Telegram
-Trello
+# NVIDIA Control Panel
+# Telegram  # UWP version still don't support startup with windows
+Toggl Track
+# Trello  # don't like another electron app in my computer
 Windows Terminal
 哔哩哔哩动画
 QQ音乐
@@ -226,7 +232,7 @@ Wechat
 
 安装 iTunes 以便刷新手机，或者不安装 iTunes 仅仅将安装包解压缩并安装`AppleMobileDeviceSupport64.msi`以支持 iPhone 的 USB 网络共享。安装过程中可能提示无法启动 xxx 服务的错误，此时点击忽略即可。
 
-高 DPI 屏幕在安装 GoldenDict 时，为了软件显示正常请选用 QT5 版本，并在环境变量中定义`QT_AUTO_SCREEN_SCALE_FACTOR`，其值设为`1`。
+高 DPI 屏幕在安装 GoldenDict 时，为了软件显示正常请选用 QT5 版本，并在环境变量中定义`QT_AUTO_SCREEN_SCALE_FACTOR`，其值设为`1`：
 
 ```powershell
 [Environment]::SetEnvironmentVariable("QT_AUTO_SCREEN_SCALE_FACTOR", "1", "User")
