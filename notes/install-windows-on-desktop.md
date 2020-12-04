@@ -133,7 +133,7 @@ sudo scoop install FiraCode
 # or save to a .ps1 file and execute
 scoop bucket add extras
 scoop install anki
-# [Environment]::SetEnvironmentVariable("HTTPS_PROXY", "http://localhost:7890", "User")  # set proxy for Anki
+# [Environment]::SetEnvironmentVariable("HTTPS_PROXY", "http://127.0.01:7890", "User")  # set proxy for Anki, if you use `localhost` here but some apps complain about `localhost` not resolving, change to 127.0.0.1
 scoop install archwsl
 scoop install autohotkey
 scoop install bitwarden-cli
