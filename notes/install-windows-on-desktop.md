@@ -203,7 +203,6 @@ pip install black
 pip install flake8
 pip install mypy
 pip install pip-autoremove
-pip install pipdeptree
 ```
 
 ## 安装其他软件
