@@ -132,54 +132,60 @@ sudo scoop install FiraCode
 # install other apps, copy and remove those you don't need, then paste-run
 # or save to a .ps1 file and execute
 scoop bucket add extras
+# scoop install adb
 scoop install anki
 # [Environment]::SetEnvironmentVariable("HTTPS_PROXY", "http://127.0.01:7890", "User")  # set proxy for Anki, if you use `localhost` here but some apps complain about `localhost` not resolving, change to 127.0.0.1
+scoop install anydesk
 scoop install archwsl
+scoop install authy
 scoop install autohotkey
 scoop install bitwarden-cli
 # scoop install besttrace
+scoop install ffmpeg  # for youtube-dl
 # scoop install firefox  # I don't recommend using package managers to install frequently updated softwares like browsers when they officially provide more efficient ways to update themselves
 scoop install goldendict # if you want QT5 goldendict to solve High-DPI scale problem, then modify manifest or create a pull request to add goldendict-qt5
 # scoop install iperf3
 scoop install less
+scoop install mpv-git
 scoop install neovim
 scoop install oh-my-posh
 scoop install posh-git
-scoop install qbittorrent-portable
+# scoop install qbittorrent-portable
+# scoop install qbittorrent-enhanced  # Not portable by default, you can change by yourself, see https://github.com/chawyehsu/dorado/issues/255
 scoop install steam
 # scoop install streamlink
 scoop install sumatrapdf
-# scoop install teamviewer  # portable version won't remember logins, if it's a problem to you, try `teamviewer-np`
+# scoop install teamviewer  # portable version won't remember logins, if it's a problem to you, try `teamviewer-np`, I don't use TeamViewer anymore and prefer Anydesk now
 scoop install telegram
 scoop install vcredist2019  # dependency for neovim
-scoop install vlc
+# scoop install vlc  # I prefer mpv now
 scoop install vscode-portable
 
 # add visual studio code as a context menu option
 reg import $SCOOP\apps\vscode-portable\current\vscode-install-context.reg
 
-# I recommend to install programming utilities on Windows Subsystem for Linux now, below are just my old way to install devDependencies
-# If you use Windows Subsystem for Linux, skip the following three paragraphs
-scoop bucket add java
-scoop install octave
-scoop install openjdk
-scoop install gcc
+# # I recommend to install programming utilities on Windows Subsystem for Linux now, below are just my old way to install devDependencies
+# # If you use Windows Subsystem for Linux, skip the following three paragraphs
+# scoop bucket add java
+# scoop install octave
+# scoop install openjdk
+# scoop install gcc
 scoop install python  # this will also install dark & lessmsi
-scoop install llvm
-scoop install nodejs
-scoop install yarn
+# scoop install llvm
+# scoop install nodejs
+# scoop install yarn
 
-## choco related. please run in an admin shell
-# install choco
-Set-ExecutionPolicy Bypass -Scope Process -Force
-[System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072
-iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
-# configure choco
-# choco config set proxy http://localhost:7890  # choco uses system proxy by default
-choco feature enable -n allowGlobalConfirmation
-# install apps
-choco install authy-desktop
-choco install geforce-experience
+# ## choco related. deprecated. please run in an admin shell
+# # install choco
+# Set-ExecutionPolicy Bypass -Scope Process -Force
+# [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072
+# iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
+# # configure choco
+# # choco config set proxy http://localhost:7890  # choco uses system proxy by default
+# choco feature enable -n allowGlobalConfirmation
+# # install apps
+# choco install authy-desktop
+# choco install geforce-experience
 
 # configure npm, yarn and install node modules
 # WARNING: don't use yrm to set registry as it will break scoop's yarn path settings
@@ -195,14 +201,15 @@ yarn global add prettier
 yarn global add rimraf
 yarn global add typescript
 
-# configure pip and install python modules
+# configure pip and install python apps. Plz only install dev time dep in venv
 pip install -i https://mirrors.cloud.tencent.com/pypi/simple --upgrade pip
 pip config set global.index-url https://mirrors.cloud.tencent.com/pypi/simple
-pip install bandit
-pip install black
-pip install flake8
-pip install mypy
-pip install pip-autoremove
+# pip install bandit
+# pip install black
+# pip install flake8
+# pip install mypy  # I'm trying out Pylance now
+# pip install pip-autoremove
+pip install youtube-dl
 ```
 
 ## 安装其他软件
@@ -222,13 +229,13 @@ Microsoft Office Home and Student 2019
 # NVIDIA Control Panel
 # Telegram  # UWP version still don't support startup with windows
 Toggl Track
-# Trello  # don't like another electron app in my computer
+# Trello  # I don't want another electron app in my computer
 Windows Terminal
 哔哩哔哩动画
 QQ音乐
 爱奇艺
-QQ
-Wechat
+# QQ  # Not a fully UWP, can still spy on you
+# Wechat  # Not a fully UWP, can still spy on you
 ```
 
 安装 iTunes 以便刷新手机，或者不安装 iTunes 仅仅将安装包解压缩并安装`AppleMobileDeviceSupport64.msi`以支持 iPhone 的 USB 网络共享。安装过程中可能提示无法启动 xxx 服务的错误，此时点击忽略即可。
@@ -259,7 +266,7 @@ Windows Security notification icon
 
 ### 组策略
 
-组策略在家庭版中不可用，如您的 windows 是家庭版请移步下文中[注册表](#注册表)的部分。
+组策略在家庭版中不可用，如您的 windows 是家庭版请移步下文中[注册表](#注册表)的部分，或者查看[Microsoft Activation Scripts](https://github.com/massgravel/Microsoft-Activation-Scripts)
 
 `Win+r`：`gpedit.msc`
 
