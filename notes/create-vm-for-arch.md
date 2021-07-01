@@ -21,9 +21,17 @@ title: 为Arch Linux创建Hyper-V虚拟机
 
 ### 启用Hyper-V
 
-在开始菜单搜索并选择“Turn Windows features on or off”，找到“Hyper-V”并勾选，点击“OK”按钮。（勾选后为对勾抑或方块并不影响）
+[用管理员权限执行 PowerShell 命令](https://docs.microsoft.com/en-us/virtualization/hyper-v-on-windows/quick-start/enable-hyper-v#enable-hyper-v-using-powershell)：
+
+```powershell
+Enable-WindowsOptionalFeature -Online -FeatureName Microsoft-Hyper-V -All
+```
+
+或者，在开始菜单搜索并选择“Turn Windows features on or off”，找到“Hyper-V”并勾选，点击“OK”按钮。（勾选后为对勾抑或方块并不影响）
 
 ![启用Hyper-V](../attachments/enable-hyper-v.png)
+
+启用之后往往需要重启。
 
 ### 配置虚拟机网络（可选）
 
@@ -64,10 +72,6 @@ Arch Linux的安装和使用均需要连接到网络，因此要给虚拟机分�
 - 关闭Secure Boot：
 
   ![关闭Secure Boot](../attachments/virtual-machine-disable-secure-boot.png)
-
-- 分配更多处理器核心（可选）：
-
-  ![分配更多处理器核心](../attachments/virtual-machine-change-virtual-processors-number.png)
 
 ## 连接并启动虚拟机
 
