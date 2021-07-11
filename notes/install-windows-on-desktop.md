@@ -98,7 +98,7 @@ iwr -useb get.scoop.sh | iex
 scoop --version
 
 # configure scoop, as scoop ignores aria2's global config
-# scoop config proxy 127.0.0.1:7890  # scoop uses system proxy by default
+scoop config proxy 127.0.0.1:7890
 scoop install aria2
 scoop config aria2-max-connection-per-server 16
 scoop config aria2-min-split-size 1M
@@ -107,7 +107,7 @@ scoop install 7zip
 scoop install git
 
 # configure git
-# git config --global http.proxy http://localhost:7890  # git uses system proxy by default
+git config --global http.proxy http://localhost:7890
 git config --global merge.ff only
 git config --global pull.ff only
 git config --global user.email tothesong@gmail.com
@@ -115,50 +115,38 @@ git config --global user.name escape0707
 
 # install clash-for-windows
 scoop bucket add dorado https://github.com/h404bi/dorado
-scoop install clash-for-windows-portable
-# and configure clash-for-windows to be the proxy at port 7890 manually...
+scoop install clash-for-windows
 
 # install non-portable nvidia-display-driver
 scoop bucket add nonportable
 scoop install nvidia-display-driver-np
-scoop install teamviewer-np  # nonportable version remember logins
 # beware that there will be UAC prompts
 
 # install firacode font, there will be UAC prompts, too
 scoop bucket add nerd-fonts
 scoop install sudo
-sudo scoop install FiraCode
+sudo scoop install firacode-nf
 
 # install other apps, copy and remove those you don't need, then paste-run
 # or save to a .ps1 file and execute
 scoop bucket add extras
-# scoop install adb
-scoop install anki
+# scoop install anki
 # [Environment]::SetEnvironmentVariable("HTTPS_PROXY", "http://127.0.01:7890", "User")  # set proxy for Anki, if you use `localhost` here but some apps complain about `localhost` not resolving, change to 127.0.0.1
-scoop install anydesk
-scoop install archwsl
-scoop install authy
+# scoop install authy
 scoop install autohotkey
-scoop install bitwarden-cli
-# scoop install besttrace
 scoop install ffmpeg  # for youtube-dl
 # scoop install firefox  # I don't recommend using package managers to install frequently updated softwares like browsers when they officially provide more efficient ways to update themselves
 scoop install goldendict # if you want QT5 goldendict to solve High-DPI scale problem, then modify manifest or create a pull request to add goldendict-qt5
-# scoop install iperf3
 scoop install less
 scoop install mpv-git
 scoop install neovim
-scoop install oh-my-posh
-scoop install posh-git
+scoop install oh-my-posh3
 # scoop install qbittorrent-portable
-# scoop install qbittorrent-enhanced  # Not portable by default, you can change by yourself, see https://github.com/chawyehsu/dorado/issues/255
+# scoop install qbittorrent-enhanced
 scoop install steam
-# scoop install streamlink
 scoop install sumatrapdf
-# scoop install teamviewer  # portable version won't remember logins, if it's a problem to you, try `teamviewer-np`, I don't use TeamViewer anymore and prefer Anydesk now
 scoop install telegram
 scoop install vcredist2019  # dependency for neovim
-# scoop install vlc  # I prefer mpv now
 scoop install vscode-portable
 
 # add visual studio code as a context menu option
@@ -175,6 +163,16 @@ scoop install python  # this will also install dark & lessmsi
 # scoop install nodejs
 # scoop install yarn
 
+# configure pip and install python apps. Plz only install dev time dep in venv
+pip install -i https://mirrors.cloud.tencent.com/pypi/simple --upgrade pip
+pip config set global.index-url https://mirrors.cloud.tencent.com/pypi/simple
+# pip install bandit
+# pip install black
+# pip install flake8
+# pip install mypy  # I'm trying out Pylance now
+# pip install pip-autoremove
+pip install youtube-dl
+
 # ## choco related. deprecated. please run in an admin shell
 # # install choco
 # Set-ExecutionPolicy Bypass -Scope Process -Force
@@ -184,7 +182,6 @@ scoop install python  # this will also install dark & lessmsi
 # # choco config set proxy http://localhost:7890  # choco uses system proxy by default
 # choco feature enable -n allowGlobalConfirmation
 # # install apps
-# choco install authy-desktop
 # choco install geforce-experience
 
 # configure npm, yarn and install node modules
@@ -200,42 +197,23 @@ yarn global add eslint-config-prettier
 yarn global add prettier
 yarn global add rimraf
 yarn global add typescript
-
-# configure pip and install python apps. Plz only install dev time dep in venv
-pip install -i https://mirrors.cloud.tencent.com/pypi/simple --upgrade pip
-pip config set global.index-url https://mirrors.cloud.tencent.com/pypi/simple
-# pip install bandit
-# pip install black
-# pip install flake8
-# pip install mypy  # I'm trying out Pylance now
-# pip install pip-autoremove
-pip install youtube-dl
 ```
 
 ## 安装其他软件
 
-以及自行安装一些软件：
+去 Microsoft Store 中安装一些软件：
 
 ```text
-# New Microsoft Edge  # shipped with Windows 10 by default now
-```
-
-还要去 Microsoft Store 中安装一些软件：
-
-```text
-Bitwarden
 # Lenovo Vantage
 Microsoft Office Home and Student 2019
 # NVIDIA Control Panel
-# Telegram  # UWP version still don't support startup with windows
 Toggl Track
-# Trello  # I don't want another electron app in my computer
 Windows Terminal
-哔哩哔哩动画
-QQ音乐
-爱奇艺
-# QQ  # Not a fully UWP, can still spy on you
-# Wechat  # Not a fully UWP, can still spy on you
+# 哔哩哔哩动画  # Reject Bilibili and return to piracy
+QQ 音乐
+# 爱奇艺
+# QQ 桌面版  # Not a full UWP, can still spy on you
+# Wechat for Windows  # Not a full UWP, can still spy on you
 ```
 
 安装 iTunes 以便刷新手机，或者不安装 iTunes 仅仅将安装包解压缩并安装`AppleMobileDeviceSupport64.msi`以支持 iPhone 的 USB 网络共享。安装过程中可能提示无法启动 xxx 服务的错误，此时点击忽略即可。
@@ -251,9 +229,9 @@ QQ音乐
 俺有一个[代码仓库](https://github.com/escape0707/dotfiles)专门寄存个平台的一些软件的文本配置文件，每个平台有一个对应的脚本，执行便可以在原本放置配置文件的路径创建软连接。使用和修改配置文件的软件不会察觉与直接放置了一个配置文件在原处有何不同。反倒是修改可以统一反映在我们克隆下来的这个`dotfiles`文件夹下。方便用 git 管理版本和同步。
 
 ```powershell
-mkdir C:\ProgramData\my-programs\dotfiles
-git clone https://github.com/escape0707/dotfiles C:\ProgramData\my-programs\dotfiles
-sudo C:\ProgramData\my-programs\dotfiles\windows-setup.ps1
+mkdir $env:USERPROFILE\my-programs
+git clone https://github.com/escape0707/dotfiles $env:USERPROFILE\my-programs\dotfiles
+sudo $env:USERPROFILE\my-programs\dotfiles\windows-setup.ps1
 ```
 
 ## 禁用多余启动项和功能
