@@ -258,3 +258,12 @@ Windows Security notification icon
 ### Firefox config
 
 打开 Firefox 并跳转到`about:config`页面，将`browser.tabs.closeWindowWithLastTab`设置为`false`。
+
+### Edge Chromium config
+
+打开 Edge Chromium 并跳转到`edge://flags`页面，跳转并关闭如下几个锚点对应的设置：
+
+```
+#smooth-scrolling
+#edge-experimental-scrolling
+```
