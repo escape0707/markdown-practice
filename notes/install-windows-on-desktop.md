@@ -5,7 +5,7 @@ title: 在台式机上安装 Windows 10
 
 - [前言](#前言)
 - [下载最新 Windows 安装镜像](#下载最新-windows-安装镜像)
-- [使用 Ventoy 制作 USB 启动盘](#使用-ventoy-制作-usb-启动盘)
+- [制作 USB 启动盘](#制作-usb-启动盘)
 - [UEFI 下 Secure Boot USB 启动盘](#uefi-下-secure-boot-usb-启动盘)
 - [修改计算机名](#修改计算机名)
 - [移动`%UserProfile%`内的各种文件夹](#移动userprofile内的各种文件夹)
@@ -25,24 +25,9 @@ title: 在台式机上安装 Windows 10
 
 或者将 User Agent 更改为 Mac OS 或 Linux 并直接选择想要下载的 ISO。该方法可以用 Aria2 断点续传，适合大陆国际网络劣化后不翻墙下载。
 
-## 使用 Ventoy 制作 USB 启动盘
+## 制作 USB 启动盘
 
-### 下载 Ventoy
-
-从[官网](https://www.ventoy.net)手动下载，或用 Scoop 下载：
-
-```powershell
-scoop install ventoy
-```
-
-### 制作启动盘
-
-[官方指南](https://www.ventoy.net/cn/doc_start.html)
-
-- 选择要使用的 USB 盘
-- 分区类型选择`GPT`
-- 点击`Install`开始制作
-- 将下载的 Windows / Arch ISO 镜像拷贝到 USB 盘中
+请参考俺的另一短篇[使用 Ventoy 制作 USB 启动盘](use-ventoy-to-create-bootable-usb.md)
 
 ## UEFI 下 Secure Boot USB 启动盘
 
