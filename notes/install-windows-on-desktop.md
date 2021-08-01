@@ -5,7 +5,7 @@ title: 在台式机上安装Windows 10
 
 - [前言](#前言)
 - [下载最新 Windows 安装镜像](#下载最新-windows-安装镜像)
-- [使用 Rufus 制作 USB 启动盘](#使用-rufus-制作-usb-启动盘)
+- [使用 Ventoy 制作 USB 启动盘](#使用-ventoy-制作-usb-启动盘)
 - [UEFI 下 Secure Boot USB 启动盘](#uefi-下-secure-boot-usb-启动盘)
 - [修改计算机名](#修改计算机名)
 - [如果有两个以上的分区，移动`%UserProfile%`内的各种文件夹](#如果有两个以上的分区移动userprofile内的各种文件夹)
@@ -23,33 +23,32 @@ title: 在台式机上安装Windows 10
 
 下载 [Media Creation Tool](https://www.microsoft.com/software-download/windows10)，运行向导中选择下载 ISO。
 
-## 使用 Rufus 制作 USB 启动盘
+## 使用 Ventoy 制作 USB 启动盘
 
-### 下载 Rufus
+### 下载 Ventoy
 
-从[官网](https://rufus.ie/)手动下载，或用 Scoop/Chocolatey 下载：
+从[官网](https://www.ventoy.net)手动下载，或用 Scoop 下载：
 
 ```powershell
-scoop install rufus
-choco install rufus
+scoop install ventoy
 ```
 
 ### 制作启动盘
 
+[官方指南](https://www.ventoy.net/cn/doc_start.html)
+
 - 选择要使用的 USB 盘
-- 选择下载的 Windows ISO 镜像
-- 分区类型选择`GPT`、目标系统类型选择`UEFI`
-- 文件系统选择 FAT32
-  > 如果不是用官方 Media Creation Tool 下载的，`install.wim`文件可能会因为包含了各种版本的 Windows 而大于 4GB，不能存放于 FAT32 文件系统中，此时请参照[Rufus 官方 FAQ](https://github.com/pbatard/rufus/wiki/FAQ#Blah_UEFI_Blah_FAT32_therefore_Rufus_should_Blah)尝试使用`UEFI:NTFS`，或者直接使用 NTFS 格式化并尝试您的 UEFI 固件是否支持从 NTFS 启动 UEFI 安装盘。）
-- `START`开始制作
+- 分区类型选择`GPT`
+- 点击`Install`开始制作
+- 将下载的 Windows / Arch ISO 镜像拷贝到 USB 盘中
 
 ## UEFI 下 Secure Boot USB 启动盘
 
 ~~俺使用的 MSI B150 Krait Gaming，需要开启 UEFI、Secure Boot，以及 legacy USB support，之后 UEFI 模式的 USB 启动才会出现。~~
 
-> 如果使用了 Rufus 的`UEFI:NTFS`模式，[请在安装期间临时关闭 Secure Boot](https://github.com/pbatard/rufus/wiki/FAQ#why-do-i-need-to-disable-secure-boot-to-use-uefintfs)。
+[请在安装期间临时关闭 Secure Boot](https://www.ventoy.net/cn/doc_secure.html)。
 
-U 盘启动后请自行安装，个人不建议额外划分分区，每个磁盘一个分区已经足够了。
+USB 盘启动后请自行安装，个人不建议额外划分分区，每个磁盘一个分区已经足够了。
 
 ## 修改计算机名
 
