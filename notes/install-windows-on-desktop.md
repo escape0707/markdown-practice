@@ -47,7 +47,7 @@ JayChu-Desktop
 
 ## 移动`%UserProfile%`内的各种文件夹
 
-如果有外挂 HDD 仓库盘，可以将桌面、下载、音乐、图片等适合存放在仓库盘的文件存放过去。只要将用户文件夹内对应的文件夹的属性打开，修改位置，并在确定时选择移动原有内容即可。
+如果有外挂 HDD 仓库盘，可以将桌面、下载、音乐、图片等适合存放在仓库盘的文件存放过去。只要查看用户文件夹内对应的文件夹的“属性”，修改“位置”，并在确定时选择“移动原有内容”即可。
 
 可能需要移动的文件夹包括
 
@@ -62,7 +62,7 @@ Videos
 
 ## 交换 CapsLock 与 Esc
 
-当使用 Vim / 其他编辑器 Vim 插件时，为了不用经常去够`Esc`和`Ctrl`，Windows 下可以使用[`dual-key-remap`](https://github.com/ililim/dual-key-remap)或者[AutoHotKey 脚本](https://github.com/escape0707/scripts/blob/master/Use%20CapsLock%20in%20Vim.ahk)。
+当使用 Vim / 其他编辑器 Vim 插件时，为了不用经常去够`Esc`和`Ctrl`，Windows 下可以使用[`dual-key-remap`](https://github.com/ililim/dual-key-remap)或者 [AutoHotKey 脚本](https://github.com/escape0707/scripts/blob/master/Use%20CapsLock%20in%20Vim.ahk)。
 
 Windows 的`dual-key-remap`建议在其`config.txt`中额外加上以下内容（[后文](#下载并连接-dotfiles)俺提供了一个代码仓库专门一键配置这些 dotfiles）：
 
@@ -76,9 +76,9 @@ with_other=ESCAPE
 
 ## 在 PowerShell 中安装软件并配置
 
-在 Windows 下许多开源软件的安装不可避免地要从国外云下载。理想情况下，局域网的网关最好已经设置过路由器透明代理，或者局域网中有旁路网关设置了透明代理，这样装机、或者常用系统中开虚拟机，都不用再考虑如何运行代理软件或者如何设置软件使用代理。推荐使用 openwrt 或 linux，并在其上跑 clash 做透明代理。
+在 Windows 下许多开源软件的安装不可避免地要从国外云下载。理想情况下，局域网的网关最好已经设置过路由器透明代理，或者局域网中有旁路网关设置了透明代理，这样装机、或者常用系统中开虚拟机，都不用再考虑如何运行代理软件或者如何设置软件使用代理。推荐使用 openwrt 或 Linux，并在其上跑 clash 做透明代理。
 
-之后可能俺会单独写一篇文章介绍如何在 linux 机器上用 clash 和策略路由做透明代理网关。
+之后可能俺会单独写一篇文章介绍如何在 Linux 机器上用 clash 和策略路由做透明代理网关。
 
 如果没有条件用网关透明代理，俺往往是在同局域网下，用手机或者另一台电脑进行局域网代理共享，之后设置包管理软件`scoop`暂时使用另一台电脑提供的代理共享来翻墙下载，本机装上`clash`等翻墙软件之后再在本地配置翻墙并改回来代理设置。
 
@@ -115,7 +115,7 @@ scoop install clash-for-windows
 
 # install non-portable nvidia-display-driver
 scoop bucket add nonportable
-scoop install nvidia-display-driver-np
+scoop install nvidia-display-driver-dch-np
 # beware that there will be UAC prompts
 
 # install firacode font, there will be UAC prompts, too
@@ -203,7 +203,7 @@ yarn global add typescript
 # Lenovo Vantage
 Microsoft Office Home and Student 2019
 # NVIDIA Control Panel
-Toggl Track
+# Toggl Track
 Windows Terminal
 # 哔哩哔哩动画  # Reject Bilibili and return to piracy
 QQ 音乐
