@@ -1,66 +1,70 @@
 ---
 tags: [Blog/System Configurations]
-title: 在虚拟机/物理机中安装Arch Linux
+title: 在虚拟机 / 物理机中安装 Arch Linux
 ---
 
-## 目录<!-- omit in toc -->
+## 目录 <!-- omit in toc -->
 
 - [前言](#前言)
 - [预备理论](#预备理论)
 - [准备安装](#准备安装)
-- [安装Arch Linux](#安装arch-linux)
+- [安装 Arch Linux](#安装-arch-linux)
 - [配置系统](#配置系统)
 - [重启](#重启)
 - [安装完成后的工作](#安装完成后的工作)
 
 ## 前言
 
-本文将承接前文[安装Arch Linux前的准备工作](prepare-to-install-arch.md)和[为Arch Linux创建Hyper-V虚拟机](create-vm-for-arch.md)，按步骤介绍在虚拟机以及物理机中安装Arch Linux的步骤。个别步骤虚拟机同物理机的操作不一致，后文中会注明，请注意区分。
+本文将承接前文[安装 Arch Linux 前的准备工作](prepare-to-install-arch.md)和[为 Arch Linux 创建 Hyper-V 虚拟机](create-vm-for-arch.md)，按步骤介绍在虚拟机以及物理机中安装 Arch Linux 的步骤。个别步骤虚拟机同物理机的操作不一致，后文中会注明，请注意区分。
 
 以下参考官方[安装指南](https://wiki.archlinux.org/index.php/Installation_guide#Pre-installation)。
 
 ## 预备理论
 
-### 打开UEFI & 关闭Secure Boot
+### 新：安利专用、自动安装器——archinstall
 
-启动机器前，请在机器固件设置（虚拟机配置或物理机主板配置）中打开UEFI模式。并且，俺建议和虚拟机安装过程一样关闭[Secure Boot](https://www.rodsbooks.com/efi-bootloaders/secureboot.html)。支持这一建议的[原因](https://www.reddit.com/r/archlinux/comments/8nbau0/secure_boot_yay_or_nay/)为——Secure Boot保护我们不受[Evil Maid Attack](https://en.wikipedia.org/wiki/Evil_maid_attack)之类物理攻击，但俺自用笔记本的环境几乎不存在收到这类攻击的可能，并且俺也不涉及绝密级别的工作。鉴于俺已经不熟练（xiǎng tōu lǎn）到BootLoader都不会装、全盘加密也不会做、sudoers还不会配的份儿上，这种Windows平台下主板里按个回车就能够轻松享受，Linux却要看半个小时才弄得好的只有理论价值的安全措施暂时就不考虑了。如果有需要可以参看官方[Secure Boot指南](https://wiki.archlinux.org/index.php/Secure_Boot)。
+从 2021 年~~ 愚人节~~ 4 月 1 日起发布的 ArchISO，官方重新加入了弃更已久的安装脚本，堪称爷青回 / 文艺复兴。用这个脚本，你可以轻松的在同学的电脑的虚拟机上 15 分钟安装 Arch 并进入 KDE。值得注意的是，因为脚本在安装显卡驱动的时候没有给虚拟机需要的 xf86-video-fbdev 驱动选项，所以在提示安装自选软件的时候请记得安装。如果不小心忘记了，在启动后无法进入 SDDM 时切到另一个 TTY 安装即可。
+
+这种安装方法也完全支持和 Windows 双启动。如果之前已经把 ESP 的大小留够至少 500 MB，那么直接手动分好区挂载好 root 分区和 ESP，即可选择直接安装到`/mnt`的安装方法来安装。
+
+不过想要使用脚本安装，必须先理解如何手动安装。否则出现任何问题，都会摸不着北。脚本安装没有什么坑，如果理解如何手动安装的话会很好理解，所以暂时不展开描述。下文先正常走一遍手动安装的流程。
+
+### 与 Windows 共存双启动
+
+如果担心自己无法完全脱离 Windows，在某些时间点可能还要用到 Windows 专有的工具或者游戏，那么不妨直接做成[双启动](https://wiki.archlinux.org/title/Dual_boot_with_Windows)，不受虚拟 Windows 的局限性。
+
+接下来说的如果一开始看不明白没关系，可以先跳过这一小节，在虚拟机中按照后文安装一遍，了解了概念以后回来再看这里。之所以在开头提是希望避免读者实际安装的时候才发现需要双启动却没有做准备工作而浪费时间。
+
+如果要安排上双启动，最理想（简单）的顺序是：
+
+1. 使用 ArchISO、或者 WinPE 中的 DiskGenius 等工具在空盘上创建并格式化一个至少 500 MB 的 [ESP](https://wiki.archlinux.org/title/EFI_system_partition)
+2. 安装 Windows 的时候创建一个大小符合 Windows 需要的分区并安装在它里面。此时 Windows 会自动利用磁盘中已有的 ESP。
+3. 在剩余的空间和已有的 ESP 上安装 Linux。可以使用 archinstall 脚本的“安装到`/mnt`”选项。Bootloader 建议选择 systemd-boot。
+4. 重启，享用双启动的系统。
+
+如果先安装了 Windows 并不方便格式化重装，ESP 的大小会在 100 MB 左右，虽然我目前双启动只用了 75.3 MB，但如果换用其他内核也[有可能不够存放内核和初始内存文件系统](https://wiki.archlinux.org/title/Dual_boot_with_Windows#The_EFI_system_partition_created_by_Windows_Setup_is_too_small)。此时，可以[使用 systemd-boot 的 XBOOTLDR 启动模式](https://wiki.archlinux.org/title/Systemd-boot#Installation_using_XBOOTLDR)。
+
+### 打开 UEFI & 关闭 Secure Boot
+
+启动机器前，请在机器固件设置（虚拟机配置或物理机主板配置）中打开 UEFI 模式。并且，俺建议和虚拟机安装过程一样关闭 [Secure Boot](https://www.rodsbooks.com/efi-bootloaders/secureboot.html)。支持这一建议的[原因](https://www.reddit.com/r/archlinux/comments/8nbau0/secure_boot_yay_or_nay/)为——Secure Boot 保护我们不受 [Evil Maid Attack](https://en.wikipedia.org/wiki/Evil_maid_attack) 之类物理攻击，但俺自用笔记本的环境几乎不存在收到这类攻击的可能，并且俺也不涉及绝密级别的工作。~~鉴于俺已经不熟练（xiǎng tōu lǎn）到 BootLoader 都不会装~~（现在在用 systemd-boot 做双启动）、全盘加密也不会做、~~sudoers 还不会配的份儿上~~（其实就把 root 的那一行复制一遍换上自己的名字就行了），这种 Windows 平台下主板里按个回车就能够轻松享受，Linux 却要看半个小时才弄得好的只有理论价值的安全措施暂时就不考虑了。如果有需要可以参看官方[Secure Boot 指南](https://wiki.archlinux.org/index.php/Secure_Boot)。
 
 ### 在物理机上查看文档
 
 之前提到过尝鲜建议先用虚拟机安装，可以在原系统下方便查阅资料。
 
-如果在物理机上启动了Arch安装介质后，尽管相对抽象，但也有办法查阅资料。在[连接到互联网](#连接到互联网)之后，可以使用`elinks`文本型网页浏览器查看官方指南：
+不过即便是在物理机上启动了 Arch 安装介质，也有办法查阅资料。在[连接到互联网](#连接到互联网)之后，可以执行`Installation_guide`来快速使用文本型网页浏览器`lynx`查看官方指南。
 
-```bash
-elinks https://wiki.archlinux.org/index.php/Installation_guide
-```
-
-> 如果觉得白色背景亮瞎了眼，可以按`esc`唤出菜单 -> `Setup` -> `Options Manager` -> 按空格键展开`Default color settings` -> `Use document-specified colors` -> `Edit` -> `Value` 改为 `1` （或 `0`）
-
-也可以查看ArchISO压制时附带的纯文本安装指南：
-
-```bash
-ls
-less install.txt
-```
-
-如果希望一边看网页/文档，一边进行安装，可以用`ctrl+alt+F1`(`F1`到`F7`均可)和`alt+左/右键`切换终端。
-
-## 新：安利专用、自动安装器—— archinstall
-
-从 2021 年~~愚人节~~ 4 月 1 日发布的 ArchISO 起，官方重新加入了弃更已久的安装脚本，堪称爷青回 / 文艺复兴。用这个脚本，你可以轻松的在同学的电脑的虚拟机上15分钟安装 Arch 并进入 KDE。值得注意的是，因为脚本在安装显卡驱动的时候没有给虚拟机需要的 xf86-video-fbdev 驱动选项，所以在提示安装自选软件的时候请记得安装。如果不小心忘记了，在启动后无法进入 SDDM 时切到另一个 TTY 安装即可。
-
-想要使用脚本安装，必须先理解如何手动安装。否则出现任何问题，都会摸不着北。脚本安装没有什么坑，如果能够手动安装的话会很好理解，所以暂时不展开描述。下文先正常走一遍手动安装的流程。
+如果希望一边看网页 / 文档，一边进行安装，可以用`ctrl+alt+F1`（`F1`到`F6`均可）和`alt+ 左 / 右键`切换终端。
 
 ## 准备安装
 
 ### 选择键盘布局
 
-俺使用默认的US布局，故不做更改。
+俺使用默认的 US 布局，故不做更改。
 
 ### 验证启动模式
 
-运行如下命令，文件夹存在并有内容即正常。如不存在，则系统是在BIOS环境中启动的，请再次检查创建虚拟机时是否选择的Generation 2。（如是在物理机上安装，检查主板设置是否开启了UEFI模式。）
+运行如下命令，文件夹存在并有内容即正常。如不存在，则系统是在 BIOS 环境中启动的，请再次检查创建虚拟机时是否选择的 Generation 2。如是在物理机上安装，检查主板设置是否开启了 UEFI 模式。
 
 ```bash
 ls /sys/firmware/efi/efivars
@@ -70,23 +74,31 @@ ls /sys/firmware/efi/efivars
 
 虚拟机之前已经配置了虚拟网络适配器，故跳过。
 
-物理机安装时如使用有线连接，无需额外操作；而如需使用Wi-Fi连接，可以使用图形化工具：
+物理机安装时如使用有线连接，无需额外操作；而如需使用 Wi-Fi 连接，则首先[检查无线功能是否被关掉](https://wiki.archlinux.org/title/Network_configuration/Wireless#Rfkill_caveat)：
 
 ```bash
-wifi-menu -o
+rfkill list
 ```
 
-一般来说，`archboot`安装环境中已经包含了各种网卡的驱动，其中就有俺所需的高通专有驱动`broadcom-wl`。但如果工具仍然报错，请根据[无线网络配置](https://wiki.archlinux.org/index.php/Wireless_network_configuration)检查常见问题。
-
-根据向导选择网络，输入密码之后，工具便会在`/etc/netctl`创建一个连接配置文件，接下来启动它：
-
-> 用您指定的配置文件名称替换下文的`profile`，可在输入`start`和空格后，按`tab`键自动补全。
+如果是硬件关掉了，用机器上的开关开开；如果是被内核软件关掉了，可以执行命令打开：
 
 ```bash
-netctl start profile
+rfkill unblock wifi
 ```
 
-如此便可连接上Wi-Fi网络。
+之后[使用 iwd 连接无线网络](https://wiki.archlinux.org/title/Iwd#iwctl)，按 `tab` 键自动补全：
+
+```bash
+iwctl
+device list
+station your-wireless-device scan
+station your-wireless-device get-networks
+station your-wireless-device connect your-wifi-SSID
+```
+
+一般来说，`archboot` 安装环境中已经包含了各种网卡的驱动，其中就有俺所需的高通专有驱动 `broadcom-wl`。但如果工具仍然报错，请根据 [无线网络配置](https://wiki.archlinux.org/index.php/Wireless_network_configuration) 检查常见问题。
+
+如此便可连接上 Wi-Fi 网络。
 
 ### 更新系统时钟
 
@@ -100,7 +112,7 @@ timedatectl set-ntp true
 timedatectl status
 ```
 
-![ArchISO运行时截图](../attachments/check-timedate-status.png)
+![ArchISO 运行时截图](../attachments/check-timedate-status.png)
 
 ### 磁盘分区
 
@@ -112,21 +124,21 @@ fdisk -l
 
 寻找类似`/dev/sda`或者`/dev/nvme0n1`的条目，并根据磁盘的大小等信息，确定您想要安装的磁盘。
 
-Linux系统需要至少一个root目录（`/`）分区，如果启用了UEFI，还需要一个[EFI系统分区](https://wiki.archlinux.org/index.php/EFI_system_partition)。[Swap](https://wiki.archlinux.org/index.php/swap)可以通过分区实现也可以通过动态Swap文件实现。
+Linux 系统需要至少一个 root 目录（`/`）分区，如果启用了 UEFI，还需要一个 [EFI 系统分区](https://wiki.archlinux.org/index.php/EFI_system_partition)。[Swap](https://wiki.archlinux.org/index.php/swap) 可以通过分区实现也可以通过动态 Swap 文件实现，不过我现在有 16 GB 内存所以不上 Swap 裸奔。注意，不用 Swap 不能休眠计算机，据说有一些日志性质的缓存也在 Swap 中，不过没有照样用的可以。
 
-俺参考了官方分区模板，选择将磁盘分为512MB的EFI系统分区、利用全部剩余空间的Linux文件系统分区和一个8GB的Swap分区。Swap分区的大小可以参考It's FOSS上的[一篇文章](https://itsfoss.com/swap-size/)。一般来说设为物理内存的两倍肯定够用了。
+俺参考了官方分区模板，选择将磁盘分为 512MB 的 EFI 系统分区和利用全部剩余空间的 Linux 文件系统分区。~~和一个 8GB 的 Swap 分区。Swap 分区的大小可以参考 It's FOSS 上的 [一篇文章](https://itsfoss.com/swap-size/)。一般来说设为物理内存的两倍肯定够用了。~~
 
-分区时为了方便可以用[`fdisk`](https://wiki.archlinux.org/index.php/Fdisk)工具的图形版`cfdisk`：
+分区时为了方便可以用 [`fdisk`](https://wiki.archlinux.org/index.php/Fdisk) 工具的图形版 `cfdisk`：
 
 ```bash
 cfdisk
 ```
 
-1. Select label type选择`gpt`（如果未提示，检查屏幕上方第三行是否为`Lable: gpt`）
-2. New一个`512M`的分区，Type更改为`EFI System`
-3. New一个大小为剩余空间-`8GB`（即`cfdisk`自动填写的大小减去`8GB`）的分区，并确保Type为`Linux filesystem`
-4. New一个`8GB`的分区，Type更改为`Linux swap`
-5. 选择Write将分区更改写到磁盘
+1. Select label type 选择`gpt`（如果未提示，检查屏幕上方第三行是否为`Lable: gpt`）
+2. New 一个`512M`的分区，Type 更改为`EFI System partition`
+3. New 一个大小为剩余空间~~ -`8GB`（即`cfdisk`自动填写的大小减去`8GB`）~~的分区，并确保 Type 为`Linux Root partition (x86-64)`
+4. ~~New 一个`8GB`的分区，Type 更改为`Linux swap`~~
+5. 选择 Write 将分区更改写到磁盘
 6. Quit
 
 ### 格式化分区
@@ -135,7 +147,7 @@ cfdisk
 
 > 可以用`fdisk -l`来查看分区大小，用`lsblk -f`来查看分区格式
 
-将EFI系统分区格式化为FAT32格式，将Linux文件系统分区格式化为ext4格式：
+将 EFI 系统分区格式化为 FAT32 格式，将 Linux 文件系统分区格式化为 ext4 格式：
 
 > 如果您的分区名和下述不一致，请自行替换
 
@@ -146,7 +158,7 @@ mkfs.ext4 /dev/sda2
 
 ![格式化分区](../attachments/format-partitions.png)
 
-如果之前创建了Swap分区，应将其启用：
+如果之前创建了 Swap 分区，应将其启用：
 
 ```bash
 mkswap /dev/sda3
@@ -155,11 +167,11 @@ swapon /dev/sda3
 
 ### 挂载分区
 
-将Linux文件系统分区挂载为`/mnt`，将EFI系统分区挂载为`/mnt/boot`。
+将 Linux 文件系统分区挂载为`/mnt`，将 EFI 系统分区挂载为`/mnt/boot`。
 
-> 系统启动时，会在EFI系统分区寻找一个[Boot Loader](https://wiki.archlinux.org/index.php/Arch_boot_process#Boot_loader)、[Boot Manager](https://wiki.archlinux.org/index.php/Arch_boot_process#Boot_loader)或者使用[EFISTUB](https://wiki.archlinux.org/index.php/EFISTUB)方式直接启动Linux系统内核。由于俺在虚拟机及笔电中只安装一个系统，不涉及双系统及其他复杂情况，所以选择EFISTUB方式。
+> 系统启动时，会在 EFI 系统分区寻找一个 [Boot Loader（Manager）](https://wiki.archlinux.org/index.php/Arch_boot_process#Boot_loader)或者使用 [EFISTUB](https://wiki.archlinux.org/index.php/EFISTUB) 方式直接启动 Linux 系统内核。虚拟机中或者只想安装一个系统时，不涉及双系统及其他复杂情况的话，建议选择 EFISTUB 方式。笔记本中俺是安装了[双系统](https://wiki.archlinux.org/title/Dual_boot_with_Windows)。
 >
-> 根据官方Wiki上关于[EFI系统分区挂载](https://wiki.archlinux.org/index.php/EFI_system_partition#Mount_the_partition)的说明，当选择EFISTUB直接启动的方法时，需将EFI系统分区挂载到`/boot`中。对应于我们将root挂载到`/mnt`的情况，应将EFI系统分区挂载到`/mnt/boot`目录。
+> 根据官方 Wiki 上关于 [EFI 系统分区挂载](https://wiki.archlinux.org/index.php/EFI_system_partition#Mount_the_partition) 的说明，当选择 EFISTUB 直接启动的方法时，需将 EFI 系统分区挂载到 `/boot` 中。对应于我们将 root 挂载到 `/mnt` 的情况，应将 EFI 系统分区挂载到 `/mnt/boot` 目录。
 
 ```bash
 mount /dev/sda2 /mnt
@@ -167,39 +179,37 @@ mkdir /mnt/boot
 mount /dev/sda1 /mnt/boot
 ```
 
-## 安装Arch Linux
+## 安装 Arch Linux
 
 ### 选择镜像服务器
 
-Arch Linux默认在线安装。此外，更新时也会通过镜像服务器下载软件包。镜像服务器的列表在`/etc/pacman.d/mirrorlist`中，在安装过程中会被自动拷贝到新系统。为了方便，此时就应选择一些连通性良好、速度够快的服务器，可以节省很多时间。
+Arch Linux 默认在线安装。此外，更新时也会通过镜像服务器下载软件包。镜像服务器的列表在`/etc/pacman.d/mirrorlist`中，在安装过程中会被自动拷贝到新系统。在连接到互联网后，`reflector`会自动从镜像服务器列表中选择前 20 个最近完成同步的服务器。下载软件包时会自动按照列表中的先后顺序选择服务器。但这些服务器中有的从国内连接会很慢。如果发生这种情况，可以手动改成使用国内大厂、大学的源。
 
-下载软件包时会自动按照列表中的先后顺序选择服务器。我们可以按照Wiki上关于[镜像服务器排序](https://wiki.archlinux.org/index.php/Mirrors#Sorting_mirrors)的说明测试并修改列表：
+我们也可以按照 Wiki 上关于 [镜像服务器排序](https://wiki.archlinux.org/index.php/Mirrors#Sorting_mirrors) 的说明测试并修改列表：
 
 ```bash
-pacman -Sy reflector
 reflector --country China --sort rate --save /etc/pacman.d/mirrorlist
 ```
 
-> 如果出现：`ImportError: No module named Reflector`的错误。可能是因为ArchISO的`python`版本过旧。用`pacman -S python --needed`更新一下并再次运行`reflector`也许可以解决问题。
+还可以手动编辑，将自己喜好的镜像服务器放置在列表的前列：
 
-也可以手动编辑，将自己喜好的镜像服务器放置在列表的前列：
-
-- 如不想用Vim/Nano等命令行文本编辑器的话，可以直接用某个服务器地址覆写列表文件：
+- 如不想用 Vim / Nano 等命令行文本编辑器的话，可以直接用某个服务器地址覆写列表文件：
 
   ```bash
   echo "Server = https://mirrors.cloud.tencent.com/archlinux/\$repo/os/\$arch" > /etc/pacman.d/mirrorlist
   ```
 
-- 如果希望再附加一两行服务器，用`>>`来在文件末尾附加新内容，例如：
+- 如果希望再附加一两行服务器，用 `>>` 来在文件末尾附加新内容，例如：
 
   ```bash
   cat >> /etc/pacman.d/mirrorlist
+  Server = https://mirrors.tuna.tsinghua.edu.cn/archlinux/\$repo/os/\$arch
   Server = https://mirrors.sjtug.sjtu.edu.cn/archlinux/\$repo/os/\$arch
   Server = http://mirrors.163.com/archlinux/\$repo/os/\$arch
   #ctrl+d
   ```
 
-  > 最后一行表示用组合键`ctrl+d`输入文件终止符`EOF`来完成该文件的编写。详见[Linux系统输入输出重定向简介](https://www.digitalocean.com/community/tutorials/an-introduction-to-linux-i-o-redirection)。
+  > 最后一行表示用组合键`ctrl+d`输入文件终止符`EOF`来完成该文件的编写。详见 [Linux 系统输入输出重定向简介](https://www.digitalocean.com/community/tutorials/an-introduction-to-linux-i-o-redirection)。
 
 最后检查文件内容：
 
@@ -207,50 +217,49 @@ reflector --country China --sort rate --save /etc/pacman.d/mirrorlist
 cat /etc/pacman.d/mirrorlist
 ```
 
-### 使用powerpill缓存软件包
+### 使用 powerpill 缓存软件包
 
-如果更新了服务器列表后还不够快，可以下载[`powerpill`](https://wiki.archlinux.org/index.php/Powerpill)，并用其先缓存各软件包。当然如果身边有可用的Arch机器，也可以用[`pacserve`](https://wiki.archlinux.org/index.php/Pacserve)，这里只说下`powerpill`。
+如果更新了服务器列表后还不够快，可以下载[`powerpill`](https://wiki.archlinux.org/index.php/Powerpill)，并用其先缓存各软件包。当然如果身边有可用的 Arch 机器，也可以用[`pacserve`](https://wiki.archlinux.org/index.php/Pacserve)，这里只说下`powerpill`。
 
-由于`powerpill`属于AUR而非官方源，ArchISO下`makepkg`又会非常麻烦，所以建议添加ArchlinuxCN源**或**作者的源，并[将`SigLevel`改成`PackageRequired`](https://wiki.archlinux.org/index.php/Powerpill#Troubleshooting)：
+由于`powerpill`属于 AUR 而非官方源，ArchISO 下`makepkg`又会比较麻烦，所以建议添加 ArchlinuxCN 源**或**作者的源，并[将`SigLevel`改成`PackageRequired`](https://wiki.archlinux.org/title/Pacman/Package_signing#Setup)：
 
 ```bash
 vim /etc/pacman.conf
-# 将通用SigLevel改成PackageRequired
+# 将通用 SigLevel 改成 PackageRequired
 SigLevel = PackageRequired
 # ArchLinuxCN
 [archlinuxcn]
 Server = https://mirrors.cloud.tencent.com/archlinuxcn/$arch
-# powerpill作者源（个人建议有CN源就够了，别加这个了）
+# powerpill 作者源（个人建议有 CN 源就够了，别加这个了）
 [xyne-x86_64]
 SigLevel = Required
 Server = https://xyne.archlinux.ca/bin/repo.php?file=
 ```
 
-安装`powerpill`并将各软件包缓存到新机上：
+安装`powerpill`并将各软件包缓存到新机上，（如果在虚拟机上，不需要安装`linux-firmware`。在容器中，还能不装`linux`内核）：
 
 ```bash
-# 如用ArchLinuxCN，则需要安装keyring
+# 如用 ArchLinuxCN，则需要安装 keyring
 pacman -Sy archlinuxcn-keyring
 pacman -S powerpill
 mkdir -p /mnt/var/cache/pacman/pkg
-powerpill -Sw --dbpath /tmp --cachedir /mnt/var/cache/pacman/pkg base base-devel linux linux-firmware
+powerpill -Swb /tmp --cachedir /mnt/var/cache/pacman/pkg base base-devel linux linux-firmware
 ```
 
-建议此时就将所有之后想要安装的软件包一次性缓存下来，节省后续手动安装过程中等待下载的时间。下一步的`pacstrap`工具会使用这些缓存直接安装。
+建议此时就将所有之后想要安装的软件包一次性缓存下来，节省后续手动安装过程中等待下载的时间。下一步的`pacstrap`工具会使用这些缓存直接安装。如果之前选择的镜像服务器不好用，可以`ctrl+c`中止下载并重新选择服务器。下次`pacman`会从中止的软件包开始续传。
 
 ### 安装必要的软件包
 
-下载并安装Arch Linux：
+下载并安装 Arch Linux：
 
 ```bash
 pacstrap /mnt base linux linux-firmware
 ```
 
-如果之前选择的镜像服务器不好用，可以`ctrl+c`中止下载并重新选择服务器。下次`pacman`会从中止的软件包开始续传。
 
-> 注1：此时便可在命令后续写其他想要安装的软件包名，用空格隔开。这些软件包会被直接安装到新系统中。但是部分软件包的安装可能依赖于执行附加脚本，用`pacstrap`安装可能会遇到路径、变量等问题。俺的建议是在初体验Arch安装、未经实践的情况下，只安装原`base`组和`base-devel`这类大家都这样装过的软件包。其余的在chroot和重启到新系统之后再行安装。
+> 注 1：此时便可在命令后续写其他想要安装的软件包名，用空格隔开。这些软件包会被直接安装到新系统中。
 >
-> 注2：从2019年10月6日起，base软件包组被同名的新软件包`base`[替换](https://www.archlinux.org/news/base-group-replaced-by-mandatory-base-package-manual-intervention-required/)，且不再包含`linux`、`linux-firmware`、`netctl`、`vi`等包。俺已经根据这一变化、重新安装了系统并更新了这篇文章。
+> 注 2：从 2019 年 10 月 6 日起，base 软件包组被同名的新软件包`base`[替换](https://www.archlinux.org/news/base-group-replaced-by-mandatory-base-package-manual-intervention-required/)，且不再包含`linux`、`linux-firmware`、`netctl`、`vi`等包。俺已经根据这一变化、重新安装了系统并更新了这篇文章。
 >
 > 这一改动的好处在于日后`base`中添加的新成员可以跟随`base`的更新而自动安装。排除一些非必须的软件包可以给诸如进行批量部署的运维人员自定义需要的部件等使用场景带来方便。大家都可以安装自己需要的内核（`linux`）、文本编辑器（`neovim`）、网络管理器（`networkmanager`）、固件（`broadcom-wl-dkms`）等等，而不必用`ignore`来排除、安装后删除、又或者不管不顾造成冗余。
 
