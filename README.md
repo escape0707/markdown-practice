@@ -11,3 +11,6 @@
 - Windows:
   1. [在台式机上安装 Windows 10](notes/install-windows-on-desktop.md)
   2. [在 Windows 10 上安装 WSL 2 的 Arch](notes/install-arch-wsl2.md)
+- Other Tools:
+  1. [如何使用 Clash 的 TPROXY 功能进行透明代理](notes/how-to-use-clash-with-tproxy-and-fakeip-for-tcp-udp.md)
+  2. [使用 Ventoy 创建 USB 启动盘](notes/use-ventoy-to-create-bootable-usb.md)
