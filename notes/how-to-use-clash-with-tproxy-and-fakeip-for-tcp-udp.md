@@ -249,3 +249,37 @@ dns:
 ## 配置持久化
 
 Linux 路由表和 Netfilter 策略路由默认情况下关机后会遗忘。如果配置过程中出了拿不准的错误无法上网了，可以直接重启电脑恢复。如果确定没问题了，可以将配置写入到防火墙启动时执行的配置文件中。
+
+如果用的是 iptables 的话，可以看一下自己的 systemd 服务在启动时会读哪个文件，然后 `sudo iptables-save -f` 保存到那个文件上去。下次开机就会读取那个文件里的配置了。也可以自己手动改一下。
+
+这里我就贴上 nftables 的配置了（
+
+```nft
+flush ruleset
+table inet mangle {
+  chain filter-direct {
+    ip daddr { 0.0.0.0/8, 10.0.0.0/8, 127.0.0.0/8, 169.254.0.0/16, 172.16.0.0/12, 192.168.0.0/16, 224.0.0.0-255.255.255.255 } accept
+  }
+
+  chain clash {
+    jump filter-direct
+    ip protocol { tcp, udp } tproxy ip to :7893 meta mark set 1
+  }
+
+  chain PREROUTING {
+    type filter hook prerouting priority mangle; policy accept;
+    ip protocol { tcp, udp } jump clash
+  }
+
+  chain clash-self {
+    jump filter-direct
+    meta skuid clash accept
+    meta mark set 1
+  }
+
+  chain OUTPUT {
+    type route hook output priority mangle; policy accept;
+    ip protocol { tcp, udp } jump clash-self
+  }
+}
+```
