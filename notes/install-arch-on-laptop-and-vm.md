@@ -256,7 +256,6 @@ powerpill -Swb /tmp --cachedir /mnt/var/cache/pacman/pkg base base-devel linux l
 pacstrap /mnt base linux linux-firmware
 ```
 
-
 > 注 1：此时便可在命令后续写其他想要安装的软件包名，用空格隔开。这些软件包会被直接安装到新系统中。
 >
 > 注 2：从 2019 年 10 月 6 日起，base 软件包组被同名的新软件包`base`[替换](https://www.archlinux.org/news/base-group-replaced-by-mandatory-base-package-manual-intervention-required/)，且不再包含`linux`、`linux-firmware`、`netctl`、`vi`等包。俺已经根据这一变化、重新安装了系统并更新了这篇文章。
@@ -267,7 +266,9 @@ pacstrap /mnt base linux linux-firmware
 
 ### Fstab
 
-创建[fstab](https://wiki.archlinux.org/index.php/Fstab)文件，用`-U`或`-L`来指定用[UUID](https://wiki.archlinux.org/index.php/UUID)还是标签来标识（建议使用UUID）：
+> [fstab](https://wiki.archlinux.org/index.php/Fstab) 文件用来规定分区、磁盘等如何被（自动）挂载。如果像我一样只在一个 GPT 盘上装系统，可以不用在此时就生成这个文件，而是用 systemd [自动挂载](https://wiki.archlinux.org/title/Systemd#GPT_partition_automountinghttps://wiki.archlinux.org/title/Fstab#GPT_partition_automounting)。否则请看下面的常规操作。
+
+创建 fstab 文件，用`-U`或`-L`来指定用 [UUID](https://wiki.archlinux.org/index.php/UUID) 还是标签来标识（建议使用 UUID）：
 
 ```bash
 genfstab -U /mnt >> /mnt/etc/fstab
@@ -289,7 +290,7 @@ arch-chroot /mnt
 
 ### 下载并配置默认文本编辑器
 
-有`nano`、`vi`、`vim`、`neovim`等可以使用，俺使用的是`neovim`，并且将其通过[`symlink`](https://en.wikipedia.org/wiki/Symbolic_link)用其彻底替换`vi`：
+有`nano`、`vi`、`vim`、`neovim`等可以使用，俺使用的是`neovim，并且将其通过 [`symlink`](https://en.wikipedia.org/wiki/Symbolic_link) 用其彻底替换`vi`：
 
 ```bash
 pacman -S neovim
@@ -298,7 +299,7 @@ ln -s /usr/bin/{nvim,vi}
 
 ### 时区
 
-设置时区（亚洲/上海）：
+设置时区（亚洲 / 上海）：
 
 ```bash
 ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
@@ -312,9 +313,9 @@ hwclock --systohc
 
 ### 本地化
 
-程序和系统均需要用[Locale](https://wiki.archlinux.org/index.php/Locale)来确定地域、货币、时间日期格式等等。要使用某个locale设置，就要先生成它。有时候，在系统使用过程中即使自己只用到一套locale，也要为了支持切换、或者支持此电脑上的其他用户对不同的locale的需要，将所有可能用到的locale都一并生成。
+程序和系统均需要用 [Locale](https://wiki.archlinux.org/index.php/Locale) 来确定地域、货币、时间日期格式等等。要使用某个 locale 设置，就要先生成它。有时候，在系统使用过程中即使自己只用到一套 locale，也要为了支持切换、或者支持此电脑上的其他用户对不同的 locale 的需要，将所有可能用到的 locale 都一并生成。
 
-移除`/etc/locale.gen`中您需要的locale前的`#`号注释。可以用Nano/Vi(m)等工具修改，也可以用`cat`命令直接编写，例如：
+移除`/etc/locale.gen`中您需要的 locale 前的`#`号注释。可以用 Nano/Vi(m) 等工具修改，也可以用`cat`命令直接编写，例如：
 
 ```bash
 cat > /etc/locale.gen
@@ -326,9 +327,9 @@ zh_TW.UTF-8 UTF-8
 # ctrl+d
 ```
 
-> 注：建议选择UTF-8字符集的locale。
+> 注：建议选择 UTF-8 字符集的 locale。
 
-之后生成locale讯息：
+之后生成 locale 讯息：
 
 ```bash
 locale-gen
@@ -340,13 +341,13 @@ locale-gen
 echo LANG=en_US.UTF-8 > /etc/locale.conf
 ```
 
-> 注：建议操作系统均使用英文locale，这样终端内的输出、软件报错信息均为英语，便于Google搜索和问题分享等等。反之，设置成汉字语系的locale还可能导致TTY乱码。
+> 注：建议操作系统均使用英文 locale，这样终端内的输出、软件报错信息均为英语，便于 Google 搜索和问题分享等等。反之，设置成汉字语系的 locale 还可能导致 TTY 乱码。
 
-之后设置新系统的键盘布局，由于俺用默认的US键盘布局，故跳过。
+之后设置新系统的键盘布局，由于俺用默认的 US 键盘布局，故跳过。
 
 ### 网络配置
 
-创建[hostname](https://wiki.archlinux.org/index.php/Hostname)文件：
+创建 [hostname](https://wiki.archlinux.org/index.php/Hostname) 文件：
 
 > 用您喜欢的主机名替换`myhostname`。
 
@@ -354,7 +355,7 @@ echo LANG=en_US.UTF-8 > /etc/locale.conf
 echo myhostname > /etc/hostname
 ```
 
-创建对应的[hosts](https://jlk.fjfi.cvut.cz/arch/manpages/man/hosts.5)文件：
+[（这一步可以跳过）](https://wiki.archlinux.org/title/Network_configuration#Local_hostname_resolution)创建对应的 [hosts](https://jlk.fjfi.cvut.cz/arch/manpages/man/hosts.5) 文件：
 
 ```bash
 cat > /etc/hosts
@@ -364,13 +365,13 @@ cat > /etc/hosts
 # ctrl+d
 ```
 
-> 如果此系统有一个永久IP地址，应该用此地址替换`127.0.1.1`。
+> 如果此系统有一个永久 IP 地址，应该用此地址替换`127.0.1.1`。
 
 完成其他[网络配置](https://wiki.archlinux.org/index.php/Network_configuration)：
 
 - 虚拟机：
 
-  对于虚拟机，只需要启动[`dhcpcd`](https://wiki.archlinux.org/index.php/Dhcpcd#Running)服务即可：
+  对于虚拟机，只需要启动 [`dhcpcd`](https://wiki.archlinux.org/index.php/Dhcpcd#Running) 服务即可：
 
   ```bash
   systemctl enable dhcpcd
@@ -378,17 +379,17 @@ cat > /etc/hosts
 
 - 物理机：
 
-  如使用有线网络连接，同上述虚拟机配置一样只需启动`dhcpcd`服务即可。如需在新系统中继续使用Wi-Fi，则建议安装一个[网络管理器](https://wiki.archlinux.org/index.php/Network_configuration#Network_managers)。
+  如使用有线网络连接，同上述虚拟机配置一样只需启动`dhcpcd`服务即可。如需在新系统中继续使用 Wi-Fi，则建议安装一个 [网络管理器](https://wiki.archlinux.org/index.php/Network_configuration#Network_managers)。
 
-  鉴于GNOME、KDE等[桌面环境](https://wiki.archlinux.org/index.php/Desktop_environment)常使用`networkmanager`来管理网络连接，Xfce也支持`network-manager-applet`作为前端，并且此包会在安装KDE桌面环境时作为依赖自动安装。俺建议在`netctl`被移出`base`的当下，使用来联网。
+  鉴于 GNOME、KDE 等[桌面环境](https://wiki.archlinux.org/index.php/Desktop_environment)常使用`networkmanager`来管理网络连接，Xfce 也支持`network-manager-applet`作为前端，此包会在安装桌面环境时作为依赖自动安装。俺建议在`netctl`被移出`base`的当下，使用它来联网。
 
-  如果想和俺一样使用Xfce作为桌面环境，则直接安装`network-manager-applet`
+  如果想和俺一样使用 Xfce 作为桌面环境，则直接安装 `network-manager-applet`
 
   ```bash
   pacman -S network-manager-applet
   ```
 
-  如果使用GNOME、KDE等默认使用它的桌面环境，则作为依赖包安装`networkmanager`
+  如果使用 GNOME、KDE 等默认使用它的桌面环境，则作为依赖包安装 `networkmanager`
 
   ```bash
   pacman -S networkmanager --asdeps
@@ -400,13 +401,13 @@ cat > /etc/hosts
   systemctl enable NetworkManager
   ```
 
-  此外，关于无线网卡驱动，俺的笔电使用的无线网卡芯片为高通的BCM43142，不被高通官方开源网卡驱动支持。而官方的专有驱动[`wl`](https://wiki.archlinux.org/index.php/Broadcom_wireless#broadcom-wl)则似乎由于知识产权问题，不能由其他组织分发，所以没能被集成在Linux操作系统内核自带固件全家桶`linux-firmware`中，必须由自行安装。对应的，俺不用安装`linux-firmware`似乎也没事：
+  此外，关于无线网卡驱动，俺的笔电使用的无线网卡芯片为高通的 BCM43142，不被高通官方开源网卡驱动支持。而官方的专有驱动 [`wl`](https://wiki.archlinux.org/index.php/Broadcom_wireless#broadcom-wl) 则似乎由于知识产权问题，不能由其他组织分发，所以没能被集成在 Linux 操作系统内核自带固件全家桶`linux-firmware`中，必须由自行安装。对应的，俺不用安装`linux-firmware`似乎也没事：
 
   ```bash
   pacman -S broadcom-wl
   ```
 
-  该驱动有一种可以支持[DKMS](https://wiki.archlinux.org/index.php/DKMS)技术、随Linux系统内核更新自动适配的版本，怕出问题也可以安装DKMS版：
+  该驱动有一种可以支持 [DKMS](https://wiki.archlinux.org/index.php/DKMS) 技术、随 Linux 系统内核更新自动适配的版本，怕部分更新而出问题也可以安装 DKMS 版：
 
   ```bash
   pacman -S linux-headers broadcom-wl-dkms
@@ -414,11 +415,15 @@ cat > /etc/hosts
 
 ### Initramfs
 
-一般来说不需要创建新的initramfs，除非想要使用[LVM](https://wiki.archlinux.org/index.php/LVM#Configure_mkinitcpio)，[系统加密](https://wiki.archlinux.org/index.php/Dm-crypt)，或者[RAID](https://wiki.archlinux.org/index.php/RAID#Configure_mkinitcpio)等进阶技术。这里跳过。
+一般来说不需要创建新的 initramfs，除非想要使用 [LVM](https://wiki.archlinux.org/index.php/LVM#Configure_mkinitcpio)，[系统加密](https://wiki.archlinux.org/index.php/Dm-crypt)，或者 [RAID](https://wiki.archlinux.org/index.php/RAID#Configure_mkinitcpio) 等进阶技术。
 
-### Root密码
+如果您之前没有生成`fstab`，希望使用 systemd 来自动挂载 root 等分区，则需要用 systemd init hook。
 
-设置[root账户密码](https://wiki.archlinux.org/index.php/Password)：
+编辑`/etc/mkinitcpio.conf`，在`HOOKS`中将`base`改为`systemd`，并去掉`udev`、`usr`、`resume`。
+
+### Root 密码
+
+设置 [root 账户密码](https://wiki.archlinux.org/index.php/Password)：
 
 ```bash
 passwd
@@ -426,46 +431,48 @@ passwd
 
 ### Boot loader
 
-这是重启到新系统前最后的步骤了，以下参考了[Arch启动过程#Boot loader](https://wiki.archlinux.org/index.php/Arch_boot_process#Boot_loader)来配置系统的Boot loader。
+这是重启到新系统前最后的步骤了，以下参考了 [Arch 启动过程 #Boot loader](https://wiki.archlinux.org/index.php/Arch_boot_process#Boot_loader) 来配置系统的 Boot loader。
 
-鉴于选择了EFISTUB启动方法，故参考[Using UEFI directly](https://wiki.archlinux.org/index.php/EFISTUB#Using_UEFI_directly)来进行配置。
-
-如果是在**物理机**上安装，配置EFISTUB启动时还多一首小插曲——[Microcode](https://wiki.archlinux.org/index.php/Microcode)，即根据处理器品牌，配置早期微码更新。Intel处理器的操作如下，Amd处理器需要将`intel`替换为`amd`：
+如果是在 **物理机** 上安装，需要先安装 [Microcode](https://wiki.archlinux.org/index.php/Microcode)，以便根据处理器品牌，配置早期微码更新。Intel 处理器的操作如下，Amd 处理器需要将`intel`替换为`amd`：
 
 ```bash
 pacman -S intel-ucode
 ```
 
-> 虚拟机上[不需要考虑Microcode](https://wiki.archlinux.org/index.php/Microcode#EFISTUB)
+> 虚拟机上 [不需要考虑 Microcode](https://wiki.archlinux.org/index.php/Microcode#EFISTUB)
 
-之后编写EFISTUB启动项的脚本：
+如果希望双启动的，可以用[`systemd-boot`](https://wiki.archlinux.org/title/Systemd-boot)来控制启动过程；如果不做双启动，可以选择更精简的 EFISTUB 启动方法，并参考 [Using UEFI directly](https://wiki.archlinux.org/index.php/EFISTUB#Using_UEFI_directly) 来进行配置。下面先描述 EFISTUB，再描述 systemd-boot。
 
-1. 首先用`exit`命令或者组合键`ctrl+d`退出chroot环境。
+#### EFISTUB
+
+编写 EFISTUB 启动项的脚本：
+
+1. 首先用`exit`命令或者组合键`ctrl+d`退出 chroot 环境。
 2. 创建一个脚本文件来存贮将要执行的一条长命令，方便我们检查和修改参数：
 
    ```bash
    vi efibootmgr.sh
    ```
 
-   > 不用Vi(m)也可以用Nano等编辑器或者`cat`、`echo`等命令。但之后输入[分区UUID](https://wiki.archlinux.org/index.php/Persistent_block_device_naming#by-partuuid)俺是用Vi(m)的[`:read`](https://vim.fandom.com/wiki/Append_output_of_an_external_command#Using_:read)命令完成的。
+   > 不用 Vi(m)也可以用 Nano 等编辑器或者`cat`、`echo`等命令。但之后输入[分区 UUID](https://wiki.archlinux.org/index.php/Persistent_block_device_naming#by-partuuid) 俺是用 Vi(m)的[`:read`](https://vim.fandom.com/wiki/Append_output_of_an_external_command#Using_:read) 命令完成的。
    >
-   > #### 一点Vi的小说明
+   > #### 一点 Vi 的小说明
    >
-   > 进入Vi后是普通模式。
+   > 进入 Vi 后是普通模式。
    >
-   > 普通模式下按`h` `j` `k` `l`分别向←↓↑→移动光标。按`i`进入插入模式开始键入文字。
+   > 普通模式下按`h` `j` `k` `l`分别向 ←↓↑→ 移动光标。按`i`进入插入模式开始键入文字。
    >
    > 按`Esc`从各种模式返回普通模式。
    >
-   > 普通模式下键入`:`和命令并回车来执行Vi命令，例如`:q`在未修改文件的情况下退出、`:q!`放弃修改并退出、`:w`保存、`:wq`/`:x`保存并退出等。上述`:read`也是如此执行。
+   > 普通模式下键入`:`和命令并回车来执行 Vi 命令，例如`:q`在未修改文件的情况下退出、`:q!`放弃修改并退出、`:w`保存、`:wq`/`:x`保存并退出等。上述`:read`也是如此执行。
    >
    > 普通模式下键入`dd`来剪切当前行，`p`来粘贴，`J`（即`shift+j`）来将下一行接到当前行末尾。
    >
-   > 更多Vi(m)技巧请您自行了解，不在此赘述。
+   > 更多 Vi(m) 技巧请您自行了解，不在此赘述。
 
 3. 在其中写入如下内容：
 
-   > 将下文`/dev/sda`和`1`替换为您的EFI系统分区（ESP）的磁盘和分区号。`--disk /dev/sda --part 1`对应的是俺之前创建的ESP——`/dev/sda1`。
+   > 将下文`/dev/sda`和 `1` 替换为您的 EFI 系统分区（ESP）的磁盘和分区号。`--disk /dev/sda --part 1` 对应的是俺之前创建的 ESP——`/dev/sda1`。
 
    - 虚拟机：
 
@@ -475,19 +482,19 @@ pacman -S intel-ucode
 
    - 物理机：
 
-     > 多一段启动Microcode的`initrd=/intel-ucode.img`
+     > 多一段启动 Microcode 的 `initrd=/intel-ucode.img`
 
      ```bash
      efibootmgr --disk /dev/sda --part 1 --create --label "Arch Linux" --loader /vmlinuz-linux --unicode 'root=PARTUUID=XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX rw initrd=/intel-ucode.img initrd=/initramfs-linux.img' --verbose
      ```
 
-4. 将`root=`之后的PARTUUID的参数替换成Linux文件系统分区（即`/dev/sda2`）的分区UUID。手动输入比较麻烦，这里俺使用的Vi(m)的`:read`命令，让Vi(m)将`:read !`后面的文字当作Shell命令执行，并将结果另起一行写在文件中。
+4. `root`参数如果之前做好了使用 systemd 自动挂载的准备可以忽略掉，否则，将`root=`之后的 PARTUUID 的参数替换成 Linux 文件系统分区（俺这里是`/dev/sda2`）的分区 UUID。手动输入比较麻烦，这里俺使用的 Vi(m) 的`:read`命令，让 Vi(m) 将`:read !`后面的文字当作 Shell 命令执行，并将结果另起一行写在文件中。
 
    ```vim
    :read !lsblk -dno PARTUUID /dev/sda2
    ```
 
-   > 注意：默认情况下Vi会[防止](https://vi.stackexchange.com/a/2163/22060)用户使用退格键删除`自动缩进`、`换行符`以及`进入插入模式时的位置`之前的字符的。要么直接在普通模式下用`J`（大写J）将下一行接到当前行末尾，要么临时`:set backspace=indent,eol,start`。
+   > 注意：默认情况下 Vi 会 [防止用户使用退格键删除`自动缩进`、`换行符`以及`进入插入模式时的位置`之前的字符](https://vi.stackexchange.com/a/2163/22060)。要么直接在普通模式下用`J`（大写 J）将下一行接到当前行末尾，要么临时`:set backspace=indent,eol,start`。
 
 5. 检查脚本中内容：
 
@@ -513,19 +520,52 @@ pacman -S intel-ucode
 
 8. 设置启动顺序（可选）：
 
-   > 运行完脚本后，efibootmgr自动将`Arch Linux`项设置为第一启动项，故此步骤可以跳过。
+   > 运行完脚本后，efibootmgr 自动将`Arch Linux`项设置为第一启动项，故此步骤可以跳过。
 
    ```bash
    efibootmgr -o XXXX,XXXX --verbose
    ```
 
-   其中XXXX即efibootmgr的输出中各启动项前的四位数。
+   其中 XXXX 即 efibootmgr 的输出中各启动项前的四位数。
 
-   > 俺在笔电上安装时会将U盘设为第一项，系统设为第二项，主板固件设置设为第三项。关机之后移除U盘便可从硬盘系统启动。之后若无法启动或缺少驱动，下次启动前插入U盘便能进入安装环境进行急救。确认启动正常后，可用`systemctl reboot --firmware-setup`重启到主板设置将系统调回第一项。
+   > 俺在笔电上安装时会将 U 盘设为第一项，系统设为第二项，主板固件设置设为第三项。关机之后移除 U 盘便可从硬盘系统启动。之后若无法启动或缺少驱动，下次启动前插入 U 盘便能进入安装环境进行急救。确认启动正常后，可用 `systemctl reboot --firmware-setup` 重启到主板设置或者直接用 efibootmgr 将系统启动项调回第一项。
+
+#### systemd-boot
+
+[systemd-boot 启动](https://wiki.archlinux.org/title/Systemd-boot]其实很简单，而且也支持启动时选择进入 Windows 或者主板设置。
+
+首先[安装 systemd-boot](https://wiki.archlinux.org/title/Systemd-boot#Installation)：
+
+```bash
+bootctl install
+```
+
+之后进行配置。先创建启动项，可以拷贝参考样例：
+
+```bash
+cp /usr/share/systemd/bootctl/arch.conf /boot/loader/entries
+```
+
+再将拷贝来的文件中的`options`行删掉，在`initrd /initramfs-linux.img`行之前加上载入 ucode 的配置（如是 amdcpu 则将 intel 改为 amd）：
+
+```
+initrd  /intel-ucode.img
+```
+
+最后是这样的：
+
+```
+title Arch Linux
+linux /vmlinuz-linux
+initrd /intel-ucode.img
+initrd /initramfs-linux.img
+```
+
+保存以后可以继续编写 systemd-boot 本身的配置`/boot/loader/loader.conf`，不过其实没啥重要的，全删了用默认值也没问题。
 
 ## 重启
 
-1. 用组合键`ctrl+d`或者命令退出chroot环境：
+1. 用组合键`ctrl+d`或者命令退出 chroot 环境：
 
    ```bash
    exit
@@ -537,7 +577,7 @@ pacman -S intel-ucode
    umount -R /mnt
    ```
 
-   如果文件系统正处于使用中，可以用[fuser(1)](https://jlk.fjfi.cvut.cz/arch/manpages/man/fuser.1)找到。
+   如果文件系统正处于使用中，可以用 [fuser(1)](https://jlk.fjfi.cvut.cz/arch/manpages/man/fuser.1) 找到。
 
 3. 关机：
 
@@ -551,27 +591,27 @@ pacman -S intel-ucode
 
    - 虚拟机
 
-     在虚拟机设置中将SCSI控制器里的DVD驱动器中的安装镜像关掉。
+     在虚拟机设置中将 SCSI 控制器里的 DVD 驱动器中的安装镜像关掉。
 
      ![remove-install-disk](../attachments/remove-install-disk.png)
 
    - 物理机
 
-     确认关机后移除U盘即可。
+     确认关机后移除 U 盘即可。
 
-4. 再次启动并用设置好的密码登录root账户后，终于进入了Arch Linux。
+4. 再次启动并用设置好的密码登录 root 账户后，终于进入了 Arch Linux。
 
    ![welcome-to-arch-linux](../attachments/welcome-to-arch-linux.png)
 
 ## 安装完成后的工作
 
-至此，我们便可以在Hyper-V虚拟机/物理机中运行最小化、可联网的Arch Linux系统。可以关机稍作休息，择时进行后续配置过程。
+至此，我们便可以在 Hyper-V 虚拟机 / 物理机中运行最小化、可联网的 Arch Linux 系统。可以关机稍作休息，择时进行后续配置过程。
 
 您可以进一步参考官方[推荐的安装完成后的操作](https://wiki.archlinux.org/index.php/General_recommendations)。包括但不限于：
 
-- 创建用户账户、配置`sudo`
+- 创建用户账户、配置 `sudo`
 - 安装蓝牙、显卡等的闭源驱动
 - 配置无线网络连接
 - 安装桌面环境
 
-俺也会在之后[Arch新机用上Google](customize-arch-to-use-google.md)一文中继续记录俺进一步折腾系统到可以用搜索引擎查资料的程度的步骤，详情请移步后文。
+俺也会在之后 [Arch 新机用上 Google](customize-arch-to-use-google.md) 一文中继续记录俺进一步折腾系统到可以用搜索引擎查资料的程度的步骤，详情请移步后文。
