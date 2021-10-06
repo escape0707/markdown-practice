@@ -391,7 +391,6 @@ sudo systemctl enable tproxy-ip-route.service
 -A clash -p udp -j TPROXY --on-port 7893 --tproxy-mark 1
 -A clash-self -j filter-direct
 -A clash-self -m cgroup --path "noproxy.slice" -j ACCEPT
--A clash-self -m cgroup --path "user.slice/user-1000.slice/user@1000.service/noproxy.slice" -j ACCEPT
 -A clash-self -j MARK --set-mark 1
 -A filter-direct -d 0.0.0.0/8 -j ACCEPT
 -A filter-direct -d 10.0.0.0/8 -j ACCEPT
@@ -402,6 +401,49 @@ sudo systemctl enable tproxy-ip-route.service
 -A filter-direct -d 224.0.0.0/4 -j ACCEPT
 -A filter-direct -d 240.0.0.0/4 -j ACCEPT
 COMMIT
+```
+
+user cgroup 规则在对应的 cgroup 已经存在的时候才能加入。如果想要避免用 sudo 提权，需要创建一个 systemd.path 和 systemd.service 来监控 cgroup 路径的创建，并自动加入对应的 iptables 规则：
+
+```bash
+sudo systemctl edit --force --full tproxy-user-cgroup@.path
+```
+
+填入：
+
+```ini
+[Unit]
+Description=Monitor the creation of the user cgroup for UID %i.
+
+[Path]
+PathExists=/sys/fs/cgroup/user.slice/user-%i.slice/user@%i.service/noproxy.slice/
+
+[Install]
+WantedBy=multi-user.target
+```
+
+编写对应的 systemd.service：
+
+```bash
+sudo systemctl edit --force --full tproxy-user-cgroup@
+```
+
+填入：
+
+```bash
+[Unit]
+Description=Add iptables bypass rule for user cgroup of UID %i.
+
+[Service]
+Type=oneshot
+ExecStart=iptables -t mangle -I clash-self -m cgroup --path "user.slice/user-%i.slice/user@%i.service/noproxy.slice" -j ACCEPT
+RemainAfterExit=yes
+```
+
+最后启用：
+
+```bash
+sudo systemctl enable tproxy-user-cgroup@$UID.path
 ```
 
 #### nftables 配置
