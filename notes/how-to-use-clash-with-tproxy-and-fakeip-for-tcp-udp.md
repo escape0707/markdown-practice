@@ -3,17 +3,17 @@ tags: [Blog/Networking]
 title: 如何使用 Clash 的 TPROXY 功能进行透明代理
 ---
 
-- [前言](#前言)
-- [安装](#安装)
-- [安装其他辅助软件包](#安装其他辅助软件包)
-- [启动 / 开机自启动](#启动--开机自启动)
-- [基础使用](#基础使用)
-- [局域网转发](#局域网转发)
-- [配置 Clash DNS](#配置-clash-dns)
-- [修改防火墙来 TPROXY 内网其他机器](#修改防火墙来-tproxy-内网其他机器)
-- [代理本机流量](#代理本机流量)
-- [Fake ip](#fake-ip)
-- [配置持久化](#配置持久化)
+-   [前言](#前言)
+-   [安装](#安装)
+-   [安装其他辅助软件包](#安装其他辅助软件包)
+-   [启动 / 开机自启动](#启动--开机自启动)
+-   [基础使用](#基础使用)
+-   [局域网转发](#局域网转发)
+-   [配置 Clash DNS](#配置-clash-dns)
+-   [修改防火墙来 TPROXY 内网其他机器](#修改防火墙来-tproxy-内网其他机器)
+-   [代理本机流量](#代理本机流量)
+-   [Fake ip](#fake-ip)
+-   [配置持久化](#配置持久化)
 
 ## 前言
 
@@ -137,7 +137,7 @@ sudo systemctl enable clash --now
 log-level: debug
 mixed-port: 7890
 external-controller: 0.0.0.0:9090
-external-ui: "/usr/share/yacd"
+external-ui: '/usr/share/yacd'
 # append your proxies and rules
 ```
 
@@ -189,13 +189,13 @@ clash 和 v2ray 这类透明网关代理需要知道所代理的流量请求的�
 
 ```yaml
 dns:
-  enable: true
-  listen: 0.0.0.0:53
-  enhanced-mode: redir-host
-  # enhanced-mode: fake-ip
-  nameserver:
-    - 114.114.114.114
-    - 8.8.8.8
+    enable: true
+    listen: 0.0.0.0:53
+    enhanced-mode: redir-host
+    # enhanced-mode: fake-ip
+    nameserver:
+        - 114.114.114.114
+        - 8.8.8.8
 ```
 
 俺只按照 Clash 作者的基础建议列出来了最简单的直连国内 DNS 的方案。一般来说被污染的解析结果会指向国外，也会走上代理。总之，这里现简单设置以下，更复杂的以后再说。
@@ -328,14 +328,14 @@ ping baidu.com
 
 ```yaml
 dns:
-  fake-ip-filter:
-    - "*"
-    - "*.lan"
-    - localhost.ptlogin2.qq.com
-    - ping.archlinux.org
-    - nmcheck.gnome.org
-    - "*.msftconnecttest.com"
-    - "*.msftncsi.com"
+    fake-ip-filter:
+        - '*'
+        - '*.lan'
+        - localhost.ptlogin2.qq.com
+        - ping.archlinux.org
+        - nmcheck.gnome.org
+        - '*.msftconnecttest.com'
+        - '*.msftncsi.com'
 ```
 
 ## 配置持久化
@@ -452,6 +452,8 @@ RemainAfterExit=yes
 ```bash
 sudo systemctl enable tproxy-user-cgroup@$UID.path
 ```
+
+> TODO: 俺应该再研究研究把这个配置方法和 iptables 服务的停止和重启也配合好。另外，最近发现最方便的配合 qBittorrent 使用的方法还是早早的匹配并代理 RSS 源之后立刻按照下载软件进程名过滤，这样可以兼顾 RSS 订阅和代理软件直连。而且其实就不需要配置这种比较麻烦的用户级进程放行了。
 
 #### nftables 配置
 
