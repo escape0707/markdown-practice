@@ -86,14 +86,6 @@ title: 安装 Arch Linux 前的准备工作
 
 本文将描述 Arch Linux 安装介质的准备工作，后文将分别记录俺在一台 Windows 10 台式机和一台已运行 Arch Linux 的笔电上，安装最小化、可联网的 Arch Linux，配置可以使用搜索引擎的环境，以及安装自用软件的过程。
 
-> 俺是在下述环境进行安装的：
->
-> 操作系统：Windows 10 Pro 1903 18362.239
->
-> 虚拟技术：Hyper-V
->
-> ~~并不清楚 Hyper-V 与 Oracle VM VirtualBox 上仅仅是进行 Arch Linux 安装会有什么体验上的不同。之前已经试过 VirtualBox，此次为了少安装一个第三方软件尝试一下微软的 Hyper-V。~~Hyper-V 属于更底层的虚拟化，VirtualBox 和 VMware 传统情况下是运行在操作系统中的虚拟化环境。Hyper-V 运行 Hypervisor 然后用它跑你的 Windows 和其他想要运行的虚拟机。各个虚拟机能够更好的利用硬件资源（应该是这么说的
-
 ## 下载 & 校验 Arch Linux ISO 安装镜像
 
 我们可以按照官方[安装指南](https://wiki.archlinux.org/index.php/Installation_guide#Pre-installation)来下载和校验安装镜像。
