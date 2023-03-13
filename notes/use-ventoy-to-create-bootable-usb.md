@@ -23,10 +23,10 @@ scoop install ventoy
 
 ### Linux
 
-ArchLinux 可以从 AUR 下载：
+ArchLinux 可以从 AUR 或 ArchlinuxCN 下载：
 
 ```bash
-yay -S ventoy-bin
+paru -S ventoy-bin
 ```
 
 ## 制作启动盘
@@ -36,9 +36,8 @@ yay -S ventoy-bin
 ### Windows
 
 - 选择要使用的 USB 盘
-- 分区类型选择`GPT`
+- 分区类型选择`GPT`，如果你的目标设备主板太老了不支持则选择`MBR`。（默认值其实也能胜任。）
 - 点击`Install`开始制作
-- 将下载的 Windows / Arch ISO 镜像拷贝到 USB 盘中
 
 ### Linux
 

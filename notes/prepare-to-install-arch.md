@@ -9,7 +9,7 @@ title: 安装 Arch Linux 前的准备工作
 - [前言](#前言)
 - [为何选择 Linux](#为何选择-linux)
 - [为何选择 Arch Linux](#为何选择-arch-linux)
-- [推荐在虚拟机上初体验](#推荐在虚拟机上初体验)
+- [推荐在虚拟机或者~~二奶机~~淘汰的老机器上初体验](#推荐在虚拟机或者二奶机淘汰的老机器上初体验)
 - [下载 \& 校验 Arch Linux ISO 安装镜像](#下载--校验-arch-linux-iso-安装镜像)
 - [制作 USB 启动盘](#制作-usb-启动盘)
 - [准备完成](#准备完成)
@@ -56,7 +56,7 @@ title: 安装 Arch Linux 前的准备工作
 - 很多公司特别是国内公司选择不开发其软件的 Linux 版，例如没有原生 Adobe, Autodesk 套件、QQ、微信。虽大多有解决方案，但毕竟多一层麻烦。不过这些东西我都不用就是了，希望美术软件方面以后也再卷一卷，让美术设计师们也能有自由的操作系统选择
 - ~~游戏少、治不了、没救了、我都懒得调 Wine 等适配层，直接双启动吧，或者买主机。~~
 - ~~Nvidia 不认真支持其显卡在 Linux 下的使用体验，特别是多显卡交火、双显卡切换等在 Linux 下的发挥可能不如 Windows（但对俺这种看网页、VSCode 打打代码的菜鸡来说感觉不到，除非俺也有四路泰坦。）~~
-- 随着各大厂推行云游戏，Steam 发售 Steamdeck，和 Nvidia 深耕深度学习领域，Linux 上的显卡驱动和游戏兼容性已经在逐步好转了。Steam Proton 了解一下。
+- 随着各大厂推行云游戏和 Nvidia 深耕深度学习领域，Linux 上的显卡驱动和游戏兼容性已经在逐步好转了。Steam Deck 出来以后，可以遇见 Linux 上的游戏体验将会越来越好。Proton 了解一下。何况你可以双启动嘛，俺现在就是无脑双启动 Windows 10 LTSC。
 
 总体而言，其实仅就资源占用这一点，在俺的小笔记本上，Linux 就已经一刀处决 Windows 10 了。俺便在认为利大于弊的时候，趁着有闲，玩玩 Linux。
 
@@ -69,12 +69,12 @@ title: 安装 Arch Linux 前的准备工作
 - 泛用，特别是 AUR 能让人用上更多软件
 - 从众，以前看博客都在说 Ubuntu 运行某某命令，现在总看到 Arch 下怎样怎样做。少走弯路、少造轮子
 - 官方 Wiki 和社区很强、大神云集
-- pacman 和 Arch 的软件包体系都很方便
-- 稍微多打开一些 Linux 系统的黑箱，看到更内部结构的冰山一角
+- 包管理工具 pacman 用起来很舒服
+- 稍微打开了 Linux 系统黑箱，看到更内部结构的冰山一角
 - （年幼无知时折腾 Ubuntu 和显卡驱动 PTSD 了）
-- （暂时不想玩 Gentoo 或者 Linux From Scratch）
+- （太菜太爱玩，暂时搞不了 Gentoo 或者 Linux From Scratch）
 
-## 推荐在虚拟机上初体验
+## 推荐在虚拟机或者~~二奶机~~淘汰的老机器上初体验
 
 作为 Linux 的初次使用者，相信各位读者一定是选择使用图形化操作界面的。同样作为初次使用者，俺建议各位在比较像 Max OS X 的 Gnome 和 比较像 Windows 的 KDE Plasma 之中选择自己初次使用的桌面环境，让它们帮你解决包括网络配置、文件检索、窗口、软件自启动等等问题。而试用这两种界面的去别的最方便的方法就是在虚拟机中运行最新版的 OpenSUSE（另一个发行版，同样滚动更新，有图形化的安装 ISO）的 Gnome 和 KDE 的 LiveCD 启动盘实际感受一下，并选好心仪的桌面环境。
 
@@ -100,7 +100,7 @@ title: 安装 Arch Linux 前的准备工作
 
 ### 下载
 
-在[官网下载](https://www.archlinux.org/download/)镜像时，可选择使用[网易](http://mirrors.163.com/archlinux/iso/2019.07.01/)等速度较快的镜像服务器。
+在[官网下载](https://www.archlinux.org/download/)镜像时，可选择使用[腾讯](https://mirrors.tencent.com/archlinux/iso/latest)、[网易](https://mirrors.163.com/archlinux/iso/latest)等速度较快的镜像服务器。
 
 ### 校验
 
