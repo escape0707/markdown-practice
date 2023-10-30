@@ -216,7 +216,7 @@ layers.acceleration.force-enabled=true
 sudo pacman -S shadowsocks-libev
 vi /etc/shadowsocks/config.json
 # 将您的某个shadowsocks服务器信息写入到以上文件中
-sudo systemctl enable shadowsocks-libev@config.json --now
+sudo systemctl enable shadowsocks-libev@config --now
 ```
 
 如果服务不能成功自动启动，请尝试将json中的`server`替换为完整域名解析到的IP地址
