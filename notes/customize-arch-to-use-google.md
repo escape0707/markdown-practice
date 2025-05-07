@@ -193,6 +193,9 @@ sudo pacman -S firefox
 # 和Windows下一样，返回上一页的`Backspace`：
 browser.backspace_action=0
 
+# Keep Firefox open after closed last tab:
+browser.tabs.closeWindowWithLastTab=false
+
 # 若火狐在卷动页面时出现屏幕撕裂
 # https://wiki.archlinux.org/index.php/firefox#Tearing_video_in_fullscreen_mode：
 layers.acceleration.force-enabled=true
