@@ -431,21 +431,6 @@ vi /etc/systemd/swap.conf
 
 最后用`efibootmgr`制作好启动项就可以启动了。
 
-## Fine-tune makepkg
-
-/etc/makepkg.conf
-
-CFLAGS="-march=native -O2 -pipe -fstack-protector-strong -fno-plt"
-CXXFLAGS="${CFLAGS}"
-MAKEFLAGS="-j4"
-COMPRESSXZ=(xz -c -z - --threads=0)
-
-> DLAGENTS for curl proxy, e.g.:
->
-> `'https::/usr/bin/curl --socks5 127.0.0.1:1080 -gqb "" -fLC - --retry 3 --retry-delay 3 -o %o %u'`
-
-## zeal & dash & devdocs
-
 ## xdg-user-dirs-gtk-update
 
 ## Xfce4 快捷键设置
@@ -484,20 +469,10 @@ X-XFCE-CommandsWithParameter=/usr/bin/xfce4-terminal --maximize "%s"
 X-XFCE-Commands=/usr/bin/xfce4-terminal --maximize
 ```
 
-## 手机 USB 热点
+## 通过 Gnome + NetworkManager + OpenVPN 导入并使用 VPNGate 节点
 
-使用手机热点比 Windows 上还要方便，如果 Wi-Fi 自不必说，即便是最优选择 USB，Android 2.2 以上无需驱动即可连接；iPhone 也只需要安装一个仅`370KB`的`libimobiledevice`驱动包即可：
+在大陆不太能用，但是在海外的时候进行一些简单的地区限制绕过还是有用的。下载 OpenVPN 的文件以后，在 Gnome 倒入后会因为默认使用的协议太旧所以不能连接，此时可以尝试：
 
-```bash
-sudo pacman -S libimobiledevice
-```
-
-## 打开 Magic SysRq 组合键
-
-[魔键的详细叙述](https://www.kernel.org/doc/html/latest/admin-guide/sysrq.html)
-
-具体命令（如果需要用到更多更狠的组合键可以查以上网页中的表，或者`echo 1`）：
-
-```cpp
-echo 64 | sudo tee /proc/sys/kernel/sysrq
+```sh
+nmcli connection modify SOME-VPN-CONF +vpn.data data-ciphers=AES-256-CBC
 ```
